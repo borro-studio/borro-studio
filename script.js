@@ -1,3 +1,7 @@
+/* =====================================
+   MENU SYSTEM
+===================================== */
+
 const menuBtn = document.getElementById("menuBtn");
 const menu = document.getElementById("menu");
 const menuItems = document.querySelectorAll(".menu-overlay li");
@@ -67,13 +71,14 @@ menuBtn.addEventListener("click", () => {
     menuTL.reverse();
   }
 });
-/* ================================
+
+
+/* =====================================
    INTRO ANIMATION
-================================ */
+===================================== */
 
 window.addEventListener("load", () => {
 
-  // Forzamos estado inicial con GSAP
   gsap.set("#mainLogo", { y: -40, opacity: 0 });
   gsap.set("#menuBtn", { y: -20, opacity: 0 });
   gsap.set("footer", { y: 20, opacity: 0 });
@@ -98,5 +103,100 @@ window.addEventListener("load", () => {
       opacity: 1,
       duration: 0.8
     }, "-=0.6");
+
+});
+
+
+/* =====================================
+   WHEEL – STABLE TRUE INFINITE + SCROLL
+===================================== */
+
+function highlightCenter() {
+
+  const wheel = document.querySelector(".wheel");
+  const wheelRect = wheel.getBoundingClientRect();
+  const centerY = wheelRect.top + wheelRect.height / 2;
+
+  let closest = null;
+  let minDistance = Infinity;
+
+  document.querySelectorAll(".wheel-item").forEach(item => {
+
+    const rect = item.getBoundingClientRect();
+    const itemCenter = rect.top + rect.height / 2;
+    const distance = Math.abs(itemCenter - centerY);
+
+    item.classList.remove("active");
+
+    if (distance < minDistance) {
+      minDistance = distance;
+      closest = item;
+    }
+  });
+
+  if (closest) {
+    closest.classList.add("active");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const wheelTrack = document.querySelector(".wheel-track");
+  const originalItems = Array.from(document.querySelectorAll(".wheel-item"));
+
+  if (!wheelTrack || originalItems.length === 0) return;
+
+  // Creamos 3 bloques (original + 2 clones)
+  for (let i = 0; i < 2; i++) {
+    originalItems.forEach(item => {
+      wheelTrack.appendChild(item.cloneNode(true));
+    });
+  }
+
+  const itemHeight = originalItems[0].offsetHeight;
+  const blockHeight = itemHeight * originalItems.length;
+
+  let startY = -blockHeight;
+  gsap.set(wheelTrack, { y: startY });
+
+  function update() {
+
+    let y = gsap.getProperty(wheelTrack, "y");
+
+    if (y <= -blockHeight * 2) {
+      gsap.set(wheelTrack, { y: y + blockHeight });
+    }
+
+    if (y >= 0) {
+      gsap.set(wheelTrack, { y: y - blockHeight });
+    }
+
+    highlightCenter();
+  }
+
+  Draggable.create(wheelTrack, {
+    type: "y",
+    inertia: true,
+    onDrag: update,
+    onThrowUpdate: update
+  });
+
+  /* Scroll convierte en giro */
+  wheelTrack.addEventListener("wheel", (e) => {
+
+    e.preventDefault();
+
+    const delta = e.deltaY;
+    let currentY = gsap.getProperty(wheelTrack, "y");
+
+    gsap.set(wheelTrack, {
+      y: currentY - delta * 0.8
+    });
+
+    update();
+
+  });
+
+  highlightCenter();
 
 });
