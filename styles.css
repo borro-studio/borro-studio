@@ -16,12 +16,9 @@ html {
 
 body {
   background: #e6b84f;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: background 0.6s ease;
-  overflow-x: hidden;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
 }
 
 body.menu-active {
@@ -33,54 +30,54 @@ body.menu-active {
 ===================================== */
 
 header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 2.5rem 3.75rem;
-  position: relative;
+  justify-content: space-between;
+
+  padding: 0 60px;
   z-index: 2000;
 }
 
 .logo img {
-  width: 6.875rem;
+  width: 110px;
 }
 
 .menu-icon {
-  width: 2.8rem;
+  width: 45px;
   cursor: pointer;
 }
 
 /* =====================================
-   FOOTER EDITORIAL
+   FOOTER
 ===================================== */
 
 footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  padding: 2.5rem 3.75rem;
-  font-size: 0.875rem;
+
+  padding: 0 60px;
+  font-size: 14px;
   color: #1c1c1c;
-  transition: color 0.6s ease, opacity 0.4s ease;
 }
 
 .footer-left,
 .footer-right {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-}
-
-footer span {
-  opacity: 0.8;
-  transition: opacity 0.3s ease;
-}
-
-footer span:hover {
-  opacity: 1;
-}
-
-body.menu-active footer {
-  color: #f4c44e;
+  gap: 6px;
 }
 
 /* =====================================
@@ -145,54 +142,106 @@ body.menu-active footer {
 }
 
 /* =====================================
+   WHEEL DESKTOP
+===================================== */
+
+.wheel {
+  position: absolute;
+  top: 120px;
+  bottom: 120px;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 30%,
+    black 70%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 30%,
+    black 70%,
+    transparent 100%
+  );
+}
+
+.wheel-track {
+  position: relative;
+  text-align: center;
+}
+
+.wheel-item {
+  font-size: 16vh;
+  font-weight: 900;
+  padding: 3vh 0;
+  line-height: 0.85;
+  opacity: 0.25;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.wheel-item.active {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* =====================================
    TABLET
 ===================================== */
 
 @media (max-width: 1024px) {
-
-  header {
-    padding: 2rem 2.5rem;
-  }
-
+  header,
   footer {
-    padding: 2rem 2.5rem;
+    padding: 0 40px;
   }
-
-  .menu-overlay {
-    padding-right: 8%;
-  }
-
-  .menu-overlay li {
-    font-size: clamp(3rem, 8vw, 7rem);
-  }
-
 }
 
 /* =====================================
-   MOBILE OPTIMIZADO
+   MOBILE
 ===================================== */
 
 @media (max-width: 768px) {
 
   header {
-    padding: 1.5rem;
+    padding: 0 20px;
   }
 
   .logo img {
-    width: 5rem;
+    width: 6.5rem;
   }
 
   .menu-icon {
-    width: 2.4rem;
+    width: 3rem;
   }
 
   footer {
     flex-direction: column;
-    gap: 1.5rem;
-    padding: 1.5rem;
+    justify-content: left;
+    padding: 20px;
+    font-size: 0.9rem;
   }
 
-  /* MENU FULL MOBILE MODE */
+  /* Wheel adaptado REAL a móvil */
+
+  .wheel {
+    top: 200px;
+    bottom: 200px;
+  }
+
+  .wheel-item {
+    font-size: 20vw;
+    padding: 2vw 0;
+    line-height: 0.9;
+  }
+
+  /* Menu mobile */
 
   .menu-overlay {
     padding: 2rem;
@@ -202,47 +251,27 @@ body.menu-active footer {
 
   .menu-overlay ul {
     width: 100%;
-    text-align: left;
+    text-align: right;
   }
 
   .menu-overlay li {
-    font-size: clamp(3rem, 14vw, 5rem);
-    margin: 1.2rem 0;
-    letter-spacing: -0.08rem;
+    font-size: clamp(3rem, 20vw, 5rem);
   }
 
   .menu-line {
     display: none;
   }
 
-  /* CONTACTO INTEGRADO EN FLUJO */
-
   .menu-contact {
     position: relative;
     bottom: auto;
     right: auto;
-    margin-top: 3rem;
+    margin-top: 5rem;
     flex-direction: column;
     gap: 0.8rem;
     font-size: 0.9rem;
     opacity: 1;
     transform: none;
-  }
-
-}
-
-/* =====================================
-   MOBILE PEQUEÑO
-===================================== */
-
-@media (max-width: 480px) {
-
-  .menu-overlay li {
-    font-size: 2.6rem;
-  }
-
-  footer {
-    font-size: 0.8rem;
   }
 
 }
