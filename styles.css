@@ -1,0 +1,232 @@
+/* =====================================
+   DESIGN SYSTEM BASE
+===================================== */
+
+html {
+  font-size: 16px; /* Base 1rem = 16px */
+  -webkit-text-size-adjust: 100%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+body {
+  background: #e6b84f;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: background 0.6s ease;
+  overflow-x: hidden;
+}
+
+body.menu-active {
+  background: #2f2f2f;
+}
+
+/* =====================================
+   HEADER
+===================================== */
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2.5rem 3.75rem;
+  position: relative;
+  z-index: 2000;
+}
+
+.logo img {
+  width: 6.875rem; /* 110px */
+}
+
+.menu-icon {
+  width: 2.8rem;
+  cursor: pointer;
+}
+
+/* =====================================
+   FOOTER EDITORIAL
+===================================== */
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 2.5rem 3.75rem;
+  font-size: 0.875rem;
+  color: #1c1c1c;
+  transition: color 0.6s ease, opacity 0.4s ease;
+}
+
+.footer-left,
+.footer-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+footer span {
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+footer span:hover {
+  opacity: 1;
+}
+
+body.menu-active footer {
+  color: #f4c44e;
+}
+
+/* =====================================
+   MENU OVERLAY
+===================================== */
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: #2f2f2f;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 12%;
+  align-items: flex-end;
+  transform: translateX(100%);
+  z-index: 1500;
+}
+
+.menu-overlay ul {
+  list-style: none;
+  text-align: right;
+}
+
+.menu-overlay li {
+  font-size: clamp(3.5rem, 9vw, 10rem);
+  font-weight: 900;
+  letter-spacing: -0.125rem;
+  color: #f4c44e;
+  margin: 1.2rem 0;
+  opacity: 0;
+  transform: translateX(12rem);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.menu-overlay li:hover {
+  color: #ffffff;
+}
+
+/* Línea decorativa */
+
+.menu-line {
+  position: absolute;
+  bottom: 7.5rem;
+  right: 8%;
+  width: 84%;
+  height: 0.3rem;
+  background: #f4c44e;
+  transform: scaleX(0);
+  transform-origin: right;
+}
+
+/* Contacto dentro del overlay */
+
+.menu-contact {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 8%;
+  display: flex;
+  gap: 2.5rem;
+  color: #f4c44e;
+  font-size: 0.875rem;
+  opacity: 0;
+  transform: translateY(2rem);
+}
+
+/* =====================================
+   RESPONSIVE SYSTEM
+===================================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+
+  header {
+    padding: 2rem 2.5rem;
+  }
+
+  footer {
+    padding: 2rem 2.5rem;
+  }
+
+  .menu-overlay {
+    padding-right: 8%;
+  }
+
+  .menu-overlay li {
+    font-size: clamp(3rem, 8vw, 7rem);
+  }
+
+  .menu-contact {
+    gap: 1.5rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+  header {
+    padding: 1.5rem 1.5rem;
+  }
+
+  .logo img {
+    width: 5rem;
+  }
+
+  .menu-icon {
+    width: 2.2rem;
+  }
+
+  footer {
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 1.5rem;
+  }
+
+  .menu-overlay {
+    padding-right: 6%;
+  }
+
+  .menu-overlay li {
+    font-size: clamp(2.2rem, 10vw, 4.5rem);
+    margin: 1rem 0;
+  }
+
+  .menu-line {
+    bottom: 5rem;
+  }
+
+  .menu-contact {
+    flex-direction: column;
+    gap: 0.8rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Mobile pequeño */
+@media (max-width: 480px) {
+
+  .menu-overlay li {
+    font-size: 2.2rem;
+    letter-spacing: -0.05rem;
+  }
+
+  footer {
+    font-size: 0.8rem;
+  }
+
+}
