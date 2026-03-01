@@ -1,10 +1,11 @@
 /* =====================================
-   DESIGN SYSTEM BASE
+   BASE
 ===================================== */
 
 html {
   font-size: 16px;
-  -webkit-text-size-adjust: 100%;
+  scrollbar-gutter: stable;
+
 }
 
 * {
@@ -16,13 +17,42 @@ html {
 
 body {
   background: #e6b84f;
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.6s ease;
+  overflow-x: hidden;
+  
+}
+
+body.home-active {
+  overflow: hidden; /* SOLO HOME */
+}
+
+body.portfolio-active {
+  overflow-y: auto; /* SOLO PORTFOLIO */
+}
+
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 body.menu-active {
   background: #2f2f2f;
+}
+
+body.portfolio-active {
+  background: #1f1f1f;
+  overflow-y: auto;
+}
+
+body.portfolio-active footer {
+  opacity: 0;
+  pointer-events: none;
+
 }
 
 /* =====================================
@@ -30,17 +60,11 @@ body.menu-active {
 ===================================== */
 
 header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 120px;
-
   display: flex;
-  align-items: center;
   justify-content: space-between;
-
-  padding: 0 60px;
+  align-items: center;
+  padding: 2.5rem 3.75rem;
+  position: relative;
   z-index: 2000;
 }
 
@@ -51,6 +75,7 @@ header {
 .menu-icon {
   width: 45px;
   cursor: pointer;
+  transition: transform 0.4s ease;
 }
 
 /* =====================================
@@ -58,19 +83,12 @@ header {
 ===================================== */
 
 footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 120px;
-
   display: flex;
-  align-items: center;
   justify-content: space-between;
-
-  padding: 0 60px;
+  padding: 2.5rem 3.75rem;
   font-size: 14px;
   color: #1c1c1c;
+  transition: color 0.6s ease, opacity 0.4s ease;
 }
 
 .footer-left,
@@ -80,8 +98,9 @@ footer {
   gap: 6px;
 }
 
+
 /* =====================================
-   MENU OVERLAY DESKTOP
+   MENU OVERLAY
 ===================================== */
 
 .menu-overlay {
@@ -105,11 +124,11 @@ footer {
 .menu-overlay li {
   font-size: clamp(3.5rem, 9vw, 10rem);
   font-weight: 900;
-  letter-spacing: -0.125rem;
+  letter-spacing: -2px;
   color: #f4c44e;
   margin: 1.2rem 0;
   opacity: 0;
-  transform: translateX(12rem);
+  transform: translateX(200px);
   cursor: pointer;
   transition: color 0.3s ease;
 }
@@ -123,7 +142,7 @@ footer {
   bottom: 7.5rem;
   right: 8%;
   width: 84%;
-  height: 0.3rem;
+  height: 4px;
   background: #f4c44e;
   transform: scaleX(0);
   transform-origin: right;
@@ -136,142 +155,279 @@ footer {
   display: flex;
   gap: 2.5rem;
   color: #f4c44e;
-  font-size: 0.875rem;
+  font-size: 14px;
   opacity: 0;
-  transform: translateY(2rem);
+  transform: translateY(30px);
 }
 
 /* =====================================
-   WHEEL DESKTOP
+   HOME BIG SECTIONS
 ===================================== */
 
-.wheel {
-  position: absolute;
-  top: 120px;
-  bottom: 120px;
-  left: 0;
-  right: 0;
+.home-sections {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 3.75rem;
+  gap: 0.5rem;
+}
 
+.home-item {
+  font-size: clamp(4rem, 10vw, 9rem);
+  font-weight: 900;
+  letter-spacing: -2px;
+  color: #1c1c1c;
+  margin: 0.5rem 0;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  line-height: 0.95;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.home-item:hover {
+  color: #ffffff;
+}
+
+/* =====================================
+   BACK ARROW
+===================================== */
+
+#portfolio {
+  position: relative;
+  z-index: 30;
+}
+
+.back-arrow {
+  position: absolute;
+  left: -70px;
+  top: 50%;
+  transform: translateY(-50%) scale(0.6);
+  width: 48px;
+  height: 48px;
+  border: 2px solid #f4c44e;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 30%,
-    black 70%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 30%,
-    black 70%,
-    transparent 100%
-  );
+  opacity: 0;
+  pointer-events: auto;
+  z-index: 40;
+  transition: transform 0.3s ease;
 }
 
-.wheel-track {
-  position: relative;
-  text-align: center;
+.arrow-icon {
+  width: 14px;
+  height: 14px;
+  border-left: 2px solid #f4c44e;
+  border-bottom: 2px solid #f4c44e;
+  transform: rotate(45deg);
 }
 
-.wheel-item {
-  font-size: 16vh;
-  font-weight: 900;
-  padding: 3vh 0;
-  line-height: 0.85;
-  opacity: 0.25;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.wheel-item.active {
-  opacity: 1;
-  transform: scale(1.05);
+.back-arrow:hover {
+  transform: translateY(-50%) translateX(-6px) scale(0.6);
 }
 
 /* =====================================
-   TABLET
+   PORTFOLIO CONTENT
 ===================================== */
 
-@media (max-width: 1024px) {
-  header,
-  footer {
-    padding: 0 40px;
-  }
+.portfolio-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  opacity: 0;
+  pointer-events: none;
+
+  padding-left: 8%;
+  padding-top: 350px;
+  padding-bottom: 160px;
+
+  display: flex;
+  flex-direction: column;
 }
 
 /* =====================================
-   MOBILE
+   PROJECT BLOCKS
+===================================== */
+
+.project-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 50px;   /* separación entre proyectos */
+  cursor: pointer;
+}
+
+.project-line {
+  width: 300px;
+  height: 2px;
+  background: #f4c44e;
+  margin-bottom: 6px;
+  transform-origin: left; /* 🔥 importante para que crezca desde la izquierda */
+}
+
+.project-title {
+  font-size: 60px;
+  font-weight: 500;
+  color: #ffffff;
+}
+.stilo-expand {
+  height: 0;
+  overflow: hidden;
+}
+
+.stilo-content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-top: 60px;
+}
+
+.stilo-description {
+  max-width: 600px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #ffffff;
+  opacity: 0;
+  transform: translateY(20px);
+  margin-top: 50px;
+}
+
+.stilo-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  margin-top: 70px;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.meta-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.meta-label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+}
+
+.meta-value {
+  font-size: 18px;
+  color: #ffffff;
+  line-height: 1.6;
+}
+/* =====================================
+   MOBILE REFINEMENT
 ===================================== */
 
 @media (max-width: 768px) {
 
+  /* -----------------------------
+     HEADER
+  ----------------------------- */
+
   header {
-    padding: 0 20px;
+    padding: 1.5rem 6%;
   }
 
   .logo img {
-    width: 6.5rem;
+    width: 85px;
   }
 
   .menu-icon {
-    width: 3rem;
+    width: 36px;
   }
 
-  footer {
-    flex-direction: column;
-    justify-content: left;
-    padding: 20px;
-    font-size: 0.9rem;
+  /* -----------------------------
+     HOME TITLES
+  ----------------------------- */
+
+  .home-sections {
+    padding-left: 6%;
+    padding-right: 6%;
   }
 
-  /* Wheel adaptado REAL a móvil */
-
-  .wheel {
-    top: 200px;
-    bottom: 200px;
+  .home-item {
+    font-size: 54px;
   }
 
-  .wheel-item {
-    font-size: 20vw;
-    padding: 2vw 0;
-    line-height: 0.9;
+  #portfolio {
+    font-size: 52px;      /* 🔥 reducido para que no se corte */
+    white-space: nowrap;
   }
 
-  /* Menu mobile */
+  /* -----------------------------
+     PORTFOLIO CONTENT
+  ----------------------------- */
 
-  .menu-overlay {
-    padding: 2rem;
-    align-items: flex-start;
-    justify-content: center;
+  .portfolio-content {
+    padding-left: 6%;
+    padding-right: 6%;
+    padding-top: 200px;
+    padding-bottom: 100px;
+  }
+  @media (max-width: 768px) {
+
+  .portfolio-content {
+    padding-top: 350px;  /* Ajusta aquí */
   }
 
-  .menu-overlay ul {
-    width: 100%;
-    text-align: right;
+}
+
+  /* -----------------------------
+     PROJECT TITLES (cerrados)
+  ----------------------------- */
+
+  .project-title {
+    font-size: 34px;
+    max-width: 95%;     /* 🔥 evita que toque borde */
   }
 
-  .menu-overlay li {
-    font-size: clamp(3rem, 20vw, 5rem);
+  .project-line {
+    width: 200px;
   }
 
-  .menu-line {
-    display: none;
+  /* -----------------------------
+     DESCRIPTION
+  ----------------------------- */
+
+  .stilo-description {
+    font-size: 15px;
+    line-height: 1.7;
+    margin-top: 30px;
+    max-width: 100%;
   }
 
-  .menu-contact {
-    position: relative;
-    bottom: auto;
-    right: auto;
-    margin-top: 5rem;
-    flex-direction: column;
-    gap: 0.8rem;
-    font-size: 0.9rem;
-    opacity: 1;
-    transform: none;
+  /* -----------------------------
+     META (AÑO / OBJETIVOS)
+  ----------------------------- */
+
+  .stilo-meta {
+    margin-top: 50px;
+    gap: 30px;
+    padding-right: 4%;   /* 🔥 evita que objetivos toque borde */
+  }
+
+  .meta-col {
+    gap: 6px;
+  }
+
+  .meta-label {
+    font-size: 11px;
+  }
+
+  .meta-value {
+    font-size: 15px;
   }
 
 }

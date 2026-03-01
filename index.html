@@ -6,10 +6,8 @@
   <title>Borro Studio</title>
 
   <link rel="stylesheet" href="styles.css">
-
-  <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
 </head>
 <body>
 
@@ -21,17 +19,94 @@
   <img src="img/Recurso 1.png" id="menuBtn" class="menu-icon" alt="Abrir menú">
 </header>
 
-<section class="wheel">
-  <div class="wheel-track">
-    <div class="wheel-item">Trabajos</div>
-    <div class="wheel-item">Servicios</div>
-    <div class="wheel-item">Contacto</div>
+<main>
+
+  <!-- HOME TITLES -->
+  <section class="home-sections">
+    <h1 class="home-item" id="portfolio">
+      <span class="back-arrow" id="backArrow">
+        <span class="arrow-icon"></span>
+      </span>
+      Portfolio
+    </h1>
+
+    <h1 class="home-item">Servicios</h1>
+    <h1 class="home-item">Contacto</h1>
+  </section>
+
+  <!-- PORTFOLIO CONTENT -->
+  <section class="portfolio-content" id="portfolioContent">
+
+
+  <div class="project-block stilo-project">
+
+  <div class="project-line"></div>
+
+  <h2 class="project-title">Stilo Pole Dance Studio.</h2>
+
+  <div class="stilo-expand">
+
+  <div class="stilo-wrapper">
+
+    <!-- IZQUIERDA -->
+    <div class="stilo-left">
+
+      <p class="stilo-description"></p>
+    </div>
+
+    <!-- DERECHA -->
+    <div class="stilo-right">
+
+      <div class="stilo-meta">
+
+  <div class="meta-col">
+    <div class="meta-label">AÑO</div>
+    <div class="meta-value">2025</div>
+  </div>
+
+  <div class="meta-col">
+    <div class="meta-label">OBJETIVOS</div>
+    <div class="meta-value">
+      Actual<br>
+      Dinámico<br>
+      Confianza
+    </div>
+  </div>
+
+</div>
+
+    </div>
+
+  </div>
+
+</div>
+
+  </div>
+
+</div>
+
+</div>
+
+  <div class="project-block">
+    <div class="project-line"></div>
+    <h2 class="project-title">Brand Identity Minimal.</h2>
+  </div>
+
+  <div class="project-block">
+    <div class="project-line"></div>
+    <h2 class="project-title">Editorial Design.</h2>
   </div>
 
 </section>
+
+  </section>
+
+</main>
+
+<!-- MENU OVERLAY -->
 <div class="menu-overlay" id="menu">
   <ul>
-    <li>Trabajos</li>
+    <li>Portfolio</li>
     <li>Servicios</li>
     <li>Contacto</li>
   </ul>
@@ -60,3 +135,4 @@
 <script src="script.js"></script>
 
 </body>
+</html>

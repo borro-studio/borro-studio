@@ -1,32 +1,60 @@
 /* =====================================
-   MENU SYSTEM
+   TYPEWRITER FUNCTION
 ===================================== */
 
-const menuBtn = document.getElementById("menuBtn");
-const menu = document.getElementById("menu");
-const menuItems = document.querySelectorAll(".menu-overlay li");
-const menuLine = document.querySelector(".menu-line");
-const menuContact = document.querySelector(".menu-contact");
+function typeWriter(element, text, speed = 20, callback) {
+  let i = 0;
+  element.innerHTML = "";
+
+  function typing() {
+    if (i < text.length) {
+      element.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typing, speed);
+    } else {
+      if (callback) callback();
+    }
+  }
+
+  typing();
+}
+
+
+/* =====================================
+   GLOBAL ELEMENTS
+===================================== */
+
 const body = document.body;
 const logo = document.getElementById("mainLogo");
-const footer = document.querySelector("footer");
+const menuBtn = document.getElementById("menuBtn");
 
+const menu = document.getElementById("menu");
+const menuItems = document.querySelectorAll(".menu-overlay li");
+
+const portfolio = document.getElementById("portfolio");
+const backArrow = document.getElementById("backArrow");
+const homeItems = document.querySelectorAll(".home-item");
+
+const portfolioContent = document.getElementById("portfolioContent");
+const projectBlocks = document.querySelectorAll(".project-block");
+
+let portfolioOpen = false;
 let menuOpen = false;
 let isAnimating = false;
 
+
+/* =====================================
+   MENU SYSTEM
+===================================== */
+
 gsap.set(menu, { x: "100%" });
 gsap.set(menuItems, { x: 200, opacity: 0 });
-gsap.set(menuLine, { scaleX: 0 });
-gsap.set(menuContact, { y: 30, opacity: 0 });
 
 const menuTL = gsap.timeline({ paused: true });
 
 menuTL
-  .to(menu, { x: "0%", duration: 0.8 })
-  .call(() => {
-    body.classList.add("menu-active");
-    footer.style.opacity = "0";
-  }, null, 0.1)
+  .to(menu, { x: "0%", duration: 0.8, ease: "power4.inOut" })
+  .call(() => body.classList.add("menu-active"), null, 0.1)
   .call(() => {
     logo.src = "img/borro_cami.png";
     menuBtn.src = "img/ICONO AMARILLO.png";
@@ -35,25 +63,16 @@ menuTL
     x: 0,
     opacity: 1,
     stagger: 0.15,
-    duration: 0.8
-  }, "-=0.4")
-  .to(menuLine, {
-    scaleX: 1,
-    duration: 0.8
-  }, "-=0.6")
-  .to(menuContact, {
-    y: 0,
-    opacity: 1,
-    duration: 0.6
-  }, "-=0.5");
+    duration: 0.8,
+    ease: "power3.out"
+  }, "-=0.4");
 
 menuTL.eventCallback("onReverseComplete", () => {
   body.classList.remove("menu-active");
-  footer.style.opacity = "1";
   logo.src = "img/LOGO.png";
   menuBtn.src = "img/Recurso 1.png";
-  isAnimating = false;
   menuOpen = false;
+  isAnimating = false;
 });
 
 menuBtn.addEventListener("click", () => {
@@ -62,141 +81,227 @@ menuBtn.addEventListener("click", () => {
   isAnimating = true;
 
   if (!menuOpen) {
-    gsap.to(menuBtn, { rotation: 180, scale: 1.15, duration: 0.5 });
+
+    gsap.to(menuBtn, {
+      rotation: 180,
+      scale: 1.15,
+      duration: 0.5,
+      ease: "power3.out"
+    });
+
     menuTL.play();
     menuOpen = true;
+
     setTimeout(() => isAnimating = false, 900);
+
   } else {
-    gsap.to(menuBtn, { rotation: 0, scale: 1, duration: 0.5 });
+
+    gsap.to(menuBtn, {
+      rotation: 0,
+      scale: 1,
+      duration: 0.5,
+      ease: "power3.out"
+    });
+
     menuTL.reverse();
   }
+
 });
 
 
 /* =====================================
-   INTRO ANIMATION
+   INTRO
 ===================================== */
 
 window.addEventListener("load", () => {
 
-  gsap.set("#mainLogo", { y: -40, opacity: 0 });
-  gsap.set("#menuBtn", { y: -20, opacity: 0 });
-  gsap.set("footer", { y: 20, opacity: 0 });
+  const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-  const introTL = gsap.timeline({
-    defaults: { ease: "power3.out" }
-  });
+  body.classList.add("home-active");
 
-  introTL
-    .to("#mainLogo", {
-      y: 0,
-      opacity: 1,
-      duration: 1
-    })
-    .to("#menuBtn", {
-      y: 0,
-      opacity: 1,
-      duration: 0.8
-    }, "-=0.7")
-    .to("footer", {
-      y: 0,
-      opacity: 1,
-      duration: 0.8
-    }, "-=0.6");
+  intro
+    .fromTo(logo, { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 1 })
+    .fromTo(menuBtn, { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, "-=0.7")
+    .fromTo("footer", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, "-=0.6")
+    .fromTo(homeItems, { y: 40, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.15, duration: 0.8 }, "-=0.6");
 
 });
 
 
 /* =====================================
-   WHEEL – STABLE TRUE INFINITE + SCROLL
+   PORTFOLIO OPEN
 ===================================== */
 
-function highlightCenter() {
+portfolio.addEventListener("click", () => {
 
-  const wheel = document.querySelector(".wheel");
-  const wheelRect = wheel.getBoundingClientRect();
-  const centerY = wheelRect.top + wheelRect.height / 2;
+  if (portfolioOpen) return;
+  portfolioOpen = true;
 
-  let closest = null;
-  let minDistance = Infinity;
+  body.classList.remove("home-active");
+  body.classList.add("portfolio-active");
 
-  document.querySelectorAll(".wheel-item").forEach(item => {
+  const tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
 
-    const rect = item.getBoundingClientRect();
-    const itemCenter = rect.top + rect.height / 2;
-    const distance = Math.abs(itemCenter - centerY);
+  tl.to("footer", { opacity: 0, duration: 0.4 }, 0);
 
-    item.classList.remove("active");
-
-    if (distance < minDistance) {
-      minDistance = distance;
-      closest = item;
+  homeItems.forEach(item => {
+    if (item !== portfolio) {
+      tl.to(item, { x: "-40vw", opacity: 0, duration: 0.6 }, 0);
     }
   });
 
-  if (closest) {
-    closest.classList.add("active");
-  }
-}
+  const isMobile = window.innerWidth < 768;
+
+tl.to(portfolio, {
+  x: isMobile ? window.innerWidth * 0.40 : window.innerWidth * 0.55,
+  duration: 1,
+  ease: "power4.inOut"
+}, 0);
+
+  tl.to(portfolio, { color: "#f4c44e", duration: 0.3 }, 0.2);
+
+  tl.to(body, { backgroundColor: "#1f1f1f", duration: 0.6 }, 0);
+
+  tl.call(() => {
+    logo.src = "img/borro_cami.png";
+    menuBtn.src = "img/ICONO AMARILLO.png";
+  }, null, 0.3);
+
+  tl.to(portfolioContent, {
+    opacity: 1,
+    pointerEvents: "auto",
+    duration: 0.5
+  }, 0.5);
+
+  tl.fromTo(projectBlocks,
+    { x: -120, opacity: 0 },
+    { x: 0, opacity: 1, duration: 0.9, stagger: 0.2, ease: "power4.out" },
+    0.8
+  );
+
+  tl.to(backArrow, { opacity: 1, duration: 0.3 }, 0.8);
+
+});
+
+
+/* =====================================
+   BACK TO HOME
+===================================== */
+
+backArrow.addEventListener("click", (e) => {
+
+  e.stopPropagation();
+  if (!portfolioOpen) return;
+  portfolioOpen = false;
+
+  const tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
+
+  tl.to(window, { scrollTo: 0, duration: 0.6, ease: "power2.out" }, 0);
+
+  tl.to(projectBlocks, { x: -40, opacity: 0, duration: 0.4, stagger: 0.08 }, 0);
+
+  tl.to(portfolioContent, { opacity: 0, duration: 0.3 }, 0.2);
+
+  tl.to(backArrow, { opacity: 0, duration: 0.2 }, 0);
+
+  tl.to(portfolio, { x: 0, duration: 0.6, ease: "power4.inOut" }, 0.3);
+
+  tl.to(portfolio, { color: "#1c1c1c", duration: 0.3 }, 0.3);
+
+  tl.to(homeItems, { x: 0, opacity: 1, duration: 0.6, stagger: 0.05 }, 0.4);
+
+  tl.to(body, { backgroundColor: "#e6b84f", duration: 0.6 }, 0.3);
+
+  tl.to("footer", { opacity: 1, duration: 0.4 }, 0.4);
+
+  tl.call(() => {
+    logo.src = "img/LOGO.png";
+    menuBtn.src = "img/Recurso 1.png";
+    body.classList.remove("portfolio-active");
+    body.classList.add("home-active");
+  });
+
+});
+
+
+/* =====================================
+   STILO PREMIUM ANIMATION
+===================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  const wheelTrack = document.querySelector(".wheel-track");
-  const originalItems = Array.from(document.querySelectorAll(".wheel-item"));
+  const stiloProject = document.querySelector(".stilo-project");
+  const stiloLine = document.querySelector(".stilo-project .project-line");
+  const stiloExpand = document.querySelector(".stilo-expand");
+  const stiloTitle = document.querySelector(".stilo-project .project-title");
+  const stiloDescription = document.querySelector(".stilo-description");
+  const stiloMeta = document.querySelector(".stilo-meta");
 
-  if (!wheelTrack || originalItems.length === 0) return;
+  let isOpen = false;
 
-  // Creamos 3 bloques (original + 2 clones)
-  for (let i = 0; i < 2; i++) {
-    originalItems.forEach(item => {
-      wheelTrack.appendChild(item.cloneNode(true));
-    });
-  }
+  if (!stiloProject) return;
 
-  const itemHeight = originalItems[0].offsetHeight;
-  const blockHeight = itemHeight * originalItems.length;
+  stiloProject.addEventListener("click", () => {
 
-  let startY = -blockHeight;
-  gsap.set(wheelTrack, { y: startY });
+    if (!portfolioOpen) return;
+    if (isOpen) return;
+    isOpen = true;
 
-  function update() {
+    const descriptionText =
+      "Stilo Pole Studio es un estudio creado por dos jóvenes emprendedoras que ante todo, disfrutan el deporte que tanto practican. Desde Aurea nos encargamos de transmitir esa confianza, juventud y dinamismo que tanto transmiten en sus clases.";
 
-    let y = gsap.getProperty(wheelTrack, "y");
-
-    if (y <= -blockHeight * 2) {
-      gsap.set(wheelTrack, { y: y + blockHeight });
-    }
-
-    if (y >= 0) {
-      gsap.set(wheelTrack, { y: y - blockHeight });
-    }
-
-    highlightCenter();
-  }
-
-  Draggable.create(wheelTrack, {
-    type: "y",
-    inertia: true,
-    onDrag: update,
-    onThrowUpdate: update
-  });
-
-  /* Scroll convierte en giro */
-  wheelTrack.addEventListener("wheel", (e) => {
-
-    e.preventDefault();
-
-    const delta = e.deltaY;
-    let currentY = gsap.getProperty(wheelTrack, "y");
-
-    gsap.set(wheelTrack, {
-      y: currentY - delta * 0.8
+    const tl = gsap.timeline({
+      defaults: { ease: "power3.out" }
     });
 
-    update();
+    /* 1️⃣ Línea con micro overshoot */
+    tl.to(stiloLine, {
+      width: "88vw",
+      duration: 0.6,
+      ease: "power2.out"
+    })
+    
+
+    /* 2️⃣ Título crece + sube + micro fade */
+    tl.to(stiloTitle, {
+      scale: 1.38,
+      y: -12,
+      opacity: 0.95,
+      transformOrigin: "left top",
+      duration: 0.7,
+      ease: "power3.out"
+    }, "-=0.5");
+
+    /* 3️⃣ Abrir espacio suave */
+    tl.to(stiloExpand, {
+      height: 520,
+      duration: 1,
+      ease: "power2.out"
+    }, "-=0.4");
+
+    /* 4️⃣ Texto aparece suavemente */
+    tl.to(stiloDescription, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6
+    }, "-=0.5");
+
+    /* 5️⃣ Typewriter + meta */
+    tl.call(() => {
+
+      typeWriter(stiloDescription, descriptionText, 18, () => {
+
+        gsap.to(stiloMeta, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out"
+        });
+
+      });
+
+    });
 
   });
-
-  highlightCenter();
 
 });
