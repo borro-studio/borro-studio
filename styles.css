@@ -277,8 +277,9 @@ footer {
   color: #ffffff;
 }
 .stilo-expand {
-  height: 0;
+  max-height: 0;
   overflow: hidden;
+
 }
 
 .stilo-content-wrapper {
@@ -325,6 +326,54 @@ footer {
   font-size: 18px;
   color: #ffffff;
   line-height: 1.6;
+}
+/* =====================================
+   STILO GALLERY
+===================================== */
+
+.stilo-gallery {
+  margin-top: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.gallery-item {
+  overflow: hidden;
+  border-radius: 24px;
+  opacity: 0;
+  transform: translateY(80px);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Tamaños */
+
+.large {
+  height: 500px;
+}
+
+.gallery-row {
+  display: flex;
+  gap: 40px;
+}
+
+.small {
+  flex: 1;
+  height: 300px;
+}
+
+.medium {
+  flex: 2;
+  height: 300px;
+}
+
+.wide {
+  height: 450px;
 }
 /* =====================================
    MOBILE REFINEMENT
@@ -412,22 +461,119 @@ footer {
      META (AÑO / OBJETIVOS)
   ----------------------------- */
 
-  .stilo-meta {
-    margin-top: 50px;
-    gap: 30px;
-    padding-right: 4%;   /* 🔥 evita que objetivos toque borde */
+.stilo-content-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 120px; /* separación controlada */
+  padding-top: 60px;
+}
+
+}
+.meta-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.meta-label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+}
+
+.meta-value {
+  font-size: 18px;
+  color: #ffffff;
+  line-height: 1.6;
+}
+.stilo-meta {
+  display: flex;
+  margin-top: 70px;
+  opacity: 0;
+  transform: translateY(20px);
+  max-width: 300px;
+}
+/* =====================================
+   DIAGONAL BAND WITH REAL LINES
+===================================== */
+
+.side-marquee {
+  position: fixed;
+  top: 50%;
+  right: -200px;  /* Ajusta posición */
+  transform: translateY(-50%);
+  width: 1200px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(-40px);
+}
+
+
+.side-band {
+  transform: rotate(-75deg);
+  transform-origin: center;
+
+  border-top: 6px solid #1c1c1c;
+  border-bottom: 6px solid #1c1c1c;
+
+  padding: 18px 0;
+  overflow: hidden;
+}
+
+.side-track {
+  display: flex;
+  width: max-content;
+  font-size: 160px;
+  font-weight: 800;
+  letter-spacing: 5px;
+  color: #1c1c1c;
+
+  animation: bandMove 40s linear infinite; /* más lento */
+}
+
+.side-track span {
+  padding-right: 80px; /* separación entre bloques */
+}
+
+/* 🔥 Loop matemático perfecto */
+@keyframes bandMove {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+/* =====================================
+   MOBILE ONLY STYLES
+   (NO AFECTA DESKTOP)
+===================================== */
+
+@media screen and (max-width: 768px) {
+
+  /* 🔹 SIDE BAND AJUSTES MOVIL */
+
+  .side-marquee {
+    right: -120px;     /* Más dentro en móvil */
+    width: 600px;
+    
   }
 
-  .meta-col {
-    gap: 6px;
+  .side-band {
+    transform: rotate(-16deg);  /* Un poco menos inclinada */
+    padding: 14px 0;
+    border-top: 4px solid #1c1c1c;
+    border-bottom: 4px solid #1c1c1c;
+    margin-top: -280px;
+
   }
 
-  .meta-label {
-    font-size: 11px;
-  }
-
-  .meta-value {
-    font-size: 15px;
+  .side-track {
+    font-size: 42px;   /* Más pequeño en móvil */
+    letter-spacing: 3px;
+    animation: bandMove 35s linear infinite; /* Más lenta */
   }
 
 }
