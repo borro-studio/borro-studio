@@ -61,7 +61,6 @@ const menuTL = gsap.timeline({
     menuOpen = false;
     isAnimating = false;
 
-    // Mostrar banda solo si estamos en Home
     if (!portfolioOpen) {
       showSideBand();
     }
@@ -74,7 +73,7 @@ menuTL
     body.classList.add("menu-active");
     logo.src = "img/borro_cami.png";
     menuBtn.src = "img/ICONO AMARILLO.png";
-    hideSideBand(); // 🔥 ocultar banda al abrir menú
+    hideSideBand();
   }, null, 0.1)
   .to(menuItems, {
     x: 0,
@@ -122,7 +121,7 @@ window.addEventListener("load", () => {
   body.classList.add("home-active");
   gsap.set("footer", { opacity: 1, y: 0 });
 
-  showSideBand(); // 🔥 visible solo en Home
+  showSideBand();
 
   const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
 
@@ -144,7 +143,7 @@ portfolioBtn.addEventListener("click", () => {
   portfolioOpen = true;
   isAnimating = true;
 
-  hideSideBand(); // 🔥 ocultar banda al entrar en portfolio
+  hideSideBand();
 
   body.classList.remove("home-active");
   body.classList.add("portfolio-active");
@@ -165,12 +164,12 @@ portfolioBtn.addEventListener("click", () => {
   });
 
   tl.to(portfolioBtn, {
-    x: isMobile
-      ? window.innerWidth * 0.4
-      : window.innerWidth * 0.55,
-    duration: 1,
-    ease: "power4.inOut"
-  }, 0);
+  x: isMobile
+    ? window.innerWidth * 0.26   // 🔥 antes 0.4
+    : window.innerWidth * 0.55,
+  duration: 1,
+  ease: "power4.inOut"
+}, 0);
 
   tl.to(portfolioBtn, { color: "#f4c44e", duration: 0.3 }, 0.2);
 
@@ -187,7 +186,6 @@ portfolioBtn.addEventListener("click", () => {
     duration: 0.5
   }, 0.5);
 
-  // 🔥 IMPORTANTE: fromTo para que funcione siempre
   tl.fromTo(projectBlocks,
     { x: -120, opacity: 0 },
     {
@@ -219,7 +217,7 @@ backArrow.addEventListener("click", (e) => {
     defaults: { ease: "power3.inOut" },
     onComplete: () => {
       isAnimating = false;
-      showSideBand(); // 🔥 reaparece al volver a Home
+      showSideBand();
     }
   });
 
@@ -242,150 +240,162 @@ backArrow.addEventListener("click", (e) => {
 });
 
 /* =====================================
-   STILO PROJECT (REBUILT CLEAN VERSION)
+   GENERIC EXPANDABLE PROJECT SYSTEM
 ===================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  const stiloProject = document.querySelector(".stilo-project");
-  if (!stiloProject) return;
+  const projects = document.querySelectorAll(".expandable-project");
 
-  const stiloLine = stiloProject.querySelector(".project-line");
-  const stiloExpand = stiloProject.querySelector(".stilo-expand");
-  const stiloTitle = stiloProject.querySelector(".project-title");
-  const stiloDescription = stiloProject.querySelector(".stilo-description");
-  const stiloMeta = stiloProject.querySelector(".stilo-meta");
-  const closeBtn = stiloProject.querySelector(".close-stilo");
+  projects.forEach(project => {
 
-  let isOpen = false;
+    const line = project.querySelector(".project-line");
+    const title = project.querySelector(".project-title");
+    const expand = project.querySelector(".project-expand");
+    const description = project.querySelector(".project-description");
+    const meta = project.querySelector(".project-meta");
+    const closeBtn = project.querySelector(".close-project");
+    const galleryItems = project.querySelectorAll(".gallery-item");
 
-  /* =========================
-     OPEN
-  ========================= */
+    let isOpen = false;
 
- stiloTitle.addEventListener("click", (e) => {
+    gsap.set(title, { transformOrigin: "left top" });
 
-    if (!portfolioOpen || isOpen) return;
-    if (e.target.classList.contains("close-stilo")) return;
+    /* =========================
+       OPEN
+    ========================= */
 
-    isOpen = true;
-    stiloProject.classList.add("expanded");
+    title.addEventListener("click", (e) => {
 
-    // Medimos altura real
-    stiloExpand.style.height = "auto";
-    const contentHeight = stiloExpand.scrollHeight;
-    stiloExpand.style.height = "0px";
+      if (!portfolioOpen || isOpen) return;
+      if (e.target.classList.contains("close-project")) return;
 
-    const tl = gsap.timeline({
-      defaults: { ease: "power3.out" }
+      isOpen = true;
+      project.classList.add("expanded");
+
+      expand.style.height = "auto";
+      const contentHeight = expand.scrollHeight;
+      expand.style.height = "0px";
+
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      // Línea hasta borde derecho
+      tl.call(() => {
+        const container = document.querySelector(".portfolio-content");
+        const containerRect = container.getBoundingClientRect();
+        const lineRect = line.getBoundingClientRect();
+        const newWidth = containerRect.right - lineRect.left;
+
+        gsap.to(line, {
+          width: newWidth,
+          duration: 0.7,
+          ease: "power2.out"
+        });
+      });
+
+      // Expand primero
+      tl.to(expand, {
+        height: contentHeight,
+        duration: 1.2,
+        ease: "power3.out"
+      }, 0);
+
+      // Luego escala título (ligeramente después)
+      tl.to(title, {
+        scale: 1.35,
+        y: -12,
+        duration: 0.8,
+        ease: "power3.out"
+      }, 0.1);
+
+      if (description) {
+        tl.to(description, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8
+        }, "-=0.8");
+      }
+
+      if (meta) {
+        tl.to(meta, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8
+        }, "-=0.6");
+      }
+
+      tl.to(galleryItems, {
+        opacity: 1,
+        duration: 0.8,
+        stagger: 0.4
+      }, "-=0.3");
+
+      tl.to(closeBtn, {
+        opacity: 1,
+        pointerEvents: "auto",
+        duration: 0.3
+      }, "-=0.8");
+
+      tl.set(expand, { height: "auto" });
+
     });
 
-    /* 1️⃣ Línea */
-    tl.to(stiloLine, {
-      width: "84%",
-      duration: 0.7,
-      ease: "power2.out"
+    /* =========================
+       CLOSE
+    ========================= */
+
+    closeBtn.addEventListener("click", (e) => {
+
+      e.stopPropagation();
+      if (!isOpen) return;
+
+      isOpen = false;
+      project.classList.remove("expanded");
+
+      const tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
+
+      tl.to(closeBtn, {
+        opacity: 0,
+        pointerEvents: "none",
+        duration: 0.3
+      });
+
+      // 1️⃣ Desaparece contenido
+      tl.to([galleryItems, meta, description], {
+        opacity: 0,
+        y: 20,
+        duration: 0.4,
+        stagger: 0.05
+      });
+
+      // 2️⃣ Se contrae bloque
+      tl.to(expand, {
+        height: 0,
+        duration: 0.8,
+        ease: "power3.inOut"
+      }, "-=0.1");
+
+      // 3️⃣ Vuelve título
+      tl.to(title, {
+        scale: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power3.inOut"
+      }, "-=0.6");
+
+      // 4️⃣ Vuelve línea
+      tl.to(line, {
+        width: 300,
+        duration: 0.3,
+        ease: "power2.out"
+      }, "-=0.6");
+
     });
-
-    /* 2️⃣ Título */
-    tl.to(stiloTitle, {
-      scale: 1.35,
-      y: -12,
-      transformOrigin: "left top",
-      duration: 0.8
-    }, "-=0.5");
-
-    /* 3️⃣ Expand altura real */
-    tl.to(stiloExpand, {
-      height: contentHeight,
-      duration: 1.2,
-      ease: "power3.out"
-    }, "-=0.2");
-
-    /* 4️⃣ Fade descripción */
-    tl.to(stiloDescription, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8
-    }, "-=0.8");
-
-    /* 5️⃣ Fade meta */
-    tl.to(stiloMeta, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8
-    }, "-=0.6");
-
-    /* 6️⃣ Mostrar botón cierre */
-    tl.to(closeBtn, {
-      opacity: 1,
-      pointerEvents: "auto",
-      duration: 0.3
-    }, "-=0.8");
-
-    // Dejamos altura automática al final
-    tl.set(stiloExpand, { height: "auto" });
-
-  });
-
-  /* =========================
-     CLOSE
-  ========================= */
-
-  closeBtn.addEventListener("click", (e) => {
-
-    e.stopPropagation();
-    if (!isOpen) return;
-
-    isOpen = false;
-    stiloProject.classList.remove("expanded");
-
-    const contentHeight = stiloExpand.scrollHeight;
-
-    const tl = gsap.timeline({
-      defaults: { ease: "power3.inOut" }
-    });
-
-    tl.to(closeBtn, {
-      opacity: 0,
-      pointerEvents: "none",
-      duration: 0.3
-    });
-
-    tl.to(stiloMeta, {
-      opacity: 0,
-      y: 20,
-      duration: 0.4
-    }, 0);
-
-    tl.to(stiloDescription, {
-      opacity: 0,
-      y: 20,
-      duration: 0.4
-    }, 0);
-
-    tl.set(stiloExpand, { height: contentHeight });
-
-    tl.to(stiloExpand, {
-      height: 0,
-      duration: 1,
-      ease: "power3.inOut"
-    }, 0);
-
-    tl.to(stiloTitle, {
-      scale: 1,
-      y: 0,
-      duration: 0.6
-    }, 0);
-
-    tl.to(stiloLine, {
-      width: "300px",
-      duration: 0.6
-    }, 0);
 
   });
 
 });
+
 /* =====================================
    PROJECT HOVER MICRO INTERACTION
 ===================================== */
@@ -399,8 +409,7 @@ projectBlocks.forEach(block => {
 
     if (!portfolioOpen) return;
 
-    // No aplicar hover si es el Stilo y está expandido
-    if (block.classList.contains("stilo-project") && block.classList.contains("expanded")) return;
+    if (block.classList.contains("expandable-project") && block.classList.contains("expanded")) return;
 
     gsap.to(line, {
       width: 360,
@@ -420,7 +429,7 @@ projectBlocks.forEach(block => {
 
     if (!portfolioOpen) return;
 
-    if (block.classList.contains("stilo-project") && block.classList.contains("expanded")) return;
+    if (block.classList.contains("expandable-project") && block.classList.contains("expanded")) return;
 
     gsap.to(line, {
       width: 300,
