@@ -1,23 +1,3 @@
-/* =====================================
-   TYPEWRITER FUNCTION
-===================================== */
-
-function typeWriter(element, text, speed = 20, callback) {
-  let i = 0;
-  element.innerHTML = "";
-
-  function typing() {
-    if (i < text.length) {
-      element.innerHTML += text.charAt(i);
-      i++;
-      setTimeout(typing, speed);
-    } else {
-      if (callback) callback();
-    }
-  }
-
-  typing();
-}
 
 
 /* =====================================
@@ -34,6 +14,7 @@ const menuItems = document.querySelectorAll(".menu-overlay li");
 const portfolio = document.getElementById("portfolio");
 const backArrow = document.getElementById("backArrow");
 const homeItems = document.querySelectorAll(".home-item");
+gsap.registerPlugin(ScrollTrigger);
 
 const portfolioContent = document.getElementById("portfolioContent");
 const projectBlocks = document.querySelectorAll(".project-block");
@@ -124,7 +105,12 @@ window.addEventListener("load", () => {
     .fromTo(menuBtn, { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, "-=0.7")
     .fromTo("footer", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, "-=0.6")
     .fromTo(homeItems, { y: 40, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.15, duration: 0.8 }, "-=0.6");
-
+intro.to(".side-marquee", {
+  opacity: 1,
+  y: 0,
+  duration: 2.2,        // 🔥 más lenta
+  ease: "expo.out"      // 🔥 más orgánica
+}, "-=0.1");
 });
 
 
@@ -225,7 +211,7 @@ backArrow.addEventListener("click", (e) => {
 
 
 /* =====================================
-   STILO PREMIUM ANIMATION
+   STILO PREMIUM ANIMATION (CLEAN)
 ===================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -247,59 +233,63 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isOpen) return;
     isOpen = true;
 
-    const descriptionText =
-      "Stilo Pole Studio es un estudio creado por dos jóvenes emprendedoras que ante todo, disfrutan el deporte que tanto practican. Desde Aurea nos encargamos de transmitir esa confianza, juventud y dinamismo que tanto transmiten en sus clases.";
-
     const tl = gsap.timeline({
       defaults: { ease: "power3.out" }
     });
 
-    /* 1️⃣ Línea con micro overshoot */
+    /* 1️⃣ Línea */
     tl.to(stiloLine, {
       width: "88vw",
-      duration: 0.6,
-      ease: "power2.out"
-    })
-    
-
-    /* 2️⃣ Título crece + sube + micro fade */
-    tl.to(stiloTitle, {
-      scale: 1.38,
-      y: -12,
-      opacity: 0.95,
-      transformOrigin: "left top",
       duration: 0.7,
-      ease: "power3.out"
+      ease: "power2.out"
+    });
+
+    /* 2️⃣ Título */
+    tl.to(stiloTitle, {
+      scale: 1.35,
+      y: -12,
+      transformOrigin: "left top",
+      duration: 0.8
     }, "-=0.5");
 
-    /* 3️⃣ Abrir espacio suave */
+    /* 3️⃣ Expand */
     tl.to(stiloExpand, {
-      height: 520,
-      duration: 1,
-      ease: "power2.out"
+      maxHeight: 1200,
+      duration: 1.4,
+      ease: "expo.out"
     }, "-=0.4");
 
-    /* 4️⃣ Texto aparece suavemente */
+    /* 4️⃣ Fade descripción */
     tl.to(stiloDescription, {
       opacity: 1,
       y: 0,
-      duration: 0.6
-    }, "-=0.5");
+      duration: 0.9
+    }, "-=0.9");
 
-    /* 5️⃣ Typewriter + meta */
-    tl.call(() => {
+    /* 5️⃣ Fade meta */
+    tl.to(stiloMeta, {
+      opacity: 1,
+      y: 0,
+      duration: 0.9
+    }, "-=0.6");
 
-      typeWriter(stiloDescription, descriptionText, 18, () => {
+  });
 
-        gsap.to(stiloMeta, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out"
-        });
+  /* GALLERY SCROLL REVEAL */
 
-      });
+  gsap.utils.toArray(".gallery-item").forEach((item, i) => {
 
+    gsap.to(item, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: item,
+        start: "top 85%",
+        toggleActions: "play none none none"
+      },
+      delay: i * 0.15
     });
 
   });
