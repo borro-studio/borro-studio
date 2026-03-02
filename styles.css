@@ -1,11 +1,10 @@
 /* =====================================
-   BASE
+   1. BASE / RESET
 ===================================== */
 
 html {
   font-size: 16px;
   scrollbar-gutter: stable;
-
 }
 
 * {
@@ -22,26 +21,10 @@ body {
   flex-direction: column;
   transition: background 0.6s ease;
   overflow-x: hidden;
-  
 }
 
 body.home-active {
-  overflow: hidden; /* SOLO HOME */
-}
-
-body.portfolio-active {
-  overflow-y: auto; /* SOLO PORTFOLIO */
-}
-
-
-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-body.menu-active {
-  background: #2f2f2f;
+  overflow: hidden;
 }
 
 body.portfolio-active {
@@ -49,14 +32,23 @@ body.portfolio-active {
   overflow-y: auto;
 }
 
+body.menu-active {
+  background: #2f2f2f;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 body.portfolio-active footer {
   opacity: 0;
   pointer-events: none;
-
 }
 
 /* =====================================
-   HEADER
+   2. HEADER
 ===================================== */
 
 header {
@@ -79,7 +71,7 @@ header {
 }
 
 /* =====================================
-   FOOTER
+   3. FOOTER
 ===================================== */
 
 footer {
@@ -98,9 +90,8 @@ footer {
   gap: 6px;
 }
 
-
 /* =====================================
-   MENU OVERLAY
+   4. MENU OVERLAY
 ===================================== */
 
 .menu-overlay {
@@ -161,7 +152,7 @@ footer {
 }
 
 /* =====================================
-   HOME BIG SECTIONS
+   5. HOME
 ===================================== */
 
 .home-sections {
@@ -231,7 +222,7 @@ footer {
 }
 
 /* =====================================
-   PORTFOLIO CONTENT
+   6. PORTFOLIO
 ===================================== */
 
 .portfolio-content {
@@ -239,27 +230,29 @@ footer {
   top: 0;
   left: 0;
   width: 100%;
-
   opacity: 0;
   pointer-events: none;
-
   padding-left: 8%;
-  padding-top: 350px;
+   padding-top: clamp(340px, 24vh, 480px);
   padding-bottom: 160px;
-
   display: flex;
   flex-direction: column;
 }
-
+/* Ajuste pantallas grandes */
+@media (min-width: 1400px) {
+  .portfolio-content {
+    padding-top: 450px;
+  }
+}
 /* =====================================
-   PROJECT BLOCKS
+   PROJECTS
 ===================================== */
 
 .project-block {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-bottom: 50px;   /* separación entre proyectos */
+  margin-bottom: 50px;
   cursor: pointer;
 }
 
@@ -268,7 +261,7 @@ footer {
   height: 2px;
   background: #f4c44e;
   margin-bottom: 6px;
-  transform-origin: left; /* 🔥 importante para que crezca desde la izquierda */
+  transform-origin: left;
 }
 
 .project-title {
@@ -276,17 +269,18 @@ footer {
   font-weight: 500;
   color: #ffffff;
 }
-.stilo-expand {
-  max-height: 0;
-  overflow: hidden;
 
+/* STILO */
+.stilo-project {
+  position: relative;
 }
 
-.stilo-content-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding-top: 60px;
+.stilo-project.expanded .close-stilo {
+  opacity: 1;
+}
+.stilo-expand {
+  height: 0;
+  overflow: hidden;
 }
 
 .stilo-description {
@@ -302,11 +296,10 @@ footer {
 .stilo-meta {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-
   margin-top: 70px;
   opacity: 0;
   transform: translateY(20px);
+  max-width: 300px;
 }
 
 .meta-col {
@@ -327,8 +320,9 @@ footer {
   color: #ffffff;
   line-height: 1.6;
 }
+
 /* =====================================
-   STILO GALLERY
+   GALLERY
 ===================================== */
 
 .stilo-gallery {
@@ -351,173 +345,39 @@ footer {
   display: block;
 }
 
-/* Tamaños */
-
-.large {
-  height: 500px;
-}
+.large { height: 500px; }
+.small { flex: 1; height: 300px; }
+.medium { flex: 2; height: 300px; }
+.wide { height: 450px; }
 
 .gallery-row {
   display: flex;
   gap: 40px;
 }
 
-.small {
-  flex: 1;
-  height: 300px;
-}
-
-.medium {
-  flex: 2;
-  height: 300px;
-}
-
-.wide {
-  height: 450px;
-}
 /* =====================================
-   MOBILE REFINEMENT
-===================================== */
-
-@media (max-width: 768px) {
-
-  /* -----------------------------
-     HEADER
-  ----------------------------- */
-
-  header {
-    padding: 1.5rem 6%;
-  }
-
-  .logo img {
-    width: 85px;
-  }
-
-  .menu-icon {
-    width: 36px;
-  }
-
-  /* -----------------------------
-     HOME TITLES
-  ----------------------------- */
-
-  .home-sections {
-    padding-left: 6%;
-    padding-right: 6%;
-  }
-
-  .home-item {
-    font-size: 54px;
-  }
-
-  #portfolio {
-    font-size: 52px;      /* 🔥 reducido para que no se corte */
-    white-space: nowrap;
-  }
-
-  /* -----------------------------
-     PORTFOLIO CONTENT
-  ----------------------------- */
-
-  .portfolio-content {
-    padding-left: 6%;
-    padding-right: 6%;
-    padding-top: 200px;
-    padding-bottom: 100px;
-  }
-  @media (max-width: 768px) {
-
-  .portfolio-content {
-    padding-top: 350px;  /* Ajusta aquí */
-  }
-
-}
-
-  /* -----------------------------
-     PROJECT TITLES (cerrados)
-  ----------------------------- */
-
-  .project-title {
-    font-size: 34px;
-    max-width: 95%;     /* 🔥 evita que toque borde */
-  }
-
-  .project-line {
-    width: 200px;
-  }
-
-  /* -----------------------------
-     DESCRIPTION
-  ----------------------------- */
-
-  .stilo-description {
-    font-size: 15px;
-    line-height: 1.7;
-    margin-top: 30px;
-    max-width: 100%;
-  }
-
-  /* -----------------------------
-     META (AÑO / OBJETIVOS)
-  ----------------------------- */
-
-.stilo-content-wrapper {
-  display: flex;
-  align-items: flex-start;
-  gap: 120px; /* separación controlada */
-  padding-top: 60px;
-}
-
-}
-.meta-col {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.meta-label {
-  font-size: 12px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.6);
-}
-
-.meta-value {
-  font-size: 18px;
-  color: #ffffff;
-  line-height: 1.6;
-}
-.stilo-meta {
-  display: flex;
-  margin-top: 70px;
-  opacity: 0;
-  transform: translateY(20px);
-  max-width: 300px;
-}
-/* =====================================
-   DIAGONAL BAND WITH REAL LINES
+   SIDE MARQUEE (CORREGIDO)
 ===================================== */
 
 .side-marquee {
   position: fixed;
   top: 50%;
-  right: -200px;  /* Ajusta posición */
+  right: -200px;
   transform: translateY(-50%);
   width: 1200px;
   pointer-events: none;
   z-index: 9999;
   opacity: 0;
-  transform: translateY(-40px);
+  transition: opacity 0.8s ease;
 }
-
-
+.side-marquee-2 {
+  display: none;
+}
 .side-band {
   transform: rotate(-75deg);
   transform-origin: center;
-
   border-top: 6px solid #1c1c1c;
   border-bottom: 6px solid #1c1c1c;
-
   padding: 18px 0;
   overflow: hidden;
 }
@@ -529,51 +389,170 @@ footer {
   font-weight: 800;
   letter-spacing: 5px;
   color: #1c1c1c;
-
-  animation: bandMove 40s linear infinite; /* más lento */
+  animation: bandMove 40s linear infinite;
 }
 
 .side-track span {
-  padding-right: 80px; /* separación entre bloques */
+  padding-right: 80px;
 }
 
-/* 🔥 Loop matemático perfecto */
 @keyframes bandMove {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
+
 /* =====================================
-   MOBILE ONLY STYLES
-   (NO AFECTA DESKTOP)
+   MOBILE
 ===================================== */
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
 
-  /* 🔹 SIDE BAND AJUSTES MOVIL */
+  @media (max-width: 768px) {
+
+  header {
+    padding-left: calc(6% + env(safe-area-inset-left));
+    padding-right: calc(6% + env(safe-area-inset-right));
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+}
+
+  .logo img {
+    width: 85px;
+  }
+
+  @media (max-width: 768px) {
+
+  .menu-icon {
+    position: relative !important;
+    right: auto !important;
+    top: auto !important;
+    margin: 0;
+  }
+
+}
+
+  .home-sections {
+    padding-left: 6%;
+    padding-right: 6%;
+  }
+
+  .home-item {
+    font-size: 54px;
+  }
+
+  .portfolio-content {
+    padding-left: 6%;
+    padding-right: 6%;
+    padding-top: clamp(340px, 24vh, 480px);
+    padding-bottom: 100px;
+  }
+
+  /* ======================
+     PROJECTS
+  ====================== */
+
+  .project-title {
+    font-size: 30px;
+    max-width: 100%;
+    margin-top: 10px;
+  }
+
+  .project-line {
+    width: 160px; /* base más corta */
+  }
+
+  /* Cuando Stilo está abierto */
+  .stilo-project.expanded .project-line {
+    width: 100%;
+  }
+
+  .stilo-description {
+    margin-top: 30px;
+    font-size: 16px;
+  }
+
+  .stilo-meta {
+    margin-top: 40px;
+  }
+
+  .stilo-gallery {
+    margin-top: 70px;
+    gap: 24px;
+  }
+
+  .gallery-row {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* Botón cerrar */
+  .close-stilo {
+    top: 80px;
+    right: 0;
+    font-size: 22px;
+  }
+
+  /* ======================
+     SIDE MARQUEE
+  ====================== */
 
   .side-marquee {
-    right: -120px;     /* Más dentro en móvil */
+    right: -120px;
     width: 600px;
-    
+  }
+
+  .side-marquee-2 {
+    display: block;
+    top: 100%;
+    right: -70px;
   }
 
   .side-band {
-    transform: rotate(-16deg);  /* Un poco menos inclinada */
+    transform: rotate(-16deg);
     padding: 14px 0;
     border-top: 4px solid #1c1c1c;
     border-bottom: 4px solid #1c1c1c;
     margin-top: -280px;
+  }
 
+  .side-marquee-2 .side-band {
+    transform: rotate(16deg);
   }
 
   .side-track {
-    font-size: 42px;   /* Más pequeño en móvil */
+    font-size: 42px;
     letter-spacing: 3px;
-    animation: bandMove 35s linear infinite; /* Más lenta */
+    animation: bandMove 35s linear infinite;
   }
 
+  .side-marquee-2 .side-track {
+    animation-direction: reverse;
+  }
+
+}
+/* =====================================
+   STILO CLOSE BUTTON (FIX DEFINITIVO)
+===================================== */
+
+/* espacio extra cuando está expandido */
+
+
+.close-stilo {
+  position: absolute;
+  right: 18%;          /* alineado con padding del portfolio */
+  top: 10px;         /* ajusta fino si quieres 110-130px */
+  font-size: 56px;
+  font-weight: 300;
+  color: #f4c44e;
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  z-index: 50;
+  transition: opacity 0.3s ease;
+}
+
+.close-stilo:hover {
+  opacity: 0.7;
 }
