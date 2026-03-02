@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 <body>
 
@@ -20,7 +21,8 @@
 </header>
 
 <main>
-
+<div class="side-marquee">
+  </div>
   <!-- HOME TITLES -->
   <section class="home-sections">
     <h1 class="home-item" id="portfolio">
@@ -51,13 +53,17 @@
     <!-- IZQUIERDA -->
     <div class="stilo-left">
 
-      <p class="stilo-description"></p>
-    </div>
+      <div class="stilo-description">
+  Stilo Pole Studio es un estudio creado por dos jóvenes emprendedoras 
+  que ante todo, disfrutan el deporte que tanto practican. Desde Borro Studio 
+  nos encargamos de transmitir esa confianza, juventud y dinamismo 
+  que tanto transmiten en sus clases.
+</div>
 
     <!-- DERECHA -->
     <div class="stilo-right">
 
-      <div class="stilo-meta">
+    <div class="stilo-meta">
 
   <div class="meta-col">
     <div class="meta-label">AÑO</div>
@@ -66,13 +72,33 @@
 
   <div class="meta-col">
     <div class="meta-label">OBJETIVOS</div>
-    <div class="meta-value">
-      Actual<br>
-      Dinámico<br>
-      Confianza
+    <div class="meta-value">Actual</div>
+    <div class="meta-value">Dinámico</div>
+    <div class="meta-value">Confianza</div>
+  </div>
+
+</div>
+  <div class="stilo-gallery">
+
+  <div class="gallery-item large">
+    <img src="img/logo stilo port.png" alt="">
+  </div>
+
+  <div class="gallery-row">
+    <div class="gallery-item small">
+      <img src="img/stilo-2.jpg" alt="">
+    </div>
+
+    <div class="gallery-item medium">
+      <img src="img/stilo-3.jpg" alt="">
     </div>
   </div>
 
+  <div class="gallery-item wide">
+    <img src="img/stilo-4.jpg" alt="">
+  </div>
+
+</div>
 </div>
 
     </div>
@@ -134,5 +160,17 @@
 
 <script src="script.js"></script>
 
+<div class="side-marquee">
+  <div class="side-band">
+    <div class="side-track">
+  <span>
+    DISEÑO GRÁFICO Y WEB — DISEÑO GRÁFICO Y WEB — DISEÑO GRÁFICO Y WEB —
+  </span>
+  <span>
+    DISEÑO GRÁFICO Y WEB — DISEÑO GRÁFICO Y WEB — DISEÑO GRÁFICO Y WEB —
+  </span>
+</div>
+  </div>
+</div>
 </body>
 </html>
