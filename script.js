@@ -2,7 +2,7 @@
    GLOBAL SETUP
 ===================================== */
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const body = document.body;
 const logo = document.getElementById("mainLogo");
@@ -262,84 +262,91 @@ document.addEventListener("DOMContentLoaded", () => {
     gsap.set(title, { transformOrigin: "left top" });
 
     /* =========================
-       OPEN
-    ========================= */
+   OPEN
+========================= */
 
-    title.addEventListener("click", (e) => {
+title.addEventListener("click", (e) => {
 
-      if (!portfolioOpen || isOpen) return;
-      if (e.target.classList.contains("close-project")) return;
+  if (!portfolioOpen || isOpen) return;
+  if (e.target.classList.contains("close-project")) return;
 
-      isOpen = true;
-      project.classList.add("expanded");
+  isOpen = true;
+  project.classList.add("expanded");
 
-      expand.style.height = "auto";
-      const contentHeight = expand.scrollHeight;
-      expand.style.height = "0px";
+  expand.style.height = "auto";
+  const contentHeight = expand.scrollHeight;
+  expand.style.height = "0px";
 
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+  const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      // Línea hasta borde derecho
-      tl.call(() => {
-        const container = document.querySelector(".portfolio-content");
-        const containerRect = container.getBoundingClientRect();
-        const lineRect = line.getBoundingClientRect();
-        const newWidth = containerRect.right - lineRect.left;
+  // 🔥 Línea hasta la "o" de Portfolio (alineación estable)
+ tl.call(() => {
 
-        gsap.to(line, {
-          width: newWidth,
-          duration: 0.7,
-          ease: "power2.out"
-        });
-      });
+  const container = document.querySelector(".portfolio-content");
 
-      // Expand primero
-      tl.to(expand, {
-        height: contentHeight,
-        duration: 1.2,
-        ease: "power3.out"
-      }, 0);
+  const containerStyles = window.getComputedStyle(container);
+  const paddingRight = parseFloat(containerStyles.paddingRight);
 
-      // Luego escala título (ligeramente después)
-      tl.to(title, {
-        scale: 1.35,
-        y: -12,
-        duration: 0.8,
-        ease: "power3.out"
-      }, 0.1);
+  const containerWidth = container.clientWidth;
+  const maxWidth = containerWidth - paddingRight;
 
-      if (description) {
-        tl.to(description, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8
-        }, "-=0.8");
-      }
+  const lineLeftInsideContainer = line.offsetLeft;
 
-      if (meta) {
-        tl.to(meta, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8
-        }, "-=0.6");
-      }
+  const newWidth = maxWidth - lineLeftInsideContainer;
 
-      tl.to(galleryItems, {
-        opacity: 1,
-        duration: 0.8,
-        stagger: 0.4
-      }, "-=0.3");
+  gsap.to(line, {
+    width: newWidth,
+    duration: 0.7,
+    ease: "power2.out"
+  });
 
-      tl.to(closeBtn, {
-        opacity: 1,
-        pointerEvents: "auto",
-        duration: 0.3
-      }, "-=0.8");
+});
+  // Expand primero
+  tl.to(expand, {
+    height: contentHeight,
+    duration: 1.2,
+    ease: "power3.out"
+  }, 0);
 
-      tl.set(expand, { height: "auto" });
+  // Luego escala título
+  tl.to(title, {
+    scale: 1.35,
+    y: -12,
+    duration: 0.8,
+    ease: "power3.out"
+  }, 0.1);
 
-    });
+  if (description) {
+    tl.to(description, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8
+    }, "-=0.8");
+  }
 
+  if (meta) {
+    tl.to(meta, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8
+    }, "-=0.6");
+  }
+
+  tl.to(galleryItems, {
+    opacity: 1,
+    duration: 0.8,
+    stagger: 0.4
+  }, "-=0.3");
+
+  tl.to(closeBtn, {
+    opacity: 1,
+    pointerEvents: "auto",
+    duration: 0.3
+  }, "-=0.8");
+
+  tl.set(expand, { height: "auto" });
+
+});
     /* =========================
        CLOSE
     ========================= */
@@ -380,13 +387,13 @@ document.addEventListener("DOMContentLoaded", () => {
         scale: 1,
         y: 0,
         duration: 0.6,
-        ease: "power3.inOut"
+        ease: "expo.inOut"
       }, "-=0.6");
 
       // 4️⃣ Vuelve línea
       tl.to(line, {
         width: 300,
-        duration: 0.3,
+        duration: 0.6,
         ease: "power2.out"
       }, "-=0.6");
 
