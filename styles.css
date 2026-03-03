@@ -5,6 +5,8 @@
 html {
   font-size: 16px;
   scrollbar-gutter: stable;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 * {
@@ -278,6 +280,23 @@ footer {
 .expandable-project {
   position: relative;
 }
+.close-project {
+  position: absolute;
+  right: 0;
+  top: 10px;
+  font-size: 48px;
+  font-weight: 300;
+  color: #f4c44e;
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  z-index: 50;
+  transition: opacity 0.3s ease;
+}
+
+.close-project:hover {
+  opacity: 0.7;
+}
 
 .expandable-project.expanded .close-project {
   opacity: 1;
@@ -496,7 +515,7 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 210px;
+  gap: 20px;
   }
 
   .project-meta .meta-col {
@@ -608,4 +627,32 @@ footer {
 .close-project:hover {
   opacity: 0.7;
 }
+}
+/* =====================================
+   LARGE DESKTOP LAYOUT FIX
+===================================== */
+
+@media (min-width: 1400px) {
+
+  .project-wrapper {
+    display: grid;
+    grid-template-columns: 0.7fr 1.6fr;
+    gap: 120px;
+    width: 100%;
+  }
+
+  .project-left {
+    max-width: 520px;
+  }
+
+  .project-right {
+    width: 100%;
+  }
+
+  .project-gallery {
+    width: 100%;
+    grid-template-columns: 1.2fr 1.8fr;
+    gap: 72px;
+  }
+
 }
