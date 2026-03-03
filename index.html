@@ -1,244 +1,658 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Borro Studio</title>
+/* =====================================
+   1. BASE / RESET
+===================================== */
 
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-</head>
+html {
+  font-size: 16px;
+  scrollbar-gutter: stable;
+  overflow-x: hidden;
+  max-width: 100%;
+}
 
-<body>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Helvetica Neue', sans-serif;
+}
 
-<header>
-  <div class="logo">
-    <img src="img/LOGO.png" alt="Borro Studio" id="mainLogo">
-  </div>
+body {
+  background: #e6b84f;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.6s ease;
+  overflow-x: hidden;
+}
 
-  <img src="img/Recurso 1.png" id="menuBtn" class="menu-icon" alt="Abrir menú">
-</header>
+body.home-active {
+  overflow: hidden;
+}
 
-<main>
+body.portfolio-active {
+  background: #1f1f1f;
+  overflow-y: auto;
+}
 
-  <!-- HOME TITLES -->
-  <section class="home-sections">
-    <h1 class="home-item" id="portfolio">
-      <span class="back-arrow" id="backArrow">
-        <span class="arrow-icon"></span>
-      </span>
-      Portfolio
-    </h1>
+body.menu-active {
+  background: #2f2f2f;
+}
 
-    <h1 class="home-item">Servicios</h1>
-    <h1 class="home-item">Contacto</h1>
-    <div class="home-peek">
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+body.portfolio-active footer {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* =====================================
+   2. HEADER
+===================================== */
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2.5rem 3.75rem;
+  position: relative;
+  z-index: 2000;
+}
+
+.logo img {
+  width: 110px;
+}
+
+.menu-icon {
+  width: 45px;
+  cursor: pointer;
+  transition: transform 0.4s ease;
+  display: block;   /* 🔥 CLAVE */
+}
+
+/* =====================================
+   3. FOOTER
+===================================== */
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 2.5rem 3.75rem;
+  font-size: 14px;
+  color: #1c1c1c;
+  transition: color 0.6s ease, opacity 0.4s ease;
+}
+
+.footer-left,
+.footer-right {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* =====================================
+   4. MENU OVERLAY
+===================================== */
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: #2f2f2f;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 12%;
+  align-items: flex-end;
+  transform: translateX(100%);
+  z-index: 1500;
+}
+
+.menu-overlay ul {
+  list-style: none;
+  text-align: right;
+}
+
+.menu-overlay li {
+  font-size: clamp(3.5rem, 9vw, 10rem);
+  font-weight: 900;
+  letter-spacing: -2px;
+  color: #f4c44e;
+  margin: 1.2rem 0;
+  opacity: 0;
+  transform: translateX(200px);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.menu-overlay li:hover {
+  color: #ffffff;
+}
+
+.menu-line {
+  position: absolute;
+  bottom: 7.5rem;
+  right: 8%;
+  width: 84%;
+  height: 4px;
+  background: #f4c44e;
+  transform: scaleX(0);
+  transform-origin: right;
+}
+
+.menu-contact {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 8%;
+  display: flex;
+  gap: 2.5rem;
+  color: #f4c44e;
+  font-size: 14px;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* =====================================
+   5. HOME
+===================================== */
+
+.home-sections {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 3.75rem;
+  gap: 0.5rem;
+}
+
+.home-item {
+  font-size: clamp(4rem, 10vw, 9rem);
+  font-weight: 900;
+  letter-spacing: -2px;
+  color: #1c1c1c;
+  margin: 0.5rem 0;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  line-height: 0.95;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.home-item:hover {
+  color: #ffffff;
+}
+
+/* =====================================
+   BACK ARROW
+===================================== */
+
+#portfolio {
+  position: relative;
+  z-index: 30;
+}
+
+.back-arrow {
+  position: absolute;
+  left: -70px;
+  top: 50%;
+  transform: translateY(-50%) scale(0.6);
+  width: 48px;
+  height: 48px;
+  border: 2px solid #f4c44e;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: auto;
+  z-index: 40;
+  transition: transform 0.3s ease;
+}
+
+.arrow-icon {
+  width: 14px;
+  height: 14px;
+  border-left: 2px solid #f4c44e;
+  border-bottom: 2px solid #f4c44e;
+  transform: rotate(45deg);
+}
+
+.back-arrow:hover {
+  transform: translateY(-50%) translateX(-6px) scale(0.6);
+}
+
+/* =====================================
+   6. PORTFOLIO
+===================================== */
+
+.portfolio-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+  padding-left: 8%;
+  padding-right: 15%;
+  padding-top: clamp(340px, 24vh, 480px);
+  padding-bottom: 160px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 1400px) {
+  .portfolio-content {
+    padding-top: 450px;
+  }
+}
+
+/* =====================================
+   PROJECTS
+===================================== */
+
+.project-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 50px;
+  cursor: pointer;
+}
+
+.project-line {
+  width: 300px;
+  height: 2px;
+  background: #f4c44e;
+  margin-bottom: 6px;
+  transform-origin: left;
+}
+
+.project-title {
+  font-size: 60px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+/* PROJECT */
+
+.expandable-project {
+  position: relative;
+}
+.close-project {
+  position: absolute;
+  right: 0;
+  top: 10px;
+  font-size: 48px;
+  font-weight: 300;
+  color: #f4c44e;
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  z-index: 50;
+  transition: opacity 0.3s ease;
+}
+
+.close-project:hover {
+  opacity: 0.7;
+}
+
+.expandable-project.expanded .close-project {
+  opacity: 1;
+}
+
+.project-expand {
+  height: 0;
+  overflow: hidden;
+}
+
+.project-description {
+  max-width: 600px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #ffffff;
+  opacity: 0;
+  transform: translateY(20px);
+  margin-top: 50px;
+}
+
+.project-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 70px;
+  opacity: 0;
+  transform: translateY(20px);
+  max-width: 300px;
+}
+
+.meta-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.meta-label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+}
+
+.meta-value {
+  font-size: 18px;
+  color: #ffffff;
+  line-height: 1.6;
+}
+
+/* =====================================
+   GALLERY
+===================================== */
+
+.project-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 48px;
+  margin-top: 160px;
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.item-1 {
+  grid-column: 1 / 3;
+  aspect-ratio: 16 / 9;
+}
+
+.item-2 { aspect-ratio: 3 / 4; }
+.item-4 { aspect-ratio: 3 / 4; }
+.item-3 { aspect-ratio: 4 / 5; }
+.item-5 { aspect-ratio: 4 / 5; }
+
+/* =====================================
+   SIDE MARQUEE
+===================================== */
+
+.side-marquee {
+  position: fixed;
+  top: 50%;
+  right: -200px;
+  transform: translateY(-50%);
+  width: 1200px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.side-marquee-2 {
+  display: none;
+}
+
+.side-band {
+  transform: rotate(-75deg);
+  transform-origin: center;
+  border-top: 6px solid #1c1c1c;
+  border-bottom: 6px solid #1c1c1c;
+  padding: 18px 0;
+  overflow: hidden;
+}
+
+.side-track {
+  display: flex;
+  width: max-content;
+  font-size: 160px;
+  font-weight: 800;
+  letter-spacing: 5px;
+  color: #1c1c1c;
+  animation: bandMove 40s linear infinite;
+}
+
+.side-track span {
+  padding-right: 80px;
+}
+
+@keyframes bandMove {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* =====================================
+   MOBILE (SOLO OVERRIDES)
+===================================== */
+
+@media (max-width: 768px) {
+
+  header {
+    height: 70px;          /* altura fija real */
+    padding: 0 6% !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo img {
+    height: 44px;
+    width: auto;
+    margin-top: auto;
+    padding-top: 10px;
+  }
+
+  .menu-icon {
+    height: 42px;
+    width: auto;
+    transform-origin: center;
+    margin-top: auto;
+    padding-top: 10px;
+  }
+
+
+
+
+  /* ======================
+     HOME
+  ====================== */
+
+  .home-sections {
+    padding-left: 6%;
+    padding-right: 6%;
+  }
+
+  .home-item {
+    font-size: 64px;
   
-  </section>
+  }
 
-  <!-- PORTFOLIO CONTENT -->
-  <section class="portfolio-content" id="portfolioContent">
+  /* ======================
+     PORTFOLIO
+  ====================== */
 
-    <!-- PROJECT 1 -->
-    <div class="project-block expandable-project">
+  .portfolio-content {
+    padding-left: 6%;
+    padding-right: 6%;
+    padding-top: 360px; /* puedes ajustar */
+    padding-bottom: 100px;
+  }
+  /* ======================
+   PORTFOLIO LIST (MÓVIL)
+    ====================== */
 
-      <div class="project-line"></div>
+  .project-block {
+  margin-bottom: 60px; /* más aire entre proyectos */
+    }
 
-      <h2 class="project-title">Stilo Pole Dance Studio.</h2>
-      <span class="close-project">–</span>
-
-      <div class="project-expand">
-
-        <div class="project-wrapper">
-
-          <!-- LEFT -->
-          <div class="project-left">
-
-            <div class="project-description">
-              Stilo Pole Studio es un estudio creado por dos jóvenes emprendedoras 
-              que ante todo, disfrutan el deporte que tanto practican. Desde Borro Studio 
-              nos encargamos de transmitir esa confianza, juventud y dinamismo 
-              que tanto transmiten en sus clases.
-            </div>
-
-          </div>
-
-          <!-- RIGHT -->
-          <div class="project-right">
-
-            <div class="project-meta">
-
-              <div class="meta-col">
-                <div class="meta-label">AÑO</div>
-                <div class="meta-value">2025</div>
-              </div>
-
-              <div class="meta-col">
-                <div class="meta-label">OBJETIVOS</div>
-                <div class="meta-value">Actual</div>
-                <div class="meta-value">Dinámico</div>
-                <div class="meta-value">Confianza</div>
-              </div>
-
-            </div>
-
-            <div class="project-gallery">
-
-              <div class="gallery-item item-1">
-                <img src="img/logo stilo port.png" alt="">
-              </div>
-
-              <div class="gallery-item item-2">
-                <img src="img/stlio_2.png" alt="">
-              </div>
-
-              <div class="gallery-item item-3">
-                <img src="img/stilo_3.png" alt="">
-              </div>
-
-              <div class="gallery-item item-4">
-                <img src="img/stilo_5.png" alt="">
-              </div>
-
-              <div class="gallery-item item-5">
-                <img src="img/stilo_4.png" alt="">
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- PROJECT 2 -->
-<div class="project-block expandable-project">
-
-  <div class="project-line"></div>
-
-  <h2 class="project-title">ENE Fisioterapia</h2>
-  <span class="close-project">–</span>
-
-  <div class="project-expand">
-
-    <div class="project-wrapper">
-
-      <div class="project-left">
-
-        <div class="project-description">
-          Aquí irá la descripción del segundo proyecto.
-          Puedes cambiar este texto por el contenido real.
-        </div>
-
-      </div>
-
-      <div class="project-right">
-
-        <div class="project-meta">
-
-          <div class="meta-col">
-            <div class="meta-label">AÑO</div>
-            <div class="meta-value">2025</div>
-          </div>
-
-          <div class="meta-col">
-            <div class="meta-label">OBJETIVOS</div>
-            <div class="meta-value">Minimal</div>
-            <div class="meta-value">Elegante</div>
-          </div>
-
-        </div>
-
-        <div class="project-gallery">
-
-          <div class="gallery-item item-1">
-            <img src="img/logo stilo port.png" alt="">
-          </div>
-
-          <div class="gallery-item item-2">
-            <img src="img/logo stilo port.png" alt="">
-          </div>
-
-          <div class="gallery-item item-3">
-            <img src="img/logo stilo port.png" alt="">
-          </div>
-
-          <div class="gallery-item item-4">
-            <img src="img/logo stilo port.png" alt="">
-          </div>
-
-          <div class="gallery-item item-5">
-            <img src="img/logo stilo port.png" alt="">
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-    <!-- PROJECT 3 -->
-    <div class="project-block">
-      <div class="project-line"></div>
-      <h2 class="project-title">Editorial Design.</h2>
-    </div>
-
-  </section>
-
-</main>
-
-<!-- MENU OVERLAY -->
-<div class="menu-overlay" id="menu">
-  <ul>
-    <li>Portfolio</li>
-    <li>Servicios</li>
-    <li>Contacto</li>
-  </ul>
   
-</div>
-  <div class="menu-line"></div>
 
-  <div class="menu-contact">
-    <span>Resurrección María de Azkue 5 — Donostia</span>
-    <span>695 78 82 96</span>
-    <span>info@borrostudio.com</span>
-  </div>
-</div>
+  .project-line {
+  width: 100%;
+  margin-bottom: 12px;
+  }
+  /* ======================
+     PROJECT BLOCK
+  ====================== */
 
-<footer>
-  <div class="footer-left">
-    <span>Resurrección María de Azkue 5</span>
-    <span>20018 — Donostia</span>
-  </div>
+  .project-line {
+    width: 100%;
+  }
 
-  <div class="footer-right">
-    <span>695 78 82 96</span>
-    <span>info@borrostudio.com</span>
-  </div>
-</footer>
+  .project-description {
+    margin-top: 30px;
+    font-size: 12px;
+  }
 
-<script src="script.js"></script>
+  .project-meta {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  }
 
-<!-- SIDE MARQUEE -->
-<div class="side-marquee">
-  <div class="side-band">
-    <div class="side-track">
-      <span>DISEÑO GRÁFICO Y WEB — DISEÑO GRÁFICO Y WEB —</span>
-      <span>DISEÑO GRÁFICO Y WEB — DISEÑO GRÁFICO Y WEB —</span>
-    </div>
-  </div>
-</div>
+  .project-meta .meta-col {
+  flex: 1;
+  }
+
+  /* ======================
+     GALLERY
+  ====================== */
+
+  .project-gallery {
+    margin-top: 60px;
+    gap: 24px;
+    grid-template-columns: 1fr;
+  }
+
+  .item-1,
+  .item-2,
+  .item-3,
+  .item-4,
+  .item-5 {
+    grid-column: auto;
+    aspect-ratio: 4 / 5;
+  }
+
+  /* ======================
+     CLOSE BUTTON
+  ====================== */
+
+  .close-project {
+    font-size: 26px;
+    right: 6%;
+    top: 0;
+  }
+
+  /* ======================
+     SIDE MARQUEE
+  ====================== */
+
+  .side-marquee {
+    right: -120px;
+    width: 600px;
+  }
+
+  .side-marquee-2 {
+    display: block;
+    top: 100%;
+    right: -70px;
+  }
+
+  .side-band {
+    transform: rotate(-10deg);
+    padding: 14px 0;
+    border-top: 4px solid #1c1c1c;
+    border-bottom: 4px solid #1c1c1c;
+    margin-top: -280px;
+  }
+
+  
+
+  .side-track {
+    font-size: 42px;
+    letter-spacing: 3px;
+    animation: bandMove 35s linear infinite;
+  }
+
+  .side-marquee-2 .side-track {
+    animation-direction: reverse;
+  }
 
 
+  .project-block {
+    margin-bottom: 30px;
+    
+  }
 
-</body>
-</html>
+  .project-title {
+    font-size: 30px;
+    line-height: 1.3;
+    margin-top: 1px;
+  }
+
+  .project-line {
+    width: 30%;
+    margin-bottom: 18px;
+  }
+  .project-block:first-child .project-title {
+  max-width: 220px;
+  }
+  .project-block:nth-child(2) .project-title {
+  max-width: 160px;
+  }
+/* CLOSE BUTTON */
+
+.close-project {
+  position: absolute;
+  right: 1%;
+  top: 10px;
+  font-size: 56px;
+  font-weight: 300;
+  color: #f4c44e;
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  z-index: 50;
+  transition: opacity 0.3s ease;
+}
+
+.close-project:hover {
+  opacity: 0.7;
+}
+}
+/* =====================================
+   LARGE DESKTOP LAYOUT FIX
+===================================== */
+
+@media (min-width: 1400px) {
+
+  .project-wrapper {
+    display: grid;
+    grid-template-columns: 0.7fr 1.6fr;
+    gap: 120px;
+    width: 100%;
+  }
+
+  .project-left {
+    max-width: 520px;
+  }
+
+  .project-right {
+    width: 100%;
+  }
+
+  .project-gallery {
+    width: 100%;
+    grid-template-columns: 1.2fr 1.8fr;
+    gap: 72px;
+  }
+
+}
