@@ -68,7 +68,7 @@
        BLOB WINDOW  (the masked portal)
     ══════════════════════════════════ */
     #blob-win{
-      position:fixed;inset:0;z-index:10;pointer-events:none;
+      position:fixed;inset:0;z-index:10;pointer-events:none;will-change:mask-size;
       /* mask-image set by JS via canvas */
       -webkit-mask-size:100% 100%;
       mask-size:100% 100%;
@@ -423,39 +423,24 @@ const progEl      = document.getElementById('prog');
 let maskDataURL   = '';
 
 /* ══════════════════════════════════════
-   CANVAS MASK — Borro Studio star logo
-   Draws the SVG polygon onto canvas,
-   with letter cutouts punched through.
+   SVG MASK — vector, scales without pixelation
 ══════════════════════════════════════ */
 function buildMask(W, H) {
-  // SVG viewBox dimensions and center
   const svgW = 3371.28, svgH = 3375.54;
   const svgCX = svgW / 2, svgCY = svgH / 2;
-
-  // Scale star to fill ~38% of the shorter viewport dimension
   const scale = (Math.min(W, H) * 0.38) / Math.max(svgW, svgH);
 
-  // Use devicePixelRatio for crisp rendering on retina/HiDPI screens
-  const dpr = Math.min(window.devicePixelRatio || 1, 3);
-  const canvas = document.createElement('canvas');
-  canvas.width = W * dpr; canvas.height = H * dpr;
-  const ctx = canvas.getContext('2d');
-  ctx.scale(dpr, dpr); // draw in CSS px — DPR handled by canvas scale
-
-  // Map SVG coords → canvas coords (centered)
-  function drawPoly(pts) {
-    ctx.beginPath();
-    ctx.moveTo((pts[0] - svgCX) * scale + W / 2,
-               (pts[1] - svgCY) * scale + H / 2);
-    for (let i = 2; i < pts.length; i += 2) {
-      ctx.lineTo((pts[i]   - svgCX) * scale + W / 2,
-                 (pts[i+1] - svgCY) * scale + H / 2);
+  function tp(pts) {
+    const out = [];
+    for (let i = 0; i < pts.length; i += 2) {
+      out.push(
+        ((pts[i]   - svgCX) * scale + W / 2).toFixed(2) + ',' +
+        ((pts[i+1] - svgCY) * scale + H / 2).toFixed(2)
+      );
     }
-    ctx.closePath();
-    ctx.fill();
+    return out.join(' ');
   }
 
-  // Main star polygon (from SVG .st0 element)
   const starPts = [
     2215.36,1709.09, 2749.15,1954.23, 2577.64,2327.57, 2044.08,2082.41,
     2248.07,2633.25, 1862.77,2776.11, 1658.55,2225.3,  1413.42,2759.13,
@@ -464,8 +449,6 @@ function buildMask(W, H) {
     1109.82, 744.32, 1495.15, 601.41, 1699.11,1152.02, 1944.28, 618.45,
     2317.85, 789.93, 2072.72,1323.76, 2623.33,1119.8,  2766.19,1505.1
   ];
-
-  // Letter cutout polygons (from SVG .st2 elements)
   const letterL = [
     1657.94,1512.73, 1655.34,1629.04, 1515.69,1625.94,
     1510.31,1866.6,  1394.01,1864.01, 1401.99,1507.04
@@ -475,28 +458,18 @@ function buildMask(W, H) {
     1835.43,1870.48, 1719.13,1867.89, 1727.11,1510.92
   ];
 
-  // Draw star in white (opaque = content shows through)
-  ctx.fillStyle = 'white';
-  drawPoly(starPts);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><defs><mask id="m"><polygon fill="white" points="${tp(starPts)}"/><polygon fill="black" points="${tp(letterL)}"/><polygon fill="black" points="${tp(letterB)}"/></mask></defs><rect width="${W}" height="${H}" fill="white" mask="url(#m)"/></svg>`;
 
-  // Punch letter-shaped holes (transparent = background shows through)
-  ctx.globalCompositeOperation = 'destination-out';
-  ctx.fillStyle = 'black';
-  drawPoly(letterL);
-  drawPoly(letterB);
-  ctx.globalCompositeOperation = 'source-over';
-
-  return canvas;
+  return 'data:image/svg+xml,' + encodeURIComponent(svg);
 }
 
-/* ── Apply the canvas mask to #blob-win ── */
+/* ── Apply the SVG mask to #blob-win ── */
 function applyMask() {
   const W = window.innerWidth;
   const H = window.innerHeight;
-  const canvas = buildMask(W, H);
-  maskDataURL = canvas.toDataURL('image/png');
-  blobWin.style.webkitMaskImage = `url(${maskDataURL})`;
-  blobWin.style.maskImage       = `url(${maskDataURL})`;
+  maskDataURL = buildMask(W, H);
+  blobWin.style.webkitMaskImage = `url("${maskDataURL}")`;
+  blobWin.style.maskImage       = `url("${maskDataURL}")`;
   blobWin.style.webkitMaskPosition = '50% 50%';
   blobWin.style.maskPosition       = '50% 50%';
   blobWin.style.webkitMaskSize = '100% 100%';
@@ -525,49 +498,49 @@ function setMask(on) {
   }
 }
 
+let rafPending = false;
 window.addEventListener('scroll', () => {
-  const y   = window.scrollY;
-  const H   = window.innerHeight;
-  const max = document.documentElement.scrollHeight - H;
+  if (rafPending) return;
+  rafPending = true;
+  requestAnimationFrame(() => {
+    rafPending = false;
+    const y   = window.scrollY;
+    const H   = window.innerHeight;
+    const max = document.documentElement.scrollHeight - H;
 
-  progEl.style.width = (y / max * 100) + '%';
+    progEl.style.width = (y / max * 100) + '%';
 
-  if (y <= H) {
-    /* ── Phase 1: zoom the blob mask ── */
-    const p = y / H;
-    // ease-in-out: slow start, accelerates, slows at end
-    const eased = p < 0.5
-      ? 2 * p * p
-      : 1 - Math.pow(-2 * p + 2, 2) / 2;
-    const pct = 100 + eased * (ZOOM_MAX - 100);
+    if (y <= H) {
+      const p = y / H;
+      const eased = p < 0.5
+        ? 2 * p * p
+        : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      const pct = 100 + eased * (ZOOM_MAX - 100);
 
-    if (p < 0.92) {
-      // Still zooming — apply growing mask
-      setMask(true);
-      const sz = pct.toFixed(0) + '% ' + pct.toFixed(0) + '%';
-      blobWin.style.webkitMaskSize = sz;
-      blobWin.style.maskSize       = sz;
+      if (p < 0.92) {
+        setMask(true);
+        const sz = pct.toFixed(3) + '% ' + pct.toFixed(3) + '%';
+        blobWin.style.webkitMaskSize = sz;
+        blobWin.style.maskSize       = sz;
+      } else {
+        setMask(false);
+      }
+
+      blobContent.style.transform = 'translateY(0)';
+      heroHl.style.opacity = Math.max(0, 1 - p * 2.5);
+      scuEl.style.opacity  = Math.max(0, 1 - p * 2);
+      dotsEl.forEach((d, i) => d.classList.toggle('on', i === 0));
+
     } else {
-      // Blob has covered the screen — drop the mask entirely
       setMask(false);
+      const contentY = y - H;
+      blobContent.style.transform = `translateY(${-contentY}px)`;
+      heroHl.style.opacity = 0;
+      scuEl.style.opacity  = 0;
+      const idx = Math.min(Math.floor(contentY / H), N - 1);
+      dotsEl.forEach((d, i) => d.classList.toggle('on', i === idx));
     }
-
-    blobContent.style.transform = 'translateY(0)';
-    heroHl.style.opacity = Math.max(0, 1 - p * 2.5);
-    scuEl.style.opacity  = Math.max(0, 1 - p * 2);
-    dotsEl.forEach((d, i) => d.classList.toggle('on', i === 0));
-
-  } else {
-    /* ── Phase 2: full screen, content scrolls ── */
-    setMask(false);
-    const contentY = y - H;
-    blobContent.style.transform = `translateY(${-contentY}px)`;
-    heroHl.style.opacity = 0;
-    scuEl.style.opacity  = 0;
-    const idx = Math.min(Math.floor(contentY / H), N - 1);
-    dotsEl.forEach((d, i) => d.classList.toggle('on', i === idx));
-  }
-
+  });
 }, { passive: true });
 
 /* ══════════════════════════════════════
