@@ -106,15 +106,15 @@
     .s2-sep{width:1px;background:rgba(255,255,255,.1);align-self:stretch}
 
     /* S3 — work list */
-    #s3{background:#111;padding:60px 52px}
-    .s3-lbl{font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:40px;align-self:flex-start}
-    .wk-list{width:100%;max-width:620px}
-    .wk-row{display:flex;align-items:baseline;gap:16px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.07);cursor:none}
+    #s3{background:#111;padding:60px 52px;align-items:flex-start}
+    .s3-lbl{font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:40px}
+    .wk-list{width:100%;max-width:700px}
+    .wk-row{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.07);cursor:none}
     .wk-row:first-child{border-top:1px solid rgba(255,255,255,.07)}
-    .wk-n{font-size:10px;font-family:monospace;color:rgba(255,255,255,.22);flex-shrink:0}
-    .wk-t{font-size:clamp(15px,2.2vw,26px);font-weight:800;letter-spacing:-.02em;color:rgba(255,255,255,.68);flex:1;transition:color .25s}
+    .wk-n{font-size:10px;font-family:monospace;color:rgba(255,255,255,.22)}
+    .wk-t{font-size:clamp(15px,2.2vw,26px);font-weight:800;letter-spacing:-.02em;color:rgba(255,255,255,.68);transition:color .25s}
     .wk-row:hover .wk-t{color:#fff}
-    .wk-b{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.22);flex-shrink:0}
+    .wk-b{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.22)}
 
     /* S4 — project spotlight */
     #s4{background:#111;padding:0}
