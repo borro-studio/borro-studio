@@ -517,14 +517,10 @@ window.addEventListener('scroll', () => {
         : 1 - Math.pow(-2 * p + 2, 2) / 2;
       const pct = 100 + eased * (ZOOM_MAX - 100);
 
-      if (p < 0.92) {
-        setMask(true);
-        const sz = pct.toFixed(3) + '% ' + pct.toFixed(3) + '%';
-        blobWin.style.webkitMaskSize = sz;
-        blobWin.style.maskSize       = sz;
-      } else {
-        setMask(false);
-      }
+      setMask(true);
+      const sz = pct.toFixed(3) + '% ' + pct.toFixed(3) + '%';
+      blobWin.style.webkitMaskSize = sz;
+      blobWin.style.maskSize       = sz;
 
       blobContent.style.transform = 'translateY(0)';
       heroHl.style.opacity = Math.max(0, 1 - p * 2.5);
@@ -533,11 +529,14 @@ window.addEventListener('scroll', () => {
 
       // Fade yellow → dark: empieza tarde, acelera hacia el final (ease-in)
       const bgRaw   = Math.max(0, Math.min(1, (p - 0.68) / 0.23));
-      const bgEased = bgRaw * bgRaw; // ease-in: lento al inicio, rápido al final
+      const bgEased = bgRaw * bgRaw;
       document.body.style.background = `rgb(${Math.round(254*(1-bgEased))},${Math.round(205*(1-bgEased))},${Math.round(82*(1-bgEased))})`;
 
     } else {
-      setMask(false);
+      // Máscara fija al máximo — nunca se elimina, no hay salto
+      const maxSz = ZOOM_MAX + '% ' + ZOOM_MAX + '%';
+      blobWin.style.webkitMaskSize = maxSz;
+      blobWin.style.maskSize       = maxSz;
       document.body.style.background = '#0d0d0d';
       const contentY = y - H;
       blobContent.style.transform = `translateY(${-contentY}px)`;
