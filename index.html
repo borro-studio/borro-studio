@@ -10,7 +10,7 @@
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     html,body{height:100%}
     body{
-      background:#fecd52;
+      background:#0d0d0d;
       color:#0a0a0a;
       font-family:'Inter',sans-serif;
       cursor:none;
@@ -65,21 +65,26 @@
     .dot.on{background:#0a0a0a;transform:scale(1.4)}
 
     /* ══════════════════════════════════
-       BLOB WINDOW  (the masked portal)
+       BLOB WINDOW  (dark content, always fully visible)
     ══════════════════════════════════ */
     #blob-win{
-      position:fixed;inset:0;z-index:10;pointer-events:none;will-change:mask-size;
-      /* mask-image set by JS via canvas */
+      position:fixed;inset:0;z-index:10;pointer-events:none;
+    }
+    #blob-content{
+      position:absolute;top:0;left:0;right:0;
+      will-change:transform;
+    }
+
+    /* yellow overlay — star hole cut in yellow, grows as user scrolls */
+    #yellow-overlay{
+      position:fixed;inset:0;z-index:15;background:#fecd52;pointer-events:none;
+      will-change:mask-size,opacity;
       -webkit-mask-size:100% 100%;
       mask-size:100% 100%;
       -webkit-mask-repeat:no-repeat;
       mask-repeat:no-repeat;
       -webkit-mask-position:50% 50%;
       mask-position:50% 50%;
-    }
-    #blob-content{
-      position:absolute;top:0;left:0;right:0;
-      will-change:transform;
     }
 
     /* ── SLIDES ── */
@@ -165,10 +170,10 @@
     /* ── SPACER ── */
     #spacer{pointer-events:none}
 
-    /* ── SCROLL CUE — darker for yellow bg ── */
-    #scue{color:rgba(56,56,56,.65)}
-    .sc-ln{background:rgba(56,56,56,.18)}
-    .sc-ln::after{background:rgba(56,56,56,.5)}
+    /* ── SCROLL CUE — dark so visible on yellow overlay ── */
+    #scue{color:rgba(40,40,40,.7)}
+    .sc-ln{background:rgba(40,40,40,.18)}
+    .sc-ln::after{background:rgba(40,40,40,.55)}
 
     /* ── TOUCH DEVICES — hide custom cursor ── */
     @media(hover:none){
@@ -272,6 +277,9 @@
     <li><a href="#">Contacto</a></li>
   </ul>
 </nav>
+
+<!-- YELLOW OVERLAY — star hole reveals dark content underneath -->
+<div id="yellow-overlay"></div>
 
 <!-- BLOB WINDOW — dark content scrolls inside -->
 <div id="blob-win">
@@ -416,11 +424,12 @@
 'use strict';
 
 const N = 8; // number of slides
-const blobWin     = document.getElementById('blob-win');
-const blobContent = document.getElementById('blob-content');
-const dotsEl      = document.querySelectorAll('.dot');
-const progEl      = document.getElementById('prog');
-let maskDataURL   = '';
+const blobWin      = document.getElementById('blob-win');
+const blobContent  = document.getElementById('blob-content');
+const yellowOverlay = document.getElementById('yellow-overlay');
+const dotsEl       = document.querySelectorAll('.dot');
+const progEl       = document.getElementById('prog');
+let maskDataURL    = '';
 
 /* ══════════════════════════════════════
    SVG MASK — vector, scales without pixelation
@@ -458,24 +467,24 @@ function buildMask(W, H) {
     1835.43,1870.48, 1719.13,1867.89, 1727.11,1510.92
   ];
 
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><defs><mask id="m"><polygon fill="white" points="${tp(starPts)}"/><polygon fill="black" points="${tp(letterL)}"/><polygon fill="black" points="${tp(letterB)}"/></mask></defs><rect width="${W}" height="${H}" fill="white" mask="url(#m)"/></svg>`;
+  // Inverted mask: white=show yellow, black star=transparent hole, white letters=yellow LB in hole
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><defs><mask id="m"><rect width="${W}" height="${H}" fill="white"/><polygon fill="black" points="${tp(starPts)}"/><polygon fill="white" points="${tp(letterL)}"/><polygon fill="white" points="${tp(letterB)}"/></mask></defs><rect width="${W}" height="${H}" fill="white" mask="url(#m)"/></svg>`;
 
   return 'data:image/svg+xml,' + encodeURIComponent(svg);
 }
 
-/* ── Apply the SVG mask to #blob-win ── */
+/* ── Apply the SVG mask to #yellow-overlay ── */
 function applyMask() {
   const W = window.innerWidth;
   const H = window.innerHeight;
   maskDataURL = buildMask(W, H);
-  blobWin.style.webkitMaskImage = `url("${maskDataURL}")`;
-  blobWin.style.maskImage       = `url("${maskDataURL}")`;
-  blobWin.style.webkitMaskPosition = '50% 50%';
-  blobWin.style.maskPosition       = '50% 50%';
-  blobWin.style.webkitMaskSize = '100% 100%';
-  blobWin.style.maskSize       = '100% 100%';
+  yellowOverlay.style.webkitMaskImage = `url("${maskDataURL}")`;
+  yellowOverlay.style.maskImage       = `url("${maskDataURL}")`;
+  yellowOverlay.style.webkitMaskPosition = '50% 50%';
+  yellowOverlay.style.maskPosition       = '50% 50%';
+  yellowOverlay.style.webkitMaskSize = '100% 100%';
+  yellowOverlay.style.maskSize       = '100% 100%';
   blobContent.style.transform  = 'translateY(0)';
-  // H for zoom phase + (N-1)*H for content scroll = N*H total
   document.getElementById('spacer').style.height = N * H + 'px';
 }
 
@@ -484,19 +493,9 @@ function applyMask() {
    Phase 1 (0→H):   blob zooms in (mask-size 100%→1200%), then mask removed
    Phase 2 (H→N*H): no mask, content scrolls through full dark screen
 ══════════════════════════════════════ */
-const ZOOM_MAX = 1200; // mask grows until it definitely covers corners
+const ZOOM_MAX = 1200; // star hole grows until it covers all corners
 const heroHl = document.getElementById('hero-hl');
 const scuEl  = document.getElementById('scue');
-
-function setMask(on) {
-  if (on) {
-    blobWin.style.webkitMaskImage = `url(${maskDataURL})`;
-    blobWin.style.maskImage       = `url(${maskDataURL})`;
-  } else {
-    blobWin.style.webkitMaskImage = 'none';
-    blobWin.style.maskImage       = 'none';
-  }
-}
 
 let rafPending = false;
 window.addEventListener('scroll', () => {
@@ -517,33 +516,26 @@ window.addEventListener('scroll', () => {
         : 1 - Math.pow(-2 * p + 2, 2) / 2;
       const pct = 100 + eased * (ZOOM_MAX - 100);
 
-      setMask(true);
+      // Grow the star hole in the yellow overlay
       const sz = pct.toFixed(3) + '% ' + pct.toFixed(3) + '%';
-      blobWin.style.webkitMaskSize = sz;
-      blobWin.style.maskSize       = sz;
+      yellowOverlay.style.webkitMaskSize = sz;
+      yellowOverlay.style.maskSize       = sz;
 
-      // Fade out suave del blob al final del zoom (p 0.80→1.0)
+      // Fade out yellow overlay smoothly at the very end (p 0.80→1.0)
       const opFade = Math.max(0, Math.min(1, (p - 0.80) / 0.20));
-      blobWin.style.opacity = (1 - opFade).toFixed(3);
+      yellowOverlay.style.opacity = (1 - opFade).toFixed(3);
 
       blobContent.style.transform = 'translateY(0)';
-      heroHl.style.opacity = Math.max(0, 1 - p * 2.5);
-      scuEl.style.opacity  = Math.max(0, 1 - p * 2);
+      heroHl.style.opacity = Math.max(0, 1 - p * 2.5).toFixed(3);
+      scuEl.style.opacity  = Math.max(0, 1 - p * 2).toFixed(3);
       dotsEl.forEach((d, i) => d.classList.toggle('on', i === 0));
 
-      // Fade yellow → dark: empieza tarde, ease-in
-      const bgRaw   = Math.max(0, Math.min(1, (p - 0.68) / 0.23));
-      const bgEased = bgRaw * bgRaw;
-      document.body.style.background = `rgb(${Math.round(254*(1-bgEased))},${Math.round(205*(1-bgEased))},${Math.round(82*(1-bgEased))})`;
-
     } else {
-      setMask(false);
-      blobWin.style.opacity = '1';
-      document.body.style.background = '#0d0d0d';
+      yellowOverlay.style.opacity = '0';
       const contentY = y - H;
       blobContent.style.transform = `translateY(${-contentY}px)`;
-      heroHl.style.opacity = 0;
-      scuEl.style.opacity  = 0;
+      heroHl.style.opacity = '0';
+      scuEl.style.opacity  = '0';
       const idx = Math.min(Math.floor(contentY / H), N - 1);
       dotsEl.forEach((d, i) => d.classList.toggle('on', i === idx));
     }
