@@ -1,244 +1,619 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Borro Studio</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Podium — Creative Direction & Production</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=Playfair+Display:ital,wght@0,400;1,400;1,700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      background:#fecd52;
+      color:#0a0a0a;
+      font-family:'Inter',sans-serif;
+      cursor:none;
+      overflow-x:hidden;
+    }
+    a{color:inherit;text-decoration:none;cursor:none}
 
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    /* ── CURSOR ── */
+    #cur{position:fixed;z-index:9999;width:10px;height:10px;background:#0a0a0a;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:width .15s,height .15s}
+    #cur-ring{position:fixed;z-index:9998;width:34px;height:34px;border:1px solid rgba(10,10,10,.2);border-radius:50%;pointer-events:none;transform:translate(-50%,-50%)}
+    body.hl #cur{width:46px;height:46px}
+    body.hl #cur-ring{opacity:0}
+
+    /* ── LOADER ── */
+    #loader{position:fixed;inset:0;z-index:10000;background:#fecd52;display:flex;align-items:center;justify-content:center;transition:opacity .9s,visibility .9s}
+    #loader.out{opacity:0;visibility:hidden}
+    .ld-logo{width:clamp(200px,60vw,420px);height:auto;clip-path:inset(0 100% 0 0);animation:revLogo .85s cubic-bezier(.77,0,.18,1) .2s forwards}
+    @keyframes revLogo{to{clip-path:inset(0 0% 0 0)}}
+
+    /* ── PROGRESS BAR ── */
+    #prog{position:fixed;top:0;left:0;z-index:600;height:2px;width:0%;background:#0a0a0a;pointer-events:none}
+
+    /* ── NAV ── */
+    nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:28px 40px}
+    .n-logo{display:flex;align-items:center}
+    .n-logo svg{height:30px;width:auto}
+    .n-links{display:flex;gap:40px;list-style:none}
+    .n-links a{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;opacity:.4;transition:opacity .25s}
+    .n-links a:hover{opacity:1}
+
+    /* ── HERO HEADLINE (bottom-left, outside blob) ── */
+    #hero-hl{
+      position:fixed;bottom:44px;left:40px;z-index:300;
+      font-size:clamp(16px,2.1vw,28px);font-weight:900;line-height:1.2;
+      text-transform:uppercase;letter-spacing:-.01em;
+      pointer-events:none;
+      opacity:0;transform:translateY(14px);
+      transition:opacity .9s 1.5s,transform .9s 1.5s cubic-bezier(.16,1,.3,1)
+    }
+    #hero-hl.in{opacity:1;transform:translateY(0)}
+
+    /* ── SCROLL CUE ── */
+    #scue{position:fixed;bottom:52px;right:40px;z-index:300;display:flex;align-items:center;gap:14px;font-size:9px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:#999;pointer-events:none;opacity:0;animation:fcIn 1s 2.4s forwards}
+    .sc-ln{width:44px;height:1px;background:#dddbd5;position:relative;overflow:hidden}
+    .sc-ln::after{content:'';position:absolute;left:-100%;top:0;width:100%;height:100%;background:#999;animation:sweep 1.8s 2.6s ease-in-out infinite}
+    @keyframes sweep{0%{left:-100%}100%{left:100%}}
+    @keyframes fcIn{to{opacity:1}}
+
+    /* ── SECTION DOTS ── */
+    #dots{position:fixed;right:40px;top:50%;transform:translateY(-50%);z-index:400;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+    .dot{width:5px;height:5px;border-radius:50%;background:rgba(10,10,10,.18);transition:background .3s,transform .3s}
+    .dot.on{background:#0a0a0a;transform:scale(1.4)}
+
+    /* ══════════════════════════════════
+       BLOB WINDOW  (the masked portal)
+    ══════════════════════════════════ */
+    #blob-win{
+      position:fixed;inset:0;z-index:10;pointer-events:none;
+      /* mask-image set by JS via canvas */
+      -webkit-mask-size:100% 100%;
+      mask-size:100% 100%;
+      -webkit-mask-repeat:no-repeat;
+      mask-repeat:no-repeat;
+      -webkit-mask-position:50% 50%;
+      mask-position:50% 50%;
+    }
+    #blob-content{
+      position:absolute;top:0;left:0;right:0;
+      will-change:transform;
+    }
+
+    /* ── SLIDES ── */
+    .slide{width:100%;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
+
+    /* S1 — landscape / hero */
+    #s1{background:#0d0d0d}
+    .s1-bg{position:absolute;inset:0;background:linear-gradient(to bottom,#3e5668 0%,#2d4455 18%,#1a2f18 36%,#304a1c 52%,#7a6820 68%,#b08a20 82%,#c49828 100%);opacity:.9}
+    .s1-over{position:absolute;inset:0;background:rgba(0,0,0,.38)}
+    .s1-body{position:relative;z-index:2;text-align:center;color:rgba(255,255,255,.55)}
+    .s1-sub{font-size:clamp(9px,1.2vw,12px);font-weight:700;letter-spacing:.24em;text-transform:uppercase;margin-bottom:12px}
+    .s1-num{font-size:clamp(70px,16vw,180px);font-weight:900;letter-spacing:-.07em;line-height:1;color:rgba(255,255,255,.9)}
+    .s1-loc{margin-top:14px;font-size:clamp(9px,1vw,12px);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.25)}
+    .s1-brand{position:absolute;bottom:18%;left:50%;transform:translateX(-50%);font-size:clamp(9px,1.2vw,14px);font-weight:800;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.1);white-space:nowrap}
+
+    /* S2 — statement */
+    #s2{background:#0a0a0a;padding:60px 52px;text-align:center}
+    .s2-lbl{font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:36px}
+    .s2-txt{font-family:'Playfair Display',serif;font-size:clamp(18px,2.8vw,38px);font-style:italic;line-height:1.35;color:rgba(255,255,255,.88);max-width:680px}
+    .s2-stats{display:flex;gap:36px;margin-top:52px;justify-content:center}
+    .s2-stat{display:flex;flex-direction:column;gap:4px;align-items:center}
+    .s2-n{font-size:clamp(26px,3.8vw,48px);font-weight:900;letter-spacing:-.04em;color:#fff;line-height:1}
+    .s2-l{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.28)}
+    .s2-sep{width:1px;background:rgba(255,255,255,.1);align-self:stretch}
+
+    /* S3 — work list */
+    #s3{background:#111;padding:60px 52px}
+    .s3-lbl{font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:40px;align-self:flex-start}
+    .wk-list{width:100%;max-width:620px}
+    .wk-row{display:flex;align-items:baseline;gap:16px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.07);cursor:none}
+    .wk-row:first-child{border-top:1px solid rgba(255,255,255,.07)}
+    .wk-n{font-size:10px;font-family:monospace;color:rgba(255,255,255,.22);flex-shrink:0}
+    .wk-t{font-size:clamp(15px,2.2vw,26px);font-weight:800;letter-spacing:-.02em;color:rgba(255,255,255,.68);flex:1;transition:color .25s}
+    .wk-row:hover .wk-t{color:#fff}
+    .wk-b{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.22);flex-shrink:0}
+
+    /* S4 — project spotlight */
+    #s4{background:#111;padding:0}
+    .s4-bg{position:absolute;inset:0;background:linear-gradient(150deg,#1e3424 0%,#0a1408 100%)}
+    .s4-body{position:relative;z-index:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
+    .s4-tag{font-size:9px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.28)}
+    .s4-title{font-size:clamp(30px,7vw,88px);font-weight:900;letter-spacing:-.04em;line-height:.95;color:#fff}
+    .s4-sub{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:6px}
+
+    /* S5 — services */
+    #s5{background:#0d0d0d;padding:60px 52px}
+    .s5-lbl{font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:40px;align-self:flex-start}
+    .sv-list{width:100%;max-width:600px}
+    .sv-row{display:flex;align-items:center;gap:18px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+    .sv-row:first-child{border-top:1px solid rgba(255,255,255,.07)}
+    .sv-n{font-size:10px;font-family:monospace;color:rgba(255,255,255,.2);width:28px;flex-shrink:0}
+    .sv-nm{font-size:clamp(14px,2vw,24px);font-weight:800;letter-spacing:-.015em;color:rgba(255,255,255,.72)}
+    .sv-ar{margin-left:auto;font-size:13px;color:rgba(255,255,255,.18)}
+
+    /* S6 — clients */
+    #s6{background:#0a0a0a;padding:60px 52px;text-align:center}
+    .s6-lbl{font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:44px}
+    .cl-names{display:flex;flex-direction:column;gap:4px;align-items:center}
+    .cl-nm{font-size:clamp(16px,3vw,40px);font-weight:900;letter-spacing:-.03em;color:rgba(255,255,255,.14);cursor:none;transition:color .25s}
+    .cl-nm:hover{color:rgba(255,255,255,.8)}
+
+    /* S7 — athletes */
+    #s7{background:#0d0d0d;flex-direction:column;justify-content:center;gap:0;padding:0;overflow:hidden}
+    .s7-lbl{font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:28px}
+    .at-rows{width:100%;display:flex;flex-direction:column}
+    .at-row{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06);overflow:hidden;white-space:nowrap}
+    .at-row:first-child{border-top:1px solid rgba(255,255,255,.06)}
+    .at-track{display:inline-flex;gap:32px;animation:tick 22s linear infinite}
+    .at-row:nth-child(even) .at-track{animation-direction:reverse}
+    @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .at-nm{font-family:'Playfair Display',serif;font-size:clamp(13px,2vw,26px);font-style:italic;color:rgba(255,255,255,.2);flex-shrink:0;cursor:none;transition:color .25s}
+    .at-nm:hover{color:rgba(255,255,255,.7)}
+    .at-sep{color:rgba(255,255,255,.08);flex-shrink:0;align-self:center;font-size:.8em}
+
+    /* S8 — CTA */
+    #s8{background:#080808;text-align:center;padding:60px 48px}
+    .s8-lbl{font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:36px}
+    .s8-h{font-family:'Playfair Display',serif;font-size:clamp(26px,5.5vw,72px);font-style:italic;line-height:1.05;color:#fff;margin-bottom:44px}
+    .s8-em{font-size:clamp(11px,1.3vw,15px);font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.36);border-bottom:1px solid rgba(255,255,255,.14);padding-bottom:3px;transition:color .25s}
+    .s8-em:hover{color:rgba(255,255,255,.9)}
+    .s8-loc{margin-top:18px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.14)}
+
+    /* ── SPACER ── */
+    #spacer{pointer-events:none}
+
+    /* ── SCROLL CUE — darker for yellow bg ── */
+    #scue{color:rgba(56,56,56,.65)}
+    .sc-ln{background:rgba(56,56,56,.18)}
+    .sc-ln::after{background:rgba(56,56,56,.5)}
+
+    /* ── TOUCH DEVICES — hide custom cursor ── */
+    @media(hover:none){
+      body,a,.wk-row,.cl-nm,.at-nm{cursor:auto}
+      #cur,#cur-ring{display:none}
+    }
+
+    /* ── TABLET / MOBILE ── */
+    @media(max-width:768px){
+      nav{padding:18px 20px}
+      .n-logo svg{height:26px}
+      .n-links{gap:20px}
+      .n-links a{font-size:9px;letter-spacing:.1em}
+
+      #hero-hl{
+        bottom:72px;left:20px;right:20px;
+        font-size:clamp(12px,3.8vw,18px)
+      }
+      #scue{bottom:28px;right:20px}
+      #dots{display:none}
+
+      .slide{padding:40px 24px!important}
+
+      .s2-stats{flex-wrap:wrap;gap:20px 28px}
+      .s2-sep{display:none}
+
+      .wk-b{display:none}
+      .wk-row{gap:10px}
+
+      .sv-ar{display:none}
+
+      .cl-nm{font-size:clamp(18px,5vw,32px)}
+
+      .s8-em{font-size:clamp(12px,3.5vw,15px)}
+    }
+
+    /* ── SMALL MOBILE ── */
+    @media(max-width:480px){
+      nav{padding:16px 18px;gap:12px}
+      .n-logo svg{height:20px}
+      .n-links{gap:14px}
+      .n-links a{font-size:8px;letter-spacing:.08em}
+
+      #hero-hl{
+        bottom:64px;left:18px;right:18px;
+        font-size:clamp(11px,3.5vw,16px)
+      }
+
+      .s2-stats{gap:16px 20px}
+      .s2-n{font-size:clamp(22px,7vw,36px)}
+
+      .s4-title{font-size:clamp(28px,10vw,60px)}
+    }
+  </style>
 </head>
-
 <body>
 
-<header>
-  <div class="logo">
-    <img src="img/LOGO.png" alt="Borro Studio" id="mainLogo">
-  </div>
+<div id="cur"></div>
+<div id="cur-ring"></div>
 
-  <img src="img/Recurso 1.png" id="menuBtn" class="menu-icon" alt="Abrir menú">
-</header>
-
-<main>
-
-  <!-- HOME TITLES -->
-  <section class="home-sections">
-    <h1 class="home-item" id="portfolio">
-      <span class="back-arrow" id="backArrow">
-        <span class="arrow-icon"></span>
-      </span>
-      Portfolio
-    </h1>
-
-    <h1 class="home-item">Servicios</h1>
-    <h1 class="home-item">Contacto</h1>
-    <div class="home-peek">
-  
-  </section>
-
-  <!-- PORTFOLIO CONTENT -->
-  <section class="portfolio-content" id="portfolioContent">
-
-    <!-- PROJECT 1 -->
-    <div class="project-block expandable-project">
-
-      <div class="project-line"></div>
-
-      <h2 class="project-title">Stilo Pole Dance Studio.</h2>
-      <span class="close-project">–</span>
-
-      <div class="project-expand">
-
-        <div class="project-wrapper">
-
-          <!-- LEFT -->
-          <div class="project-left">
-
-            <div class="project-description">
-              Stilo Pole Studio es un estudio creado por dos jóvenes emprendedoras 
-              que ante todo, disfrutan el deporte que tanto practican. Desde Borro Studio 
-              nos encargamos de transmitir esa confianza, juventud y dinamismo 
-              que tanto transmiten en sus clases.
-            </div>
-
-          </div>
-
-          <!-- RIGHT -->
-          <div class="project-right">
-
-            <div class="project-meta">
-
-              <div class="meta-col">
-                <div class="meta-label">AÑO</div>
-                <div class="meta-value">2025</div>
-              </div>
-
-              <div class="meta-col">
-                <div class="meta-label">OBJETIVOS</div>
-                <div class="meta-value">Actual</div>
-                <div class="meta-value">Dinámico</div>
-                <div class="meta-value">Confianza</div>
-              </div>
-
-            </div>
-
-            <div class="project-gallery">
-
-              <div class="gallery-item item-1">
-                <img src="img/logo stilo port.png" alt="">
-              </div>
-
-              <div class="gallery-item item-2">
-                <img src="img/stlio_2.png" alt="">
-              </div>
-
-              <div class="gallery-item item-3">
-                <img src="img/stilo_3.png" alt="">
-              </div>
-
-              <div class="gallery-item item-4">
-                <img src="img/stilo_5.png" alt="">
-              </div>
-
-              <div class="gallery-item item-5">
-                <img src="img/stilo_4.png" alt="">
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- PROJECT 2 -->
-<div class="project-block expandable-project">
-
-  <div class="project-line"></div>
-
-  <h2 class="project-title">ENE Fisioterapia</h2>
-  <span class="close-project">–</span>
-
-  <div class="project-expand">
-
-    <div class="project-wrapper">
-
-      <div class="project-left">
-
-        <div class="project-description">
-          Aquí irá la descripción del segundo proyecto.
-          Puedes cambiar este texto por el contenido real.
-        </div>
-
-      </div>
-
-      <div class="project-right">
-
-        <div class="project-meta">
-
-          <div class="meta-col">
-            <div class="meta-label">AÑO</div>
-            <div class="meta-value">2025</div>
-          </div>
-
-          <div class="meta-col">
-            <div class="meta-label">OBJETIVOS</div>
-            <div class="meta-value">Minimal</div>
-            <div class="meta-value">Elegante</div>
-          </div>
-
-        </div>
-
-        <div class="project-gallery">
-
-          <div class="gallery-item item-1">
-            <img src="img/logo stilo port.png" alt="">
-          </div>
-
-          <div class="gallery-item item-2">
-            <img src="img/logo stilo port.png" alt="">
-          </div>
-
-          <div class="gallery-item item-3">
-            <img src="img/logo stilo port.png" alt="">
-          </div>
-
-          <div class="gallery-item item-4">
-            <img src="img/logo stilo port.png" alt="">
-          </div>
-
-          <div class="gallery-item item-5">
-            <img src="img/logo stilo port.png" alt="">
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
+<!-- LOADER -->
+<div id="loader">
+  <svg class="ld-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3949.35 1481.81" fill="#383838">
+    <path d="M708.55,369.39c-78.83-73.95-177.51-111.01-295.9-111.01-58.67,0-112.47,9.16-161.48,27.4V0H0v1028.94h251.17c66.87,5.37,122.38,3.16,161.48,0,82.66-7,152.86-13.58,226.36-57.01,24.82-14.78,48.05-32.27,69.54-52.68,77.91-73.12,116.93-165.06,116.93-275.62s-39.02-201.12-116.93-274.24M528.83,763.35c-30.19,31.77-68.96,47.68-116.18,47.68s-85.82-15.91-116.14-47.68c-30.19-31.77-45.35-71.66-45.35-119.72s15.41-86.82,46.1-119.09c30.81-32.27,69.29-48.3,115.39-48.3s84.74,16.03,115.55,48.3c30.69,32.27,46.1,71.91,46.1,119.09s-15.16,87.95-45.47,119.72"/>
+    <path d="M1616.14,919.26c-76.99,73.12-175.6,109.64-295.81,109.64s-218.86-36.52-295.81-109.64c-77.91-73.12-116.88-164.98-116.88-275.62s38.98-201.04,116.88-274.16c78.87-74.08,177.47-111.1,295.81-111.1s216.9,37.02,295.81,111.1c77.91,73.12,116.88,164.48,116.88,274.16s-38.98,202.5-116.88,275.62M1481.94,643.64c0-47.14-15.41-86.82-46.18-119.05-30.81-32.23-69.25-48.34-115.43-48.34s-84.65,16.11-115.43,48.34c-30.81,32.23-46.18,71.91-46.18,119.05s15.16,88.03,45.43,119.76c30.31,31.73,69.04,47.64,116.18,47.64s85.86-15.91,116.14-47.64c30.31-31.73,45.47-71.62,45.47-119.76"/>
+    <polygon points="3031.23 258.44 3031.23 509.44 2729.84 509.44 2729.84 1028.87 2478.83 1028.87 2478.83 258.44 3031.23 258.44"/>
+    <polygon points="2386.01 258.44 2386.01 509.44 2084.61 509.44 2084.61 1028.87 1833.61 1028.87 1833.61 258.44 2386.01 258.44"/>
+    <path d="M3832.46,919.26c-76.99,73.12-175.6,109.64-295.81,109.64s-218.86-36.52-295.81-109.64c-77.91-73.12-116.88-164.98-116.88-275.62s38.98-201.04,116.88-274.16c78.87-74.08,177.47-111.1,295.81-111.1s216.9,37.02,295.81,111.1c77.91,73.12,116.88,164.48,116.88,274.16s-38.98,202.5-116.88,275.62M3698.26,643.64c0-47.14-15.41-86.82-46.18-119.05-30.81-32.23-69.25-48.34-115.43-48.34s-84.65,16.11-115.43,48.34c-30.81,32.23-46.18,71.91-46.18,119.05s15.12,88.03,45.43,119.76c30.31,31.73,69.04,47.64,116.18,47.64s85.86-15.91,116.14-47.64c30.31-31.73,45.47-71.62,45.47-119.76"/>
+    <path d="M1464.18,1481.8c-14.28,0-27.94-1.91-40.97-5.79-13.08-3.83-23.78-8.87-32.02-15.07v-23.4c7.91,6.79,18.11,12.62,30.73,17.49,13.53,4.87,27.15,7.33,40.85,7.33,15.62,0,28.4-3.37,38.35-10.16,9.95-6.75,14.95-15.78,14.95-27.06,1.12-10.49-4.33-19.45-16.36-26.77-2.46-1.87-6.37-3.75-11.83-5.62l-12.41-4.25c-.58-.17-1.71-.5-3.37-.96-1.71-.46-3.54-1.04-5.5-1.71-2-.67-4-1.25-6.08-1.83-11.62-3.37-18.57-5.45-20.86-6.2-6-2.08-11.83-4.41-17.45-7.04-6.2-3-11.12-6.29-14.66-9.87-8.29-8.66-12.41-19.36-12.41-32.15,0-14.82,6-27.07,18.03-36.64,12.03-9.58,28.77-14.36,50.18-14.36,23.69,0,44.18,5.45,61.42,16.36v21.4c-19.53-12.2-39.81-18.32-60.88-18.32-15.2,0-26.94,3-35.23,9.04-8.24,6-12.41,13.7-12.41,23.11-1.12,7.49,3.12,14.95,12.7,22.28,1.5,1.29,4.62,2.79,9.33,4.5l9.58,3.66,12.12,3.37,11.83,3.37c10.33,3.21,16.82,5.29,19.45,6.2,5.46,1.88,11.16,4.41,17.2,7.62,6.2,3.2,11.28,6.75,15.2,10.7,9.2,8.45,13.82,19.74,13.82,33.86,0,17.65-7.12,31.56-21.4,41.68-14.12,10.16-31.4,15.24-51.88,15.24"/>
+    <polygon points="1687.54 1478.41 1666.68 1478.41 1666.68 1299.99 1598.77 1299.99 1598.77 1281.12 1756.33 1281.12 1756.33 1299.99 1687.54 1299.99 1687.54 1478.41"/>
+    <path d="M1898.23,1481.8c-24.07,0-43.51-7.62-58.34-22.82-14.87-15.03-22.28-36.56-22.28-64.59v-113.3h20.86v113.59c0,21.24,5.29,37.81,15.91,49.76,10.62,11.95,25.23,17.91,43.85,17.91s33.23-5.95,43.81-17.91c10.62-11.95,15.95-28.52,15.95-49.76v-113.59h20.86v113.3c0,27.65-7.54,49.18-22.57,64.59-15.03,15.2-34.35,22.82-58.05,22.82"/>
+    <path d="M2104.65,1478.42h-64.54v-197.29h64.54c31.94,0,57.67,9.12,77.24,27.31,19.74,18.45,29.61,42.18,29.61,71.33s-9.87,53.09-29.61,71.29c-19.57,18.24-45.3,27.36-77.24,27.36M2060.97,1299.99v159.53h41.14c27.07,0,48.55-7.21,64.54-21.69,15.78-14.28,23.69-33.65,23.69-58.05s-7.91-43.81-23.69-58.09c-15.99-14.45-37.48-21.7-64.54-21.7h-41.14Z"/>
+    <rect x="2272.76" y="1281.12" width="20.86" height="197.29"/>
+    <path d="M2383.11,1307.05c18.95-19.57,42.64-29.32,71.04-29.32s51.72,9.74,70.75,29.32c18.95,19.53,28.44,43.76,28.44,72.7s-9.49,53.47-28.44,73.04c-18.82,19.32-42.39,29.02-70.75,29.02s-52.26-9.7-71.04-29.02c-18.82-19.36-28.19-43.72-28.19-73.04s9.37-53.38,28.19-72.7M2398.6,1438.67c14.82,15.78,33.35,23.65,55.55,23.65s40.64-7.87,55.51-23.65c15.03-15.99,22.53-35.6,22.53-58.92s-7.49-42.93-22.53-58.92c-14.87-15.78-33.35-23.65-55.51-23.65s-40.72,7.87-55.55,23.65c-15.03,15.99-22.57,35.64-22.57,58.92s7.54,42.93,22.57,58.92"/>
+  </svg>
 </div>
 
-    <!-- PROJECT 3 -->
-    <div class="project-block">
-      <div class="project-line"></div>
-      <h2 class="project-title">Editorial Design.</h2>
-    </div>
+<!-- SCROLL PROGRESS -->
+<div id="prog"></div>
 
-  </section>
-
-</main>
-
-<!-- MENU OVERLAY -->
-<div class="menu-overlay" id="menu">
-  <ul>
-    <li>Portfolio</li>
-    <li>Servicios</li>
-    <li>Contacto</li>
+<!-- NAV -->
+<nav>
+  <a href="#" class="n-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3949.35 1481.81" fill="#383838">
+      <path d="M708.55,369.39c-78.83-73.95-177.51-111.01-295.9-111.01-58.67,0-112.47,9.16-161.48,27.4V0H0v1028.94h251.17c66.87,5.37,122.38,3.16,161.48,0,82.66-7,152.86-13.58,226.36-57.01,24.82-14.78,48.05-32.27,69.54-52.68,77.91-73.12,116.93-165.06,116.93-275.62s-39.02-201.12-116.93-274.24M528.83,763.35c-30.19,31.77-68.96,47.68-116.18,47.68s-85.82-15.91-116.14-47.68c-30.19-31.77-45.35-71.66-45.35-119.72s15.41-86.82,46.1-119.09c30.81-32.27,69.29-48.3,115.39-48.3s84.74,16.03,115.55,48.3c30.69,32.27,46.1,71.91,46.1,119.09s-15.16,87.95-45.47,119.72"/>
+      <path d="M1616.14,919.26c-76.99,73.12-175.6,109.64-295.81,109.64s-218.86-36.52-295.81-109.64c-77.91-73.12-116.88-164.98-116.88-275.62s38.98-201.04,116.88-274.16c78.87-74.08,177.47-111.1,295.81-111.1s216.9,37.02,295.81,111.1c77.91,73.12,116.88,164.48,116.88,274.16s-38.98,202.5-116.88,275.62M1481.94,643.64c0-47.14-15.41-86.82-46.18-119.05-30.81-32.23-69.25-48.34-115.43-48.34s-84.65,16.11-115.43,48.34c-30.81,32.23-46.18,71.91-46.18,119.05s15.16,88.03,45.43,119.76c30.31,31.73,69.04,47.64,116.18,47.64s85.86-15.91,116.14-47.64c30.31-31.73,45.47-71.62,45.47-119.76"/>
+      <polygon points="3031.23 258.44 3031.23 509.44 2729.84 509.44 2729.84 1028.87 2478.83 1028.87 2478.83 258.44 3031.23 258.44"/>
+      <polygon points="2386.01 258.44 2386.01 509.44 2084.61 509.44 2084.61 1028.87 1833.61 1028.87 1833.61 258.44 2386.01 258.44"/>
+      <path d="M3832.46,919.26c-76.99,73.12-175.6,109.64-295.81,109.64s-218.86-36.52-295.81-109.64c-77.91-73.12-116.88-164.98-116.88-275.62s38.98-201.04,116.88-274.16c78.87-74.08,177.47-111.1,295.81-111.1s216.9,37.02,295.81,111.1c77.91,73.12,116.88,164.48,116.88,274.16s-38.98,202.5-116.88,275.62M3698.26,643.64c0-47.14-15.41-86.82-46.18-119.05-30.81-32.23-69.25-48.34-115.43-48.34s-84.65,16.11-115.43,48.34c-30.81,32.23-46.18,71.91-46.18,119.05s15.12,88.03,45.43,119.76c30.31,31.73,69.04,47.64,116.18,47.64s85.86-15.91,116.14-47.64c30.31-31.73,45.47-71.62,45.47-119.76"/>
+      <path d="M1464.18,1481.8c-14.28,0-27.94-1.91-40.97-5.79-13.08-3.83-23.78-8.87-32.02-15.07v-23.4c7.91,6.79,18.11,12.62,30.73,17.49,13.53,4.87,27.15,7.33,40.85,7.33,15.62,0,28.4-3.37,38.35-10.16,9.95-6.75,14.95-15.78,14.95-27.06,1.12-10.49-4.33-19.45-16.36-26.77-2.46-1.87-6.37-3.75-11.83-5.62l-12.41-4.25c-.58-.17-1.71-.5-3.37-.96-1.71-.46-3.54-1.04-5.5-1.71-2-.67-4-1.25-6.08-1.83-11.62-3.37-18.57-5.45-20.86-6.2-6-2.08-11.83-4.41-17.45-7.04-6.2-3-11.12-6.29-14.66-9.87-8.29-8.66-12.41-19.36-12.41-32.15,0-14.82,6-27.07,18.03-36.64,12.03-9.58,28.77-14.36,50.18-14.36,23.69,0,44.18,5.45,61.42,16.36v21.4c-19.53-12.2-39.81-18.32-60.88-18.32-15.2,0-26.94,3-35.23,9.04-8.24,6-12.41,13.7-12.41,23.11-1.12,7.49,3.12,14.95,12.7,22.28,1.5,1.29,4.62,2.79,9.33,4.5l9.58,3.66,12.12,3.37,11.83,3.37c10.33,3.21,16.82,5.29,19.45,6.2,5.46,1.88,11.16,4.41,17.2,7.62,6.2,3.2,11.28,6.75,15.2,10.7,9.2,8.45,13.82,19.74,13.82,33.86,0,17.65-7.12,31.56-21.4,41.68-14.12,10.16-31.4,15.24-51.88,15.24"/>
+      <polygon points="1687.54 1478.41 1666.68 1478.41 1666.68 1299.99 1598.77 1299.99 1598.77 1281.12 1756.33 1281.12 1756.33 1299.99 1687.54 1299.99 1687.54 1478.41"/>
+      <path d="M1898.23,1481.8c-24.07,0-43.51-7.62-58.34-22.82-14.87-15.03-22.28-36.56-22.28-64.59v-113.3h20.86v113.59c0,21.24,5.29,37.81,15.91,49.76,10.62,11.95,25.23,17.91,43.85,17.91s33.23-5.95,43.81-17.91c10.62-11.95,15.95-28.52,15.95-49.76v-113.59h20.86v113.3c0,27.65-7.54,49.18-22.57,64.59-15.03,15.2-34.35,22.82-58.05,22.82"/>
+      <path d="M2104.65,1478.42h-64.54v-197.29h64.54c31.94,0,57.67,9.12,77.24,27.31,19.74,18.45,29.61,42.18,29.61,71.33s-9.87,53.09-29.61,71.29c-19.57,18.24-45.3,27.36-77.24,27.36M2060.97,1299.99v159.53h41.14c27.07,0,48.55-7.21,64.54-21.69,15.78-14.28,23.69-33.65,23.69-58.05s-7.91-43.81-23.69-58.09c-15.99-14.45-37.48-21.7-64.54-21.7h-41.14Z"/>
+      <rect x="2272.76" y="1281.12" width="20.86" height="197.29"/>
+      <path d="M2383.11,1307.05c18.95-19.57,42.64-29.32,71.04-29.32s51.72,9.74,70.75,29.32c18.95,19.53,28.44,43.76,28.44,72.7s-9.49,53.47-28.44,73.04c-18.82,19.32-42.39,29.02-70.75,29.02s-52.26-9.7-71.04-29.02c-18.82-19.36-28.19-43.72-28.19-73.04s9.37-53.38,28.19-72.7M2398.6,1438.67c14.82,15.78,33.35,23.65,55.55,23.65s40.64-7.87,55.51-23.65c15.03-15.99,22.53-35.6,22.53-58.92s-7.49-42.93-22.53-58.92c-14.87-15.78-33.35-23.65-55.51-23.65s-40.72,7.87-55.55,23.65c-15.03,15.99-22.57,35.64-22.57,58.92s7.54,42.93,22.57,58.92"/>
+    </svg>
+  </a>
+  <ul class="n-links">
+    <li><a href="#">Work</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
   </ul>
-  
-</div>
-  <div class="menu-line"></div>
+</nav>
 
-  <div class="menu-contact">
-    <span>Resurrección María de Azkue 5 — Donostia</span>
-    <span>695 78 82 96</span>
-    <span>info@borrostudio.com</span>
-  </div>
-</div>
+<!-- BLOB WINDOW — dark content scrolls inside -->
+<div id="blob-win">
+  <div id="blob-content">
 
-<footer>
-  <div class="footer-left">
-    <span>Resurrección María de Azkue 5</span>
-    <span>20018 — Donostia</span>
-  </div>
-
-  <div class="footer-right">
-    <span>695 78 82 96</span>
-    <span>info@borrostudio.com</span>
-  </div>
-</footer>
-
-<script src="script.js"></script>
-
-<!-- SIDE MARQUEE -->
-<div class="side-marquee">
-  <div class="side-band">
-    <div class="side-track">
-      <span>DISEÑO GRÁFICO Y WEB — DISEÑO GRÁFICO Y WEB —</span>
-      <span>DISEÑO GRÁFICO Y WEB — DISEÑO GRÁFICO Y WEB —</span>
+    <!-- S1: Landscape / Hero -->
+    <div class="slide" id="s1">
+      <div class="s1-bg"></div>
+      <div class="s1-over"></div>
+      <div class="s1-body">
+        <div class="s1-sub">Available worldwide</div>
+        <div class="s1-num">0%</div>
+        <div class="s1-loc">Montréal · QC · Canada</div>
+      </div>
+      <div class="s1-brand">SALOMON</div>
     </div>
-  </div>
+
+    <!-- S2: Statement -->
+    <div class="slide" id="s2">
+      <div class="s2-lbl">About</div>
+      <p class="s2-txt">"We help sports brands tell stories through fieldwork, narrative, and creative research — with deep production expertise."</p>
+      <div class="s2-stats">
+        <div class="s2-stat"><span class="s2-n">120+</span><span class="s2-l">Projects</span></div>
+        <div class="s2-sep"></div>
+        <div class="s2-stat"><span class="s2-n">40+</span><span class="s2-l">Brands</span></div>
+        <div class="s2-sep"></div>
+        <div class="s2-stat"><span class="s2-n">15</span><span class="s2-l">Countries</span></div>
+        <div class="s2-sep"></div>
+        <div class="s2-stat"><span class="s2-n">7yr</span><span class="s2-l">Production</span></div>
+      </div>
+    </div>
+
+    <!-- S3: Work list -->
+    <div class="slide" id="s3">
+      <div class="s3-lbl">Selected Work</div>
+      <div class="wk-list">
+        <div class="wk-row"><span class="wk-n">01</span><span class="wk-t">Into the Mountain</span><span class="wk-b">Salomon</span></div>
+        <div class="wk-row"><span class="wk-n">02</span><span class="wk-t">Zero Gravity</span><span class="wk-b">ON Running</span></div>
+        <div class="wk-row"><span class="wk-n">03</span><span class="wk-t">Expedition Series</span><span class="wk-b">The North Face</span></div>
+        <div class="wk-row"><span class="wk-n">04</span><span class="wk-t">Power Within</span><span class="wk-b">Puma</span></div>
+        <div class="wk-row"><span class="wk-n">05</span><span class="wk-t">Endurance Redefined</span><span class="wk-b">Garmin</span></div>
+      </div>
+    </div>
+
+    <!-- S4: Spotlight -->
+    <div class="slide" id="s4">
+      <div class="s4-bg"></div>
+      <div class="s4-body">
+        <span class="s4-tag">Trail Running · Documentary · 2025</span>
+        <div class="s4-title">INTO THE<br>MOUNTAIN</div>
+        <div class="s4-sub">Salomon — Chamonix, France</div>
+      </div>
+    </div>
+
+    <!-- S5: Services -->
+    <div class="slide" id="s5">
+      <div class="s5-lbl">Services</div>
+      <div class="sv-list">
+        <div class="sv-row"><span class="sv-n">01</span><span class="sv-nm">Creative Direction</span><span class="sv-ar">↗</span></div>
+        <div class="sv-row"><span class="sv-n">02</span><span class="sv-nm">Video Production</span><span class="sv-ar">↗</span></div>
+        <div class="sv-row"><span class="sv-n">03</span><span class="sv-nm">Post-Production</span><span class="sv-ar">↗</span></div>
+        <div class="sv-row"><span class="sv-n">04</span><span class="sv-nm">Photography</span><span class="sv-ar">↗</span></div>
+        <div class="sv-row"><span class="sv-n">05</span><span class="sv-nm">VFX & CGI</span><span class="sv-ar">↗</span></div>
+      </div>
+    </div>
+
+    <!-- S6: Clients -->
+    <div class="slide" id="s6">
+      <div class="s6-lbl">Clients</div>
+      <div class="cl-names">
+        <div class="cl-nm">Salomon</div>
+        <div class="cl-nm">ON Running</div>
+        <div class="cl-nm">The North Face</div>
+        <div class="cl-nm">Nike</div>
+        <div class="cl-nm">Puma</div>
+        <div class="cl-nm">Garmin</div>
+        <div class="cl-nm">Arc'teryx</div>
+      </div>
+    </div>
+
+    <!-- S7: Athletes -->
+    <div class="slide" id="s7">
+      <div class="s7-lbl">Athletes</div>
+      <div class="at-rows">
+        <div class="at-row"><div class="at-track">
+          <span class="at-nm">Kilian Jornet</span><span class="at-sep">✦</span>
+          <span class="at-nm">Courtney Dauwalter</span><span class="at-sep">✦</span>
+          <span class="at-nm">François D'Haene</span><span class="at-sep">✦</span>
+          <span class="at-nm">Jim Walmsley</span><span class="at-sep">✦</span>
+          <span class="at-nm">Kilian Jornet</span><span class="at-sep">✦</span>
+          <span class="at-nm">Courtney Dauwalter</span><span class="at-sep">✦</span>
+          <span class="at-nm">François D'Haene</span><span class="at-sep">✦</span>
+          <span class="at-nm">Jim Walmsley</span><span class="at-sep">✦</span>
+        </div></div>
+        <div class="at-row"><div class="at-track">
+          <span class="at-nm">Eliud Kipchoge</span><span class="at-sep">✦</span>
+          <span class="at-nm">Sifan Hassan</span><span class="at-sep">✦</span>
+          <span class="at-nm">Adam Ondra</span><span class="at-sep">✦</span>
+          <span class="at-nm">Alex Honnold</span><span class="at-sep">✦</span>
+          <span class="at-nm">Eliud Kipchoge</span><span class="at-sep">✦</span>
+          <span class="at-nm">Sifan Hassan</span><span class="at-sep">✦</span>
+          <span class="at-nm">Adam Ondra</span><span class="at-sep">✦</span>
+          <span class="at-nm">Alex Honnold</span><span class="at-sep">✦</span>
+        </div></div>
+        <div class="at-row"><div class="at-track">
+          <span class="at-nm">Tommy Caldwell</span><span class="at-sep">✦</span>
+          <span class="at-nm">Brigid Kosgei</span><span class="at-sep">✦</span>
+          <span class="at-nm">Nina Williams</span><span class="at-sep">✦</span>
+          <span class="at-nm">Katie Schide</span><span class="at-sep">✦</span>
+          <span class="at-nm">Tommy Caldwell</span><span class="at-sep">✦</span>
+          <span class="at-nm">Brigid Kosgei</span><span class="at-sep">✦</span>
+          <span class="at-nm">Nina Williams</span><span class="at-sep">✦</span>
+          <span class="at-nm">Katie Schide</span><span class="at-sep">✦</span>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- S8: CTA -->
+    <div class="slide" id="s8">
+      <div class="s8-lbl">Work with us</div>
+      <div class="s8-h">Let's build<br>your vision.</div>
+      <a href="mailto:hello@podium.global" class="s8-em">hello@podium.global</a>
+      <div class="s8-loc">Montréal · QC · Available worldwide</div>
+    </div>
+
+  </div><!-- /blob-content -->
+</div><!-- /blob-win -->
+
+<!-- FIXED UI — outside the blob -->
+<div id="hero-hl">WE OFFER CREATIVE DIRECTION<br>&amp; PRODUCTION FOR ATHLETICISM.</div>
+<div id="scue"><div class="sc-ln"></div><span>Scroll Down</span></div>
+<div id="dots">
+  <div class="dot on"></div><div class="dot"></div><div class="dot"></div>
+  <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  <div class="dot"></div><div class="dot"></div>
 </div>
 
+<!-- Scroll spacer -->
+<div id="spacer"></div>
 
+<script>
+'use strict';
 
+const N = 8; // number of slides
+const blobWin     = document.getElementById('blob-win');
+const blobContent = document.getElementById('blob-content');
+const dotsEl      = document.querySelectorAll('.dot');
+const progEl      = document.getElementById('prog');
+let maskDataURL   = '';
+
+/* ══════════════════════════════════════
+   CANVAS MASK — Borro Studio star logo
+   Draws the SVG polygon onto canvas,
+   with letter cutouts punched through.
+══════════════════════════════════════ */
+function buildMask(W, H) {
+  // SVG viewBox dimensions and center
+  const svgW = 3371.28, svgH = 3375.54;
+  const svgCX = svgW / 2, svgCY = svgH / 2;
+
+  // Scale star to fill ~38% of the shorter viewport dimension
+  const scale = (Math.min(W, H) * 0.38) / Math.max(svgW, svgH);
+
+  // Use devicePixelRatio for crisp rendering on retina/HiDPI screens
+  const dpr = Math.min(window.devicePixelRatio || 1, 3);
+  const canvas = document.createElement('canvas');
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr); // draw in CSS px — DPR handled by canvas scale
+
+  // Map SVG coords → canvas coords (centered)
+  function drawPoly(pts) {
+    ctx.beginPath();
+    ctx.moveTo((pts[0] - svgCX) * scale + W / 2,
+               (pts[1] - svgCY) * scale + H / 2);
+    for (let i = 2; i < pts.length; i += 2) {
+      ctx.lineTo((pts[i]   - svgCX) * scale + W / 2,
+                 (pts[i+1] - svgCY) * scale + H / 2);
+    }
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // Main star polygon (from SVG .st0 element)
+  const starPts = [
+    2215.36,1709.09, 2749.15,1954.23, 2577.64,2327.57, 2044.08,2082.41,
+    2248.07,2633.25, 1862.77,2776.11, 1658.55,2225.3,  1413.42,2759.13,
+    1040.07,2587.63, 1285.2, 2053.8,  734.37, 2257.79,  591.69, 1872.46,
+    1142.3, 1668.5,   608.74,1423.34,  780.24,1049.99, 1313.81,1295.15,
+    1109.82, 744.32, 1495.15, 601.41, 1699.11,1152.02, 1944.28, 618.45,
+    2317.85, 789.93, 2072.72,1323.76, 2623.33,1119.8,  2766.19,1505.1
+  ];
+
+  // Letter cutout polygons (from SVG .st2 elements)
+  const letterL = [
+    1657.94,1512.73, 1655.34,1629.04, 1515.69,1625.94,
+    1510.31,1866.6,  1394.01,1864.01, 1401.99,1507.04
+  ];
+  const letterB = [
+    1983.06,1516.61, 1980.46,1632.92, 1840.81,1629.82,
+    1835.43,1870.48, 1719.13,1867.89, 1727.11,1510.92
+  ];
+
+  // Draw star in white (opaque = content shows through)
+  ctx.fillStyle = 'white';
+  drawPoly(starPts);
+
+  // Punch letter-shaped holes (transparent = background shows through)
+  ctx.globalCompositeOperation = 'destination-out';
+  ctx.fillStyle = 'black';
+  drawPoly(letterL);
+  drawPoly(letterB);
+  ctx.globalCompositeOperation = 'source-over';
+
+  return canvas;
+}
+
+/* ── Apply the canvas mask to #blob-win ── */
+function applyMask() {
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+  const canvas = buildMask(W, H);
+  maskDataURL = canvas.toDataURL('image/png');
+  blobWin.style.webkitMaskImage = `url(${maskDataURL})`;
+  blobWin.style.maskImage       = `url(${maskDataURL})`;
+  blobWin.style.webkitMaskPosition = '50% 50%';
+  blobWin.style.maskPosition       = '50% 50%';
+  blobWin.style.webkitMaskSize = '100% 100%';
+  blobWin.style.maskSize       = '100% 100%';
+  blobContent.style.transform  = 'translateY(0)';
+  // H for zoom phase + (N-1)*H for content scroll = N*H total
+  document.getElementById('spacer').style.height = N * H + 'px';
+}
+
+/* ══════════════════════════════════════
+   SCROLL — two-phase:
+   Phase 1 (0→H):   blob zooms in (mask-size 100%→1200%), then mask removed
+   Phase 2 (H→N*H): no mask, content scrolls through full dark screen
+══════════════════════════════════════ */
+const ZOOM_MAX = 1200; // mask grows until it definitely covers corners
+const heroHl = document.getElementById('hero-hl');
+const scuEl  = document.getElementById('scue');
+
+function setMask(on) {
+  if (on) {
+    blobWin.style.webkitMaskImage = `url(${maskDataURL})`;
+    blobWin.style.maskImage       = `url(${maskDataURL})`;
+  } else {
+    blobWin.style.webkitMaskImage = 'none';
+    blobWin.style.maskImage       = 'none';
+  }
+}
+
+window.addEventListener('scroll', () => {
+  const y   = window.scrollY;
+  const H   = window.innerHeight;
+  const max = document.documentElement.scrollHeight - H;
+
+  progEl.style.width = (y / max * 100) + '%';
+
+  if (y <= H) {
+    /* ── Phase 1: zoom the blob mask ── */
+    const p = y / H;
+    // ease-in-out: slow start, accelerates, slows at end
+    const eased = p < 0.5
+      ? 2 * p * p
+      : 1 - Math.pow(-2 * p + 2, 2) / 2;
+    const pct = 100 + eased * (ZOOM_MAX - 100);
+
+    if (p < 0.92) {
+      // Still zooming — apply growing mask
+      setMask(true);
+      const sz = pct.toFixed(0) + '% ' + pct.toFixed(0) + '%';
+      blobWin.style.webkitMaskSize = sz;
+      blobWin.style.maskSize       = sz;
+    } else {
+      // Blob has covered the screen — drop the mask entirely
+      setMask(false);
+    }
+
+    blobContent.style.transform = 'translateY(0)';
+    heroHl.style.opacity = Math.max(0, 1 - p * 2.5);
+    scuEl.style.opacity  = Math.max(0, 1 - p * 2);
+    dotsEl.forEach((d, i) => d.classList.toggle('on', i === 0));
+
+  } else {
+    /* ── Phase 2: full screen, content scrolls ── */
+    setMask(false);
+    const contentY = y - H;
+    blobContent.style.transform = `translateY(${-contentY}px)`;
+    heroHl.style.opacity = 0;
+    scuEl.style.opacity  = 0;
+    const idx = Math.min(Math.floor(contentY / H), N - 1);
+    dotsEl.forEach((d, i) => d.classList.toggle('on', i === idx));
+  }
+
+}, { passive: true });
+
+/* ══════════════════════════════════════
+   CURSOR
+══════════════════════════════════════ */
+const cur  = document.getElementById('cur');
+const ring = document.getElementById('cur-ring');
+let mx=0, my=0, rx=0, ry=0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cur.style.left = mx + 'px';
+  cur.style.top  = my + 'px';
+});
+(function loop() {
+  rx += (mx - rx) * .1;
+  ry += (my - ry) * .1;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,button,.wk-row,.cl-nm,.at-nm').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('hl'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('hl'));
+});
+
+/* ══════════════════════════════════════
+   INIT + LOADER
+══════════════════════════════════════ */
+function init() {
+  applyMask();
+}
+
+window.addEventListener('load', () => {
+  init();
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('out');
+    document.getElementById('hero-hl').classList.add('in');
+  }, 1400);
+});
+
+// Rebuild mask on resize (debounced)
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(init, 200);
+});
+</script>
 </body>
 </html>
