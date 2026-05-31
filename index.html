@@ -522,21 +522,23 @@ window.addEventListener('scroll', () => {
       blobWin.style.webkitMaskSize = sz;
       blobWin.style.maskSize       = sz;
 
+      // Fade out suave del blob al final del zoom (p 0.80→1.0)
+      const opFade = Math.max(0, Math.min(1, (p - 0.80) / 0.20));
+      blobWin.style.opacity = (1 - opFade).toFixed(3);
+
       blobContent.style.transform = 'translateY(0)';
       heroHl.style.opacity = Math.max(0, 1 - p * 2.5);
       scuEl.style.opacity  = Math.max(0, 1 - p * 2);
       dotsEl.forEach((d, i) => d.classList.toggle('on', i === 0));
 
-      // Fade yellow → dark: empieza tarde, acelera hacia el final (ease-in)
+      // Fade yellow → dark: empieza tarde, ease-in
       const bgRaw   = Math.max(0, Math.min(1, (p - 0.68) / 0.23));
       const bgEased = bgRaw * bgRaw;
       document.body.style.background = `rgb(${Math.round(254*(1-bgEased))},${Math.round(205*(1-bgEased))},${Math.round(82*(1-bgEased))})`;
 
     } else {
-      // Máscara fija al máximo — nunca se elimina, no hay salto
-      const maxSz = ZOOM_MAX + '% ' + ZOOM_MAX + '%';
-      blobWin.style.webkitMaskSize = maxSz;
-      blobWin.style.maskSize       = maxSz;
+      setMask(false);
+      blobWin.style.opacity = '1';
       document.body.style.background = '#0d0d0d';
       const contentY = y - H;
       blobContent.style.transform = `translateY(${-contentY}px)`;
