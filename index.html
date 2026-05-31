@@ -531,8 +531,16 @@ window.addEventListener('scroll', () => {
       scuEl.style.opacity  = Math.max(0, 1 - p * 2);
       dotsEl.forEach((d, i) => d.classList.toggle('on', i === 0));
 
+      // Fade yellow background to dark as star covers screen
+      const bgFade = Math.max(0, Math.min(1, (p - 0.55) / 0.37));
+      const r = Math.round(254 * (1 - bgFade));
+      const g = Math.round(205 * (1 - bgFade));
+      const b = Math.round(82  * (1 - bgFade));
+      document.body.style.background = `rgb(${r},${g},${b})`;
+
     } else {
       setMask(false);
+      document.body.style.background = '#0d0d0d';
       const contentY = y - H;
       blobContent.style.transform = `translateY(${-contentY}px)`;
       heroHl.style.opacity = 0;
