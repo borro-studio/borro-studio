@@ -531,12 +531,10 @@ window.addEventListener('scroll', () => {
       scuEl.style.opacity  = Math.max(0, 1 - p * 2);
       dotsEl.forEach((d, i) => d.classList.toggle('on', i === 0));
 
-      // Fade yellow background to dark as star covers screen
-      const bgFade = Math.max(0, Math.min(1, (p - 0.55) / 0.37));
-      const r = Math.round(254 * (1 - bgFade));
-      const g = Math.round(205 * (1 - bgFade));
-      const b = Math.round(82  * (1 - bgFade));
-      document.body.style.background = `rgb(${r},${g},${b})`;
+      // Fade yellow → dark: empieza tarde, acelera hacia el final (ease-in)
+      const bgRaw   = Math.max(0, Math.min(1, (p - 0.68) / 0.23));
+      const bgEased = bgRaw * bgRaw; // ease-in: lento al inicio, rápido al final
+      document.body.style.background = `rgb(${Math.round(254*(1-bgEased))},${Math.round(205*(1-bgEased))},${Math.round(82*(1-bgEased))})`;
 
     } else {
       setMask(false);
