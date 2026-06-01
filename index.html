@@ -432,9 +432,9 @@ const progEl       = document.getElementById('prog');
 let maskDataURL    = '';
 
 /* ══════════════════════════════════════
-   SVG MASK — vector, scales without pixelation
+   SVG MASK — vector star with fading letter "eyes"
 ══════════════════════════════════════ */
-function buildMask(W, H) {
+function buildMask(W, H, letterBrightness) {
   const svgW = 3371.28, svgH = 3375.54;
   const svgCX = svgW / 2, svgCY = svgH / 2;
   const scale = (Math.min(W, H) * 0.55) / Math.max(svgW, svgH);
@@ -467,33 +467,41 @@ function buildMask(W, H) {
     1835.43,1870.48, 1719.13,1867.89, 1727.11,1510.92
   ];
 
-  // Inverted mask: white=show yellow, black star polygon=transparent hole revealing dark content
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><defs><mask id="m"><rect width="${W}" height="${H}" fill="white"/><polygon fill="black" points="${tp(starPts)}"/></mask></defs><rect width="${W}" height="${H}" fill="white" mask="url(#m)"/></svg>`;
+  const la = Math.round(Math.max(0, Math.min(1, letterBrightness)) * 255);
+  const lc = `rgb(${la},${la},${la})`;
+  const letterSvg = la > 0
+    ? `<polygon fill="${lc}" points="${tp(letterL)}"/><polygon fill="${lc}" points="${tp(letterB)}"/>`
+    : '';
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><defs><mask id="m"><rect width="${W}" height="${H}" fill="white"/><polygon fill="black" points="${tp(starPts)}"/>${letterSvg}</mask></defs><rect width="${W}" height="${H}" fill="white" mask="url(#m)"/></svg>`;
 
   return 'data:image/svg+xml,' + encodeURIComponent(svg);
 }
 
 /* ── Apply the SVG mask to #yellow-overlay ── */
+let lastLetterBrightness = 1;
 function applyMask() {
   const W = window.innerWidth;
   const H = window.innerHeight;
-  maskDataURL = buildMask(W, H);
+  lastLetterBrightness = 1;
+  maskDataURL = buildMask(W, H, 1);
   yellowOverlay.style.webkitMaskImage = `url("${maskDataURL}")`;
   yellowOverlay.style.maskImage       = `url("${maskDataURL}")`;
   yellowOverlay.style.webkitMaskPosition = '50% 50%';
   yellowOverlay.style.maskPosition       = '50% 50%';
   yellowOverlay.style.webkitMaskSize = '100% 100%';
   yellowOverlay.style.maskSize       = '100% 100%';
+  yellowOverlay.style.opacity        = '1';
   blobContent.style.transform  = 'translateY(0)';
   document.getElementById('spacer').style.height = N * H + 'px';
 }
 
 /* ══════════════════════════════════════
-   SCROLL — two-phase:
-   Phase 1 (0→H):   blob zooms in (mask-size 100%→1200%), then mask removed
-   Phase 2 (H→N*H): no mask, content scrolls through full dark screen
+   SCROLL — two-phase
+   Phase 1 (0→H):   yellow overlay star hole grows, letters fade, overlay fades
+   Phase 2 (H→N*H): content scrolls through full dark screen
 ══════════════════════════════════════ */
-const ZOOM_MAX = 2000; // large enough so star inner indentations cover corners on all aspect ratios
+const ZOOM_MAX = 2000;
 const heroHl = document.getElementById('hero-hl');
 const scuEl  = document.getElementById('scue');
 
@@ -503,25 +511,37 @@ window.addEventListener('scroll', () => {
   rafPending = true;
   requestAnimationFrame(() => {
     rafPending = false;
-    const y   = window.scrollY;
+    // clamp to avoid iOS bounce scroll going negative
+    const y   = Math.max(0, window.scrollY);
     const H   = window.innerHeight;
+    const W   = window.innerWidth;
     const max = document.documentElement.scrollHeight - H;
 
     progEl.style.width = (y / max * 100) + '%';
 
     if (y <= H) {
-      const p = y / H;
+      const p = Math.min(1, y / H);
       const eased = p < 0.5
         ? 2 * p * p
         : 1 - Math.pow(-2 * p + 2, 2) / 2;
       const pct = 100 + eased * (ZOOM_MAX - 100);
 
-      // Grow the star hole in the yellow overlay
-      const sz = pct.toFixed(3) + '% ' + pct.toFixed(3) + '%';
+      // Grow the star hole
+      const sz = pct.toFixed(1) + '% ' + pct.toFixed(1) + '%';
       yellowOverlay.style.webkitMaskSize = sz;
       yellowOverlay.style.maskSize       = sz;
 
-      // Fade out yellow overlay smoothly at the very end (p 0.80→1.0)
+      // Letter "eyes" fade out in first 30% of Phase 1, preventing blob artifacts at high zoom
+      const lb = Math.max(0, 1 - p / 0.30);
+      const lbStep = Math.round(lb * 16) / 16; // 16 quantised steps to limit rebuilds
+      if (lbStep !== lastLetterBrightness) {
+        lastLetterBrightness = lbStep;
+        maskDataURL = buildMask(W, H, lbStep);
+        yellowOverlay.style.webkitMaskImage = `url("${maskDataURL}")`;
+        yellowOverlay.style.maskImage       = `url("${maskDataURL}")`;
+      }
+
+      // Overlay opacity fade at the very end (cleanup for any remaining yellow)
       const opFade = Math.max(0, Math.min(1, (p - 0.80) / 0.20));
       yellowOverlay.style.opacity = (1 - opFade).toFixed(3);
 
