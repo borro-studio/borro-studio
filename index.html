@@ -116,6 +116,12 @@
     .fu{opacity:0;transform:translateY(16px)}
     .slide.active .fu{opacity:1;transform:translateY(0);transition:opacity .65s ease,transform .65s cubic-bezier(.22,1,.36,1)}
 
+    /* ── MENU SLIDE ── */
+    #s0{background:#0d0d0d;display:flex;align-items:center;justify-content:center}
+    .s0-inner{display:flex;flex-direction:column;align-items:center;gap:0}
+    .s0-link{font-size:clamp(52px,13vw,170px);font-weight:900;letter-spacing:-.04em;line-height:.88;color:#fff;text-transform:uppercase;text-align:center;text-decoration:none;transition:opacity .25s}
+    .s0-link:hover{opacity:.5}
+
     /* ── PROJECT SLIDES ── */
     .proj-slide{display:flex;flex-direction:column;justify-content:flex-end;padding:0 52px 60px}
     .proj-bg{position:absolute;inset:0;background-size:cover;background-position:center}
@@ -273,6 +279,15 @@
 <div id="blob-win">
   <div id="blob-content">
 
+    <!-- S0: Menu reveal -->
+    <div class="slide" id="s0">
+      <div class="s0-inner">
+        <div class="rev-wrap"><a href="#" class="rev s0-link">Trabajos</a></div>
+        <div class="rev-wrap"><a href="#" class="rev s0-link" style="transition-delay:.12s">Servicios</a></div>
+        <div class="rev-wrap"><a href="#" class="rev s0-link" style="transition-delay:.24s">Contacto</a></div>
+      </div>
+    </div>
+
     <!-- P1: Proyecto 1 -->
     <div class="slide proj-slide" id="p1">
       <div class="proj-bg" style="background:linear-gradient(160deg,#1c2e1c 0%,#0a140a 100%)"></div>
@@ -349,7 +364,7 @@
 <div id="scue"><div class="sc-ln"></div><span>Scroll Down</span></div>
 <div id="dots">
   <div class="dot on"></div><div class="dot"></div><div class="dot"></div>
-  <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
 
 <!-- Scroll spacer -->
@@ -358,7 +373,7 @@
 <script>
 'use strict';
 
-const N = 6; // number of slides
+const N = 7; // number of slides
 const blobWin       = document.getElementById('blob-win');
 const blobContent   = document.getElementById('blob-content');
 const yellowOverlay = document.getElementById('yellow-overlay');
