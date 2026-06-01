@@ -40,12 +40,8 @@
     .n-links{display:flex;flex-direction:column;align-items:flex-end;gap:0px;list-style:none}
     .n-links a{font-size:38px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.4;transition:opacity .25s;line-height:1.1}
     .n-links a:hover{opacity:1}
-    .n-links{transition:opacity .5s ease}
-    nav.phase2 .n-links{opacity:0;pointer-events:none}
-    .n-logo svg{transition:fill .5s ease}
-    nav.phase2 .n-logo svg{fill:#fecd52}
-    .n-star{position:absolute;top:28px;right:40px;opacity:0;transition:opacity .5s ease;pointer-events:none}
-    nav.phase2 .n-star{opacity:1}
+    .n-logo{color:#383838}
+    .n-star{position:absolute;top:28px;right:40px;opacity:0;pointer-events:none}
     @media(max-width:768px){.n-star{top:18px;right:20px}}
     @media(max-width:480px){.n-star{top:16px;right:18px}}
 
@@ -242,7 +238,7 @@
 <!-- NAV -->
 <nav>
   <a href="#" class="n-logo">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3949.35 1481.81" fill="#383838">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3949.35 1481.81" fill="currentColor">
       <path d="M708.55,369.39c-78.83-73.95-177.51-111.01-295.9-111.01-58.67,0-112.47,9.16-161.48,27.4V0H0v1028.94h251.17c66.87,5.37,122.38,3.16,161.48,0,82.66-7,152.86-13.58,226.36-57.01,24.82-14.78,48.05-32.27,69.54-52.68,77.91-73.12,116.93-165.06,116.93-275.62s-39.02-201.12-116.93-274.24M528.83,763.35c-30.19,31.77-68.96,47.68-116.18,47.68s-85.82-15.91-116.14-47.68c-30.19-31.77-45.35-71.66-45.35-119.72s15.41-86.82,46.1-119.09c30.81-32.27,69.29-48.3,115.39-48.3s84.74,16.03,115.55,48.3c30.69,32.27,46.1,71.91,46.1,119.09s-15.16,87.95-45.47,119.72"/>
       <path d="M1616.14,919.26c-76.99,73.12-175.6,109.64-295.81,109.64s-218.86-36.52-295.81-109.64c-77.91-73.12-116.88-164.98-116.88-275.62s38.98-201.04,116.88-274.16c78.87-74.08,177.47-111.1,295.81-111.1s216.9,37.02,295.81,111.1c77.91,73.12,116.88,164.48,116.88,274.16s-38.98,202.5-116.88,275.62M1481.94,643.64c0-47.14-15.41-86.82-46.18-119.05-30.81-32.23-69.25-48.34-115.43-48.34s-84.65,16.11-115.43,48.34c-30.81,32.23-46.18,71.91-46.18,119.05s15.16,88.03,45.43,119.76c30.31,31.73,69.04,47.64,116.18,47.64s85.86-15.91,116.14-47.64c30.31-31.73,45.47-71.62,45.47-119.76"/>
       <polygon points="3031.23 258.44 3031.23 509.44 2729.84 509.44 2729.84 1028.87 2478.83 1028.87 2478.83 258.44 3031.23 258.44"/>
@@ -369,8 +365,10 @@ const yellowOverlay = document.getElementById('yellow-overlay');
 const letterOverlay = document.getElementById('letter-overlay');
 const dotsEl        = document.querySelectorAll('.dot');
 const progEl        = document.getElementById('prog');
-const navEl         = document.querySelector('nav');
-const slides        = document.querySelectorAll('#blob-content .slide');
+const navLogoEl  = document.querySelector('.n-logo');
+const navLinksEl = document.querySelector('.n-links');
+const navStarEl  = document.querySelector('.n-star');
+const slides     = document.querySelectorAll('#blob-content .slide');
 let lastActiveIdx = -1;
 
 function activateSlide(idx) {
@@ -475,12 +473,20 @@ window.addEventListener('scroll', () => {
       heroHl.style.opacity = Math.max(0, 1 - p * 2.5).toFixed(3);
       scuEl.style.opacity  = Math.max(0, 1 - p * 2).toFixed(3);
       dotsEl.forEach((d, i) => d.classList.toggle('on', i === 0));
-      if (p > 0.75) { navEl.classList.add('phase2'); } else { navEl.classList.remove('phase2'); }
+      // Nav: interpolate smoothly 0→1 between p=0.10 and p=0.28
+      const nt = Math.max(0, Math.min(1, (p - 0.10) / 0.18));
+      navLogoEl.style.color = `rgb(${Math.round(0x38+(0xfe-0x38)*nt)},${Math.round(0x38+(0xcd-0x38)*nt)},${Math.round(0x38+(0x52-0x38)*nt)})`;
+      navLinksEl.style.opacity = (1 - nt).toFixed(3);
+      navLinksEl.style.pointerEvents = nt > 0.8 ? 'none' : '';
+      navStarEl.style.opacity = nt.toFixed(3);
 
     } else {
       yellowOverlay.style.opacity = '0';
       letterOverlay.style.opacity = '0';
-      navEl.classList.add('phase2');
+      navLogoEl.style.color = '#fecd52';
+      navLinksEl.style.opacity = '0';
+      navLinksEl.style.pointerEvents = 'none';
+      navStarEl.style.opacity = '1';
       const contentY = y - H;
       blobContent.style.transform = `translateY(${-contentY}px)`;
       heroHl.style.opacity = '0';
