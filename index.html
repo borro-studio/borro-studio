@@ -467,8 +467,8 @@ function buildMask(W, H) {
     1835.43,1870.48, 1719.13,1867.89, 1727.11,1510.92
   ];
 
-  // Inverted mask: white=show yellow, black star=transparent hole, white letters=yellow LB in hole
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><defs><mask id="m"><rect width="${W}" height="${H}" fill="white"/><polygon fill="black" points="${tp(starPts)}"/><polygon fill="white" points="${tp(letterL)}"/><polygon fill="white" points="${tp(letterB)}"/></mask></defs><rect width="${W}" height="${H}" fill="white" mask="url(#m)"/></svg>`;
+  // Inverted mask: white=show yellow, black star polygon=transparent hole revealing dark content
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><defs><mask id="m"><rect width="${W}" height="${H}" fill="white"/><polygon fill="black" points="${tp(starPts)}"/></mask></defs><rect width="${W}" height="${H}" fill="white" mask="url(#m)"/></svg>`;
 
   return 'data:image/svg+xml,' + encodeURIComponent(svg);
 }
@@ -493,7 +493,7 @@ function applyMask() {
    Phase 1 (0→H):   blob zooms in (mask-size 100%→1200%), then mask removed
    Phase 2 (H→N*H): no mask, content scrolls through full dark screen
 ══════════════════════════════════════ */
-const ZOOM_MAX = 1200; // star hole grows until it covers all corners
+const ZOOM_MAX = 2000; // large enough so star inner indentations cover corners on all aspect ratios
 const heroHl = document.getElementById('hero-hl');
 const scuEl  = document.getElementById('scue');
 
