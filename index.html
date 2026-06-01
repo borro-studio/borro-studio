@@ -100,84 +100,49 @@
     }
 
     /* ── SLIDES ── */
-    .slide{width:100%;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .slide{width:100%;height:100vh;position:relative;overflow:hidden}
 
-    /* S1 — landscape / hero */
-    #s1{background:#0d0d0d}
-    .s1-bg{position:absolute;inset:0;background:linear-gradient(to bottom,#3e5668 0%,#2d4455 18%,#1a2f18 36%,#304a1c 52%,#7a6820 68%,#b08a20 82%,#c49828 100%);opacity:.9}
-    .s1-over{position:absolute;inset:0;background:rgba(0,0,0,.38)}
-    .s1-body{position:relative;z-index:2;text-align:center;color:rgba(255,255,255,.55)}
-    .s1-sub{font-size:clamp(9px,1.2vw,12px);font-weight:700;letter-spacing:.24em;text-transform:uppercase;margin-bottom:12px}
-    .s1-num{font-size:clamp(70px,16vw,180px);font-weight:900;letter-spacing:-.07em;line-height:1;color:rgba(255,255,255,.9)}
-    .s1-loc{margin-top:14px;font-size:clamp(9px,1vw,12px);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.25)}
-    .s1-brand{position:absolute;bottom:18%;left:50%;transform:translateX(-50%);font-size:clamp(9px,1.2vw,14px);font-weight:800;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.1);white-space:nowrap}
+    /* ── REVEAL ANIMATIONS ── */
+    /* clip-up title reveal */
+    .rev-wrap{overflow:hidden}
+    .rev{display:block;transform:translateY(105%)}
+    .slide.active .rev{transform:translateY(0);transition:transform .9s cubic-bezier(.77,0,.18,1)}
 
-    /* S2 — statement */
-    #s2{background:#0a0a0a;padding:60px 52px;text-align:center}
-    .s2-lbl{font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:36px}
-    .s2-txt{font-family:'Playfair Display',serif;font-size:clamp(18px,2.8vw,38px);font-style:italic;line-height:1.35;color:rgba(255,255,255,.88);max-width:680px}
-    .s2-stats{display:flex;gap:36px;margin-top:52px;justify-content:center}
-    .s2-stat{display:flex;flex-direction:column;gap:4px;align-items:center}
-    .s2-n{font-size:clamp(26px,3.8vw,48px);font-weight:900;letter-spacing:-.04em;color:#fff;line-height:1}
-    .s2-l{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.28)}
-    .s2-sep{width:1px;background:rgba(255,255,255,.1);align-self:stretch}
+    /* fade-up for supporting text */
+    .fu{opacity:0;transform:translateY(16px)}
+    .slide.active .fu{opacity:1;transform:translateY(0);transition:opacity .65s ease,transform .65s cubic-bezier(.22,1,.36,1)}
 
-    /* S3 — work list */
-    #s3{background:#111;padding:60px 52px;align-items:flex-start}
-    .s3-lbl{font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:40px}
-    .wk-list{width:100%;max-width:700px}
-    .wk-row{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.07);cursor:none}
-    .wk-row:first-child{border-top:1px solid rgba(255,255,255,.07)}
-    .wk-n{font-size:10px;font-family:monospace;color:rgba(255,255,255,.22)}
-    .wk-t{font-size:clamp(15px,2.2vw,26px);font-weight:800;letter-spacing:-.02em;color:rgba(255,255,255,.68);transition:color .25s}
-    .wk-row:hover .wk-t{color:#fff}
-    .wk-b{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.22)}
+    /* ── PROJECT SLIDES ── */
+    .proj-slide{display:flex;flex-direction:column;justify-content:flex-end;padding:0 52px 60px}
+    .proj-bg{position:absolute;inset:0;background-size:cover;background-position:center}
+    .proj-over{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.72) 0%,rgba(0,0,0,.1) 60%,transparent 100%)}
+    .proj-sec{font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:18px}
+    .proj-title{font-size:clamp(38px,9vw,110px);font-weight:900;letter-spacing:-.04em;line-height:.92;color:#fff;margin-bottom:22px}
+    .proj-cat{font-size:clamp(10px,1.1vw,12px);font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:6px}
+    .proj-year{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.2)}
 
-    /* S4 — project spotlight */
-    #s4{background:#111;padding:0}
-    .s4-bg{position:absolute;inset:0;background:linear-gradient(150deg,#1e3424 0%,#0a1408 100%)}
-    .s4-body{position:relative;z-index:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
-    .s4-tag{font-size:9px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.28)}
-    .s4-title{font-size:clamp(30px,7vw,88px);font-weight:900;letter-spacing:-.04em;line-height:.95;color:#fff}
-    .s4-sub{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:6px}
-
-    /* S5 — services */
-    #s5{background:#0d0d0d;padding:60px 52px}
-    .s5-lbl{font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:40px;align-self:flex-start}
-    .sv-list{width:100%;max-width:600px}
-    .sv-row{display:flex;align-items:center;gap:18px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.07)}
-    .sv-row:first-child{border-top:1px solid rgba(255,255,255,.07)}
-    .sv-n{font-size:10px;font-family:monospace;color:rgba(255,255,255,.2);width:28px;flex-shrink:0}
-    .sv-nm{font-size:clamp(14px,2vw,24px);font-weight:800;letter-spacing:-.015em;color:rgba(255,255,255,.72)}
+    /* ── SERVICIOS ── */
+    #sv{background:#0a0a0a;display:flex;flex-direction:column;padding:100px 52px 60px}
+    .sv-hd{margin-bottom:auto}
+    .sv-sec{font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px}
+    .sv-title{font-size:clamp(40px,9vw,110px);font-weight:900;letter-spacing:-.04em;line-height:.92;color:#fff}
+    .sv-list{display:flex;flex-direction:column;width:100%;max-width:640px}
+    .sv-item{display:flex;align-items:center;gap:16px;padding:17px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+    .sv-item:first-child{border-top:1px solid rgba(255,255,255,.07)}
+    .sv-n{font-size:10px;font-family:monospace;color:rgba(255,255,255,.2)}
+    .sv-nm{font-size:clamp(14px,2.2vw,26px);font-weight:800;letter-spacing:-.02em;color:rgba(255,255,255,.75)}
     .sv-ar{margin-left:auto;font-size:13px;color:rgba(255,255,255,.18)}
 
-    /* S6 — clients */
-    #s6{background:#0a0a0a;padding:60px 52px;text-align:center}
-    .s6-lbl{font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:44px}
-    .cl-names{display:flex;flex-direction:column;gap:4px;align-items:center}
-    .cl-nm{font-size:clamp(16px,3vw,40px);font-weight:900;letter-spacing:-.03em;color:rgba(255,255,255,.14);cursor:none;transition:color .25s}
-    .cl-nm:hover{color:rgba(255,255,255,.8)}
-
-    /* S7 — athletes */
-    #s7{background:#0d0d0d;flex-direction:column;justify-content:center;gap:0;padding:0;overflow:hidden}
-    .s7-lbl{font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:28px}
-    .at-rows{width:100%;display:flex;flex-direction:column}
-    .at-row{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06);overflow:hidden;white-space:nowrap}
-    .at-row:first-child{border-top:1px solid rgba(255,255,255,.06)}
-    .at-track{display:inline-flex;gap:32px;animation:tick 22s linear infinite}
-    .at-row:nth-child(even) .at-track{animation-direction:reverse}
-    @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-    .at-nm{font-family:'Playfair Display',serif;font-size:clamp(13px,2vw,26px);font-style:italic;color:rgba(255,255,255,.2);flex-shrink:0;cursor:none;transition:color .25s}
-    .at-nm:hover{color:rgba(255,255,255,.7)}
-    .at-sep{color:rgba(255,255,255,.08);flex-shrink:0;align-self:center;font-size:.8em}
-
-    /* S8 — CTA */
-    #s8{background:#080808;text-align:center;padding:60px 48px}
-    .s8-lbl{font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:36px}
-    .s8-h{font-family:'Playfair Display',serif;font-size:clamp(26px,5.5vw,72px);font-style:italic;line-height:1.05;color:#fff;margin-bottom:44px}
-    .s8-em{font-size:clamp(11px,1.3vw,15px);font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.36);border-bottom:1px solid rgba(255,255,255,.14);padding-bottom:3px;transition:color .25s}
-    .s8-em:hover{color:rgba(255,255,255,.9)}
-    .s8-loc{margin-top:18px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.14)}
+    /* ── CONTACTO ── */
+    #ct{background:#080808;display:flex;flex-direction:column;padding:100px 52px 60px}
+    .ct-hd{margin-bottom:auto}
+    .ct-sec{font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px}
+    .ct-title{font-size:clamp(52px,13vw,150px);font-weight:900;letter-spacing:-.05em;line-height:.88;color:#fff}
+    .ct-links{display:flex;flex-direction:column;gap:10px;margin-top:52px}
+    .ct-email{font-size:clamp(14px,2vw,22px);font-weight:700;letter-spacing:.04em;color:rgba(255,255,255,.8);border-bottom:1px solid rgba(255,255,255,.14);padding-bottom:4px;width:fit-content;transition:color .25s;cursor:none;text-decoration:none}
+    .ct-email:hover{color:#fecd52}
+    .ct-social{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.28)}
+    .ct-loc{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.14);margin-top:6px}
 
     /* ── SPACER ── */
     #spacer{pointer-events:none}
@@ -299,124 +264,72 @@
 <div id="blob-win">
   <div id="blob-content">
 
-    <!-- S1: Landscape / Hero -->
-    <div class="slide" id="s1">
-      <div class="s1-bg"></div>
-      <div class="s1-over"></div>
-      <div class="s1-body">
-        <div class="s1-sub">Available worldwide</div>
-        <div class="s1-num">0%</div>
-        <div class="s1-loc">Montréal · QC · Canada</div>
-      </div>
-      <div class="s1-brand">SALOMON</div>
+    <!-- P1: Proyecto 1 -->
+    <div class="slide proj-slide" id="p1">
+      <div class="proj-bg" style="background:linear-gradient(160deg,#1c2e1c 0%,#0a140a 100%)"></div>
+      <div class="proj-over"></div>
+      <div class="fu" style="transition-delay:0s"><div class="proj-sec">Proyectos — 01 / 04</div></div>
+      <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">SALOMON<br>CAMPAIGN</div></div>
+      <div class="fu proj-cat" style="transition-delay:.32s">Sport Photography · Branding</div>
+      <div class="fu proj-year" style="transition-delay:.46s">2024 — Chamonix, France</div>
     </div>
 
-    <!-- S2: Statement -->
-    <div class="slide" id="s2">
-      <div class="s2-lbl">About</div>
-      <p class="s2-txt">"We help sports brands tell stories through fieldwork, narrative, and creative research — with deep production expertise."</p>
-      <div class="s2-stats">
-        <div class="s2-stat"><span class="s2-n">120+</span><span class="s2-l">Projects</span></div>
-        <div class="s2-sep"></div>
-        <div class="s2-stat"><span class="s2-n">40+</span><span class="s2-l">Brands</span></div>
-        <div class="s2-sep"></div>
-        <div class="s2-stat"><span class="s2-n">15</span><span class="s2-l">Countries</span></div>
-        <div class="s2-sep"></div>
-        <div class="s2-stat"><span class="s2-n">7yr</span><span class="s2-l">Production</span></div>
-      </div>
+    <!-- P2: Proyecto 2 -->
+    <div class="slide proj-slide" id="p2">
+      <div class="proj-bg" style="background:linear-gradient(160deg,#141b2d 0%,#070b14 100%)"></div>
+      <div class="proj-over"></div>
+      <div class="fu" style="transition-delay:0s"><div class="proj-sec">Proyectos — 02 / 04</div></div>
+      <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">NORDIC<br>STUDIO</div></div>
+      <div class="fu proj-cat" style="transition-delay:.32s">Diseño Web · UX/UI</div>
+      <div class="fu proj-year" style="transition-delay:.46s">2024 — Oslo, Norway</div>
     </div>
 
-    <!-- S3: Work list -->
-    <div class="slide" id="s3">
-      <div class="s3-lbl">Selected Work</div>
-      <div class="wk-list">
-        <div class="wk-row"><span class="wk-n">01</span><span class="wk-t">Into the Mountain</span><span class="wk-b">Salomon</span></div>
-        <div class="wk-row"><span class="wk-n">02</span><span class="wk-t">Zero Gravity</span><span class="wk-b">ON Running</span></div>
-        <div class="wk-row"><span class="wk-n">03</span><span class="wk-t">Expedition Series</span><span class="wk-b">The North Face</span></div>
-        <div class="wk-row"><span class="wk-n">04</span><span class="wk-t">Power Within</span><span class="wk-b">Puma</span></div>
-        <div class="wk-row"><span class="wk-n">05</span><span class="wk-t">Endurance Redefined</span><span class="wk-b">Garmin</span></div>
-      </div>
+    <!-- P3: Proyecto 3 -->
+    <div class="slide proj-slide" id="p3">
+      <div class="proj-bg" style="background:linear-gradient(160deg,#2a1a0d 0%,#110a04 100%)"></div>
+      <div class="proj-over"></div>
+      <div class="fu" style="transition-delay:0s"><div class="proj-sec">Proyectos — 03 / 04</div></div>
+      <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">BORRO<br>EDITORIAL</div></div>
+      <div class="fu proj-cat" style="transition-delay:.32s">Editorial · Fotografía</div>
+      <div class="fu proj-year" style="transition-delay:.46s">2023 — Barcelona, Spain</div>
     </div>
 
-    <!-- S4: Spotlight -->
-    <div class="slide" id="s4">
-      <div class="s4-bg"></div>
-      <div class="s4-body">
-        <span class="s4-tag">Trail Running · Documentary · 2025</span>
-        <div class="s4-title">INTO THE<br>MOUNTAIN</div>
-        <div class="s4-sub">Salomon — Chamonix, France</div>
-      </div>
+    <!-- P4: Proyecto 4 -->
+    <div class="slide proj-slide" id="p4">
+      <div class="proj-bg" style="background:linear-gradient(160deg,#0d1a24 0%,#040a0f 100%)"></div>
+      <div class="proj-over"></div>
+      <div class="fu" style="transition-delay:0s"><div class="proj-sec">Proyectos — 04 / 04</div></div>
+      <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">ARCTIC<br>BRAND</div></div>
+      <div class="fu proj-cat" style="transition-delay:.32s">Branding · Motion Design</div>
+      <div class="fu proj-year" style="transition-delay:.46s">2023 — Reykjavík, Iceland</div>
     </div>
 
-    <!-- S5: Services -->
-    <div class="slide" id="s5">
-      <div class="s5-lbl">Services</div>
+    <!-- Servicios -->
+    <div class="slide" id="sv">
+      <div class="sv-hd">
+        <div class="fu" style="transition-delay:0s"><div class="sv-sec">Servicios</div></div>
+        <div class="rev-wrap"><div class="rev sv-title" style="transition-delay:.1s">LO QUE<br>HACEMOS</div></div>
+      </div>
       <div class="sv-list">
-        <div class="sv-row"><span class="sv-n">01</span><span class="sv-nm">Creative Direction</span><span class="sv-ar">↗</span></div>
-        <div class="sv-row"><span class="sv-n">02</span><span class="sv-nm">Video Production</span><span class="sv-ar">↗</span></div>
-        <div class="sv-row"><span class="sv-n">03</span><span class="sv-nm">Post-Production</span><span class="sv-ar">↗</span></div>
-        <div class="sv-row"><span class="sv-n">04</span><span class="sv-nm">Photography</span><span class="sv-ar">↗</span></div>
-        <div class="sv-row"><span class="sv-n">05</span><span class="sv-nm">VFX & CGI</span><span class="sv-ar">↗</span></div>
+        <div class="sv-item fu" style="transition-delay:.28s"><span class="sv-n">01</span><span class="sv-nm">Diseño Gráfico</span><span class="sv-ar">↗</span></div>
+        <div class="sv-item fu" style="transition-delay:.4s"><span class="sv-n">02</span><span class="sv-nm">Diseño Web</span><span class="sv-ar">↗</span></div>
+        <div class="sv-item fu" style="transition-delay:.52s"><span class="sv-n">03</span><span class="sv-nm">Fotografía & Video</span><span class="sv-ar">↗</span></div>
+        <div class="sv-item fu" style="transition-delay:.64s"><span class="sv-n">04</span><span class="sv-nm">Branding</span><span class="sv-ar">↗</span></div>
+        <div class="sv-item fu" style="transition-delay:.76s"><span class="sv-n">05</span><span class="sv-nm">Motion Design</span><span class="sv-ar">↗</span></div>
       </div>
     </div>
 
-    <!-- S6: Clients -->
-    <div class="slide" id="s6">
-      <div class="s6-lbl">Clients</div>
-      <div class="cl-names">
-        <div class="cl-nm">Salomon</div>
-        <div class="cl-nm">ON Running</div>
-        <div class="cl-nm">The North Face</div>
-        <div class="cl-nm">Nike</div>
-        <div class="cl-nm">Puma</div>
-        <div class="cl-nm">Garmin</div>
-        <div class="cl-nm">Arc'teryx</div>
+    <!-- Contacto -->
+    <div class="slide" id="ct">
+      <div class="ct-hd">
+        <div class="fu" style="transition-delay:0s"><div class="ct-sec">Contacto</div></div>
+        <div class="rev-wrap"><div class="rev ct-title" style="transition-delay:.1s">HABLE<br>MOS</div></div>
       </div>
-    </div>
-
-    <!-- S7: Athletes -->
-    <div class="slide" id="s7">
-      <div class="s7-lbl">Athletes</div>
-      <div class="at-rows">
-        <div class="at-row"><div class="at-track">
-          <span class="at-nm">Kilian Jornet</span><span class="at-sep">✦</span>
-          <span class="at-nm">Courtney Dauwalter</span><span class="at-sep">✦</span>
-          <span class="at-nm">François D'Haene</span><span class="at-sep">✦</span>
-          <span class="at-nm">Jim Walmsley</span><span class="at-sep">✦</span>
-          <span class="at-nm">Kilian Jornet</span><span class="at-sep">✦</span>
-          <span class="at-nm">Courtney Dauwalter</span><span class="at-sep">✦</span>
-          <span class="at-nm">François D'Haene</span><span class="at-sep">✦</span>
-          <span class="at-nm">Jim Walmsley</span><span class="at-sep">✦</span>
-        </div></div>
-        <div class="at-row"><div class="at-track">
-          <span class="at-nm">Eliud Kipchoge</span><span class="at-sep">✦</span>
-          <span class="at-nm">Sifan Hassan</span><span class="at-sep">✦</span>
-          <span class="at-nm">Adam Ondra</span><span class="at-sep">✦</span>
-          <span class="at-nm">Alex Honnold</span><span class="at-sep">✦</span>
-          <span class="at-nm">Eliud Kipchoge</span><span class="at-sep">✦</span>
-          <span class="at-nm">Sifan Hassan</span><span class="at-sep">✦</span>
-          <span class="at-nm">Adam Ondra</span><span class="at-sep">✦</span>
-          <span class="at-nm">Alex Honnold</span><span class="at-sep">✦</span>
-        </div></div>
-        <div class="at-row"><div class="at-track">
-          <span class="at-nm">Tommy Caldwell</span><span class="at-sep">✦</span>
-          <span class="at-nm">Brigid Kosgei</span><span class="at-sep">✦</span>
-          <span class="at-nm">Nina Williams</span><span class="at-sep">✦</span>
-          <span class="at-nm">Katie Schide</span><span class="at-sep">✦</span>
-          <span class="at-nm">Tommy Caldwell</span><span class="at-sep">✦</span>
-          <span class="at-nm">Brigid Kosgei</span><span class="at-sep">✦</span>
-          <span class="at-nm">Nina Williams</span><span class="at-sep">✦</span>
-          <span class="at-nm">Katie Schide</span><span class="at-sep">✦</span>
-        </div></div>
+      <div class="ct-links">
+        <a href="mailto:info@borrostudio.com" class="ct-email fu" style="transition-delay:.32s">info@borrostudio.com</a>
+        <div class="ct-social fu" style="transition-delay:.46s">@borrostudio</div>
+        <div class="ct-loc fu" style="transition-delay:.58s">Montréal, Québec — Available worldwide</div>
       </div>
-    </div>
-
-    <!-- S8: CTA -->
-    <div class="slide" id="s8">
-      <div class="s8-lbl">Work with us</div>
-      <div class="s8-h">Let's build<br>your vision.</div>
-      <a href="mailto:hello@podium.global" class="s8-em">hello@podium.global</a>
-      <div class="s8-loc">Montréal · QC · Available worldwide</div>
     </div>
 
   </div><!-- /blob-content -->
@@ -428,7 +341,6 @@
 <div id="dots">
   <div class="dot on"></div><div class="dot"></div><div class="dot"></div>
   <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-  <div class="dot"></div><div class="dot"></div>
 </div>
 
 <!-- Scroll spacer -->
@@ -437,13 +349,22 @@
 <script>
 'use strict';
 
-const N = 8; // number of slides
+const N = 6; // number of slides
 const blobWin       = document.getElementById('blob-win');
 const blobContent   = document.getElementById('blob-content');
 const yellowOverlay = document.getElementById('yellow-overlay');
 const letterOverlay = document.getElementById('letter-overlay');
 const dotsEl        = document.querySelectorAll('.dot');
 const progEl        = document.getElementById('prog');
+const slides        = document.querySelectorAll('#blob-content .slide');
+let lastActiveIdx = -1;
+
+function activateSlide(idx) {
+  if (idx === lastActiveIdx) return;
+  if (lastActiveIdx >= 0 && slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active');
+  lastActiveIdx = idx;
+  if (slides[idx]) { void slides[idx].offsetWidth; slides[idx].classList.add('active'); }
+}
 
 /* ══════════════════════════════════════
    SVG MASKS — built once on init/resize, never rebuilt during scroll
@@ -521,6 +442,7 @@ window.addEventListener('scroll', () => {
     progEl.style.width = (y / max * 100) + '%';
 
     if (y <= H) {
+      if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
       const p = Math.min(1, y / H);
       const eased = p < 0.5 ? 2*p*p : 1 - Math.pow(-2*p+2, 2)/2;
       const pct = (100 + eased * (ZOOM_MAX - 100)).toFixed(1);
@@ -549,6 +471,7 @@ window.addEventListener('scroll', () => {
       scuEl.style.opacity  = '0';
       const idx = Math.min(Math.floor(contentY / H), N - 1);
       dotsEl.forEach((d, i) => d.classList.toggle('on', i === idx));
+      activateSlide(idx);
     }
   });
 }, { passive: true });
