@@ -475,7 +475,7 @@ window.addEventListener('scroll', () => {
       heroHl.style.opacity = Math.max(0, 1 - p * 2.5).toFixed(3);
       scuEl.style.opacity  = Math.max(0, 1 - p * 2).toFixed(3);
       dotsEl.forEach((d, i) => d.classList.toggle('on', i === 0));
-      navEl.classList.remove('phase2');
+      if (p > 0.75) { navEl.classList.add('phase2'); } else { navEl.classList.remove('phase2'); }
 
     } else {
       yellowOverlay.style.opacity = '0';
