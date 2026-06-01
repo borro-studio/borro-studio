@@ -40,6 +40,14 @@
     .n-links{display:flex;flex-direction:column;align-items:flex-end;gap:0px;list-style:none}
     .n-links a{font-size:38px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.4;transition:opacity .25s;line-height:1.1}
     .n-links a:hover{opacity:1}
+    .n-links{transition:opacity .5s ease}
+    nav.phase2 .n-links{opacity:0;pointer-events:none}
+    .n-logo svg{transition:fill .5s ease}
+    nav.phase2 .n-logo svg{fill:#fecd52}
+    .n-star{position:absolute;top:28px;right:40px;opacity:0;transition:opacity .5s ease;pointer-events:none}
+    nav.phase2 .n-star{opacity:1}
+    @media(max-width:768px){.n-star{top:18px;right:20px}}
+    @media(max-width:480px){.n-star{top:16px;right:18px}}
 
     /* ── HERO HEADLINE (bottom-left, outside blob) ── */
     #hero-hl{
@@ -253,6 +261,11 @@
     <li><a href="#">Servicios</a></li>
     <li><a href="#">Contacto</a></li>
   </ul>
+  <div class="n-star">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="550 550 2250 2250" width="48" height="48">
+      <polygon fill="#fecd52" points="2215.36,1709.09 2749.15,1954.23 2577.64,2327.57 2044.08,2082.41 2248.07,2633.25 1862.77,2776.11 1658.55,2225.3 1413.42,2759.13 1040.07,2587.63 1285.2,2053.8 734.37,2257.79 591.69,1872.46 1142.3,1668.5 608.74,1423.34 780.24,1049.99 1313.81,1295.15 1109.82,744.32 1495.15,601.41 1699.11,1152.02 1944.28,618.45 2317.85,789.93 2072.72,1323.76 2623.33,1119.8 2766.19,1505.1"/>
+    </svg>
+  </div>
 </nav>
 
 <!-- YELLOW OVERLAY — star hole grows as user scrolls -->
@@ -356,6 +369,7 @@ const yellowOverlay = document.getElementById('yellow-overlay');
 const letterOverlay = document.getElementById('letter-overlay');
 const dotsEl        = document.querySelectorAll('.dot');
 const progEl        = document.getElementById('prog');
+const navEl         = document.querySelector('nav');
 const slides        = document.querySelectorAll('#blob-content .slide');
 let lastActiveIdx = -1;
 
@@ -461,10 +475,12 @@ window.addEventListener('scroll', () => {
       heroHl.style.opacity = Math.max(0, 1 - p * 2.5).toFixed(3);
       scuEl.style.opacity  = Math.max(0, 1 - p * 2).toFixed(3);
       dotsEl.forEach((d, i) => d.classList.toggle('on', i === 0));
+      navEl.classList.remove('phase2');
 
     } else {
       yellowOverlay.style.opacity = '0';
       letterOverlay.style.opacity = '0';
+      navEl.classList.add('phase2');
       const contentY = y - H;
       blobContent.style.transform = `translateY(${-contentY}px)`;
       heroHl.style.opacity = '0';
