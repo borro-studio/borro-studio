@@ -65,32 +65,28 @@
     .dot.on{background:#0a0a0a;transform:scale(1.4)}
 
     /* ══════════════════════════════════
-       BLOB WINDOW  (dark content, always fully visible)
+       YELLOW BACKGROUND (below dark slides)
+    ══════════════════════════════════ */
+    #bg-yellow{
+      position:fixed;inset:0;z-index:2;background:#fecd52;pointer-events:none;
+    }
+
+    /* ══════════════════════════════════
+       BLOB WINDOW  (dark slides — clip-path star grows, no mask needed)
     ══════════════════════════════════ */
     #blob-win{
       position:fixed;inset:0;z-index:10;pointer-events:none;
+      will-change:clip-path;
     }
     #blob-content{
       position:absolute;top:0;left:0;right:0;
       will-change:transform;
     }
 
-    /* yellow overlay — star hole grows as user scrolls (no mask-image change during scroll) */
-    #yellow-overlay{
-      position:fixed;inset:0;z-index:15;background:#fecd52;pointer-events:none;
-      will-change:mask-size,opacity;
-      -webkit-mask-size:100% 100%;
-      mask-size:100% 100%;
-      -webkit-mask-repeat:no-repeat;
-      mask-repeat:no-repeat;
-      -webkit-mask-position:50% 50%;
-      mask-position:50% 50%;
-    }
-
-    /* letter overlay — shows only LB letters, fades out early (GPU opacity only, no mask rebuild) */
+    /* letter overlay — LB letters over dark slides, fades out early (opacity only after init) */
     #letter-overlay{
       position:fixed;inset:0;z-index:16;background:#fecd52;pointer-events:none;
-      will-change:mask-size,opacity;
+      will-change:opacity;
       -webkit-mask-size:100% 100%;
       mask-size:100% 100%;
       -webkit-mask-repeat:no-repeat;
@@ -290,9 +286,9 @@
   </ul>
 </nav>
 
-<!-- YELLOW OVERLAY — star hole reveals dark content underneath -->
-<div id="yellow-overlay"></div>
-<!-- LETTER OVERLAY — LB letters visible in star hole, fades out early -->
+<!-- YELLOW BACKGROUND — visible where blob-win star clip-path is transparent -->
+<div id="bg-yellow"></div>
+<!-- LETTER OVERLAY — LB letters over dark slides, fades out early -->
 <div id="letter-overlay"></div>
 
 <!-- BLOB WINDOW — dark content scrolls inside -->
@@ -437,118 +433,118 @@
 <script>
 'use strict';
 
-const N = 8; // number of slides
+const N = 8;
 const blobWin       = document.getElementById('blob-win');
 const blobContent   = document.getElementById('blob-content');
-const yellowOverlay = document.getElementById('yellow-overlay');
 const letterOverlay = document.getElementById('letter-overlay');
 const dotsEl        = document.querySelectorAll('.dot');
 const progEl        = document.getElementById('prog');
 
+// Star & letter polygon points (SVG coordinate space, shared by all functions)
+const STAR_PTS = [
+  2215.36,1709.09, 2749.15,1954.23, 2577.64,2327.57, 2044.08,2082.41,
+  2248.07,2633.25, 1862.77,2776.11, 1658.55,2225.3,  1413.42,2759.13,
+  1040.07,2587.63, 1285.2, 2053.8,  734.37, 2257.79,  591.69, 1872.46,
+  1142.3, 1668.5,   608.74,1423.34,  780.24,1049.99, 1313.81,1295.15,
+  1109.82, 744.32, 1495.15, 601.41, 1699.11,1152.02, 1944.28, 618.45,
+  2317.85, 789.93, 2072.72,1323.76, 2623.33,1119.8,  2766.19,1505.1
+];
+const LETTER_L = [1657.94,1512.73,1655.34,1629.04,1515.69,1625.94,1510.31,1866.6,1394.01,1864.01,1401.99,1507.04];
+const LETTER_B = [1983.06,1516.61,1980.46,1632.92,1840.81,1629.82,1835.43,1870.48,1719.13,1867.89,1727.11,1510.92];
+const SVG_W = 3371.28, SVG_H = 3375.54, SVG_CX = SVG_W/2, SVG_CY = SVG_H/2;
+
 /* ══════════════════════════════════════
-   SVG MASKS — built once on init/resize, never rebuilt during scroll
+   CLIP-PATH (star) — computed each scroll frame, pure vector geometry
+   Replaces mask-size animation: no GPU texture rasterisation on every frame
 ══════════════════════════════════════ */
-function makeSvgMask(W, H, shapes) {
-  const svgW = 3371.28, svgH = 3375.54;
-  const svgCX = svgW / 2, svgCY = svgH / 2;
-  const scale = (Math.min(W, H) * 0.55) / Math.max(svgW, svgH);
+function starClipPath(W, H, scaleFactor) {
+  const s = (Math.min(W, H) * 0.55 * scaleFactor) / Math.max(SVG_W, SVG_H);
+  const pts = [];
+  for (let i = 0; i < STAR_PTS.length; i += 2)
+    pts.push((( STAR_PTS[i]-SVG_CX)*s+W/2).toFixed(1)+' '+((STAR_PTS[i+1]-SVG_CY)*s+H/2).toFixed(1));
+  return 'polygon('+pts.join(',')+')';
+}
+
+/* ── Letter mask — built once on init/resize, applied to letter-overlay ── */
+function buildLetterMaskUrl(W, H) {
+  const s = (Math.min(W, H) * 0.55) / Math.max(SVG_W, SVG_H);
   function tp(pts) {
     const out = [];
     for (let i = 0; i < pts.length; i += 2)
-      out.push(((pts[i]-svgCX)*scale+W/2).toFixed(2)+','+((pts[i+1]-svgCY)*scale+H/2).toFixed(2));
+      out.push(((pts[i]-SVG_CX)*s+W/2).toFixed(2)+','+((pts[i+1]-SVG_CY)*s+H/2).toFixed(2));
     return out.join(' ');
   }
-  const starPts = [
-    2215.36,1709.09, 2749.15,1954.23, 2577.64,2327.57, 2044.08,2082.41,
-    2248.07,2633.25, 1862.77,2776.11, 1658.55,2225.3,  1413.42,2759.13,
-    1040.07,2587.63, 1285.2, 2053.8,  734.37, 2257.79,  591.69, 1872.46,
-    1142.3, 1668.5,   608.74,1423.34,  780.24,1049.99, 1313.81,1295.15,
-    1109.82, 744.32, 1495.15, 601.41, 1699.11,1152.02, 1944.28, 618.45,
-    2317.85, 789.93, 2072.72,1323.76, 2623.33,1119.8,  2766.19,1505.1
-  ];
-  const letterL = [1657.94,1512.73,1655.34,1629.04,1515.69,1625.94,1510.31,1866.6,1394.01,1864.01,1401.99,1507.04];
-  const letterB = [1983.06,1516.61,1980.46,1632.92,1840.81,1629.82,1835.43,1870.48,1719.13,1867.89,1727.11,1510.92];
-
-  let inner = '';
-  if (shapes === 'star-hole') {
-    // inverted: yellow everywhere, transparent inside star
-    inner = `<rect width="${W}" height="${H}" fill="white"/><polygon fill="black" points="${tp(starPts)}"/>`;
-  } else if (shapes === 'letters') {
-    // show only letter shapes (everything else transparent)
-    inner = `<rect width="${W}" height="${H}" fill="black"/><polygon fill="white" points="${tp(letterL)}"/><polygon fill="white" points="${tp(letterB)}"/>`;
-  }
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><defs><mask id="m">${inner}</mask></defs><rect width="${W}" height="${H}" fill="white" mask="url(#m)"/></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><defs><mask id="m"><rect width="${W}" height="${H}" fill="black"/><polygon fill="white" points="${tp(LETTER_L)}"/><polygon fill="white" points="${tp(LETTER_B)}"/></mask></defs><rect width="${W}" height="${H}" fill="white" mask="url(#m)"/></svg>`;
   return 'data:image/svg+xml,' + encodeURIComponent(svg);
 }
 
-function setOverlayMask(el, url) {
-  el.style.webkitMaskImage = `url("${url}")`;
-  el.style.maskImage       = `url("${url}")`;
-  el.style.webkitMaskPosition = '50% 50%';
-  el.style.maskPosition       = '50% 50%';
-  el.style.webkitMaskSize  = '100% 100%';
-  el.style.maskSize        = '100% 100%';
-}
-
-/* ── Build masks once (on init / resize only) ── */
+/* ── Init (called once on load and on resize) ── */
 function applyMask() {
   const W = window.innerWidth, H = window.innerHeight;
-  setOverlayMask(yellowOverlay, makeSvgMask(W, H, 'star-hole'));
-  setOverlayMask(letterOverlay, makeSvgMask(W, H, 'letters'));
-  yellowOverlay.style.opacity = '1';
+  // Star clip-path on blob-win at initial scale (star = 55% of viewport)
+  const initClip = starClipPath(W, H, 1);
+  blobWin.style.clipPath        = initClip;
+  blobWin.style.webkitClipPath  = initClip;
+  // Letter overlay: static mask built once, mask-size never changes after this
+  const lUrl = buildLetterMaskUrl(W, H);
+  letterOverlay.style.webkitMaskImage = `url("${lUrl}")`;
+  letterOverlay.style.maskImage       = `url("${lUrl}")`;
+  letterOverlay.style.webkitMaskPosition = '50% 50%';
+  letterOverlay.style.maskPosition       = '50% 50%';
+  letterOverlay.style.webkitMaskSize  = '100% 100%';
+  letterOverlay.style.maskSize        = '100% 100%';
   letterOverlay.style.opacity = '1';
   blobContent.style.transform = 'translateY(0)';
   document.getElementById('spacer').style.height = N * H + 'px';
 }
 
 /* ══════════════════════════════════════
-   SCROLL — pure GPU properties only during animation (mask-size + opacity)
-   Phase 1 (0→H):   star hole grows; letter overlay fades out early
-   Phase 2 (H→N*H): content scrolls
+   SCROLL — clip-path polygon grows (pure vector, compositor-thread)
+   Phase 1 (0→H):   star clip-path expands from small to full-cover
+   Phase 2 (H→N*H): content scrolls via translateY
 ══════════════════════════════════════ */
-const ZOOM_MAX = 2000;
+const SCALE_MAX = 15;
 const heroHl = document.getElementById('hero-hl');
 const scuEl  = document.getElementById('scue');
 
 let rafPending = false;
+let inPhase2 = false;
 window.addEventListener('scroll', () => {
   if (rafPending) return;
   rafPending = true;
   requestAnimationFrame(() => {
     rafPending = false;
-    const y   = Math.max(0, window.scrollY); // clamp — prevents iOS bounce going negative
+    const y   = Math.max(0, window.scrollY);
     const H   = window.innerHeight;
+    const W   = window.innerWidth;
     const max = document.documentElement.scrollHeight - H;
 
     progEl.style.width = (y / max * 100) + '%';
 
     if (y <= H) {
+      if (inPhase2) {
+        inPhase2 = false;
+        letterOverlay.style.opacity = '1';
+      }
       const p = Math.min(1, y / H);
       const eased = p < 0.5 ? 2*p*p : 1 - Math.pow(-2*p+2, 2)/2;
-      const pct = (100 + eased * (ZOOM_MAX - 100)).toFixed(1);
-      const sz  = pct + '% ' + pct + '%';
-
-      // Grow star hole on yellow overlay (mask-size only — no mask-image change)
-      yellowOverlay.style.webkitMaskSize = sz;
-      yellowOverlay.style.maskSize       = sz;
-
-      // Letter overlay: same mask-size grows, but fades out in first 30% of Phase 1
-      // This keeps letters visible at small scale and gone before they become blobs
-      letterOverlay.style.webkitMaskSize = sz;
-      letterOverlay.style.maskSize       = sz;
-      letterOverlay.style.opacity = Math.max(0, 1 - p / 0.30).toFixed(3);
-
-      // Yellow overlay fade at very end (safety net for any remaining edge pixels)
-      yellowOverlay.style.opacity = (1 - Math.max(0, Math.min(1, (p - 0.82) / 0.18))).toFixed(3);
-
-      blobContent.style.transform = 'translateY(0)';
+      const scaleFactor = 1 + eased * (SCALE_MAX - 1);
+      const cp = starClipPath(W, H, scaleFactor);
+      blobWin.style.clipPath       = cp;
+      blobWin.style.webkitClipPath = cp;
+      letterOverlay.style.opacity  = Math.max(0, 1 - p / 0.30).toFixed(3);
+      blobContent.style.transform  = 'translateY(0)';
       heroHl.style.opacity = Math.max(0, 1 - p * 2.5).toFixed(3);
       scuEl.style.opacity  = Math.max(0, 1 - p * 2).toFixed(3);
       dotsEl.forEach((d, i) => d.classList.toggle('on', i === 0));
 
     } else {
-      yellowOverlay.style.opacity = '0';
-      letterOverlay.style.opacity = '0';
+      if (!inPhase2) {
+        inPhase2 = true;
+        blobWin.style.clipPath       = 'none';
+        blobWin.style.webkitClipPath = 'none';
+        letterOverlay.style.opacity  = '0';
+      }
       const contentY = y - H;
       blobContent.style.transform = `translateY(${-contentY}px)`;
       heroHl.style.opacity = '0';
