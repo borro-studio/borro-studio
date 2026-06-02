@@ -469,8 +469,9 @@ window.addEventListener('scroll', () => {
     progEl.style.width = (y / max * 100) + '%';
 
     if (y <= H) {
-      if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
       const p = Math.min(1, y / H);
+      if (p > 0.25) { activateSlide(0); }
+      else if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
       const eased = p < 0.5 ? 2*p*p : 1 - Math.pow(-2*p+2, 2)/2;
       const pct = (100 + eased * (ZOOM_MAX - 100)).toFixed(1);
       const sz  = pct + '% ' + pct + '%';
