@@ -60,10 +60,11 @@
 
     /* ── HERO FRAMES ── */
     #hero-frames{position:fixed;inset:0;z-index:13;pointer-events:none}
-    .hf{position:absolute;left:50%;top:50%;border-radius:12px;will-change:transform,opacity}
-    .hf-1{width:clamp(130px,18vw,240px);height:clamp(180px,25vw,320px);background:#1c3528;z-index:1}
-    .hf-2{width:clamp(150px,21vw,280px);height:clamp(200px,28vw,370px);background:#121b30;z-index:3}
-    .hf-3{width:clamp(120px,17vw,220px);height:clamp(165px,23vw,300px);background:#2e160a;z-index:2}
+    .hf{position:absolute;left:50%;top:50%;width:100vw;height:100vh;border-radius:16px;will-change:transform,opacity;overflow:hidden;transform-origin:center center}
+    .hf.clickable{pointer-events:auto}
+    .hf-1{background:#1c3528}
+    .hf-2{background:#121b30}
+    .hf-3{background:#2e160a}
 
     /* ── HERO HEADLINE (bottom-left, outside blob) ── */
     #hero-hl{
@@ -302,8 +303,8 @@
   </div>
   <div class="mo-links">
     <a href="#" class="mo-link" data-target="1">Trabajos</a>
-    <a href="#" class="mo-link" data-target="5">Servicios</a>
-    <a href="#" class="mo-link" data-target="6">Contacto</a>
+    <a href="#" class="mo-link" data-target="4">Servicios</a>
+    <a href="#" class="mo-link" data-target="5">Contacto</a>
   </div>
   <div class="mo-social">
     <a href="https://instagram.com/borrostudio" class="mo-soc" target="_blank" rel="noopener">
@@ -325,46 +326,6 @@
 <!-- BLOB WINDOW — dark content scrolls inside -->
 <div id="blob-win">
   <div id="blob-content">
-
-    <!-- P1: Proyecto 1 -->
-    <div class="slide proj-slide" id="p1">
-      <div class="proj-bg" style="background:linear-gradient(160deg,#1c2e1c 0%,#0a140a 100%)"></div>
-      <div class="proj-over"></div>
-      <div class="fu" style="transition-delay:0s"><div class="proj-sec">Trabajos — 01 / 04</div></div>
-      <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">SALOMON<br>CAMPAIGN</div></div>
-      <div class="fu proj-cat" style="transition-delay:.32s">Sport Photography · Branding</div>
-      <div class="fu proj-year" style="transition-delay:.46s">2024 — Chamonix, France</div>
-    </div>
-
-    <!-- P2: Proyecto 2 -->
-    <div class="slide proj-slide" id="p2">
-      <div class="proj-bg" style="background:linear-gradient(160deg,#141b2d 0%,#070b14 100%)"></div>
-      <div class="proj-over"></div>
-      <div class="fu" style="transition-delay:0s"><div class="proj-sec">Trabajos — 02 / 04</div></div>
-      <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">NORDIC<br>STUDIO</div></div>
-      <div class="fu proj-cat" style="transition-delay:.32s">Diseño Web · UX/UI</div>
-      <div class="fu proj-year" style="transition-delay:.46s">2024 — Oslo, Norway</div>
-    </div>
-
-    <!-- P3: Proyecto 3 -->
-    <div class="slide proj-slide" id="p3">
-      <div class="proj-bg" style="background:linear-gradient(160deg,#2a1a0d 0%,#110a04 100%)"></div>
-      <div class="proj-over"></div>
-      <div class="fu" style="transition-delay:0s"><div class="proj-sec">Trabajos — 03 / 04</div></div>
-      <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">BORRO<br>EDITORIAL</div></div>
-      <div class="fu proj-cat" style="transition-delay:.32s">Editorial · Fotografía</div>
-      <div class="fu proj-year" style="transition-delay:.46s">2023 — Barcelona, Spain</div>
-    </div>
-
-    <!-- P4: Proyecto 4 -->
-    <div class="slide proj-slide" id="p4">
-      <div class="proj-bg" style="background:linear-gradient(160deg,#0d1a24 0%,#040a0f 100%)"></div>
-      <div class="proj-over"></div>
-      <div class="fu" style="transition-delay:0s"><div class="proj-sec">Trabajos — 04 / 04</div></div>
-      <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">ARCTIC<br>BRAND</div></div>
-      <div class="fu proj-cat" style="transition-delay:.32s">Branding · Motion Design</div>
-      <div class="fu proj-year" style="transition-delay:.46s">2023 — Reykjavík, Iceland</div>
-    </div>
 
     <!-- Servicios -->
     <div class="slide" id="sv">
@@ -409,7 +370,7 @@
 <div id="scue"><div class="sc-ln"></div><span>Scroll Down</span></div>
 <div id="dots">
   <div class="dot on"></div><div class="dot"></div><div class="dot"></div>
-  <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  <div class="dot"></div><div class="dot"></div>
 </div>
 
 <!-- Scroll spacer -->
@@ -418,7 +379,8 @@
 <script>
 'use strict';
 
-const N = 6; // number of slides
+const N_FAN     = 3; // fan sub-phases (one per project frame)
+const N_CONTENT = 2; // content slides: sv + ct
 const hfEl  = document.getElementById('hero-frames');
 const hfEls = document.querySelectorAll('.hf');
 const blobWin       = document.getElementById('blob-win');
@@ -490,19 +452,44 @@ function applyMask() {
   yellowOverlay.style.opacity = '1';
   letterOverlay.style.opacity = '1';
   blobContent.style.transform = 'translateY(0)';
-  document.getElementById('spacer').style.height = (N + 1) * H + 'px';
-  posFrames(0);
+  document.getElementById('spacer').style.height = (N_FAN + N_CONTENT + 2) * H + 'px';
+  animateFan(0);
+  hfEl.style.opacity = '0';
 }
 
-/* ── HERO FRAMES: scatter → organize as scroll progresses ── */
-function posFrames(p) {
-  const t = Math.min(1, p / 0.55);
-  const e = t < 0.5 ? 2*t*t : 1-(Math.pow(-2*t+2,2)/2);
-  const lerp = (a,b) => (a + (b-a)*e).toFixed(2);
-  hfEls[0].style.transform = `translate(calc(-50% + ${lerp(-24,-16)}vw),calc(-50% + ${lerp(-16,0)}vh)) rotate(${lerp(-14,-4)}deg)`;
-  hfEls[1].style.transform = `translate(calc(-50% + ${lerp(20,0)}vw),calc(-50% + ${lerp(6,0)}vh)) rotate(${lerp(11,0)}deg)`;
-  hfEls[2].style.transform = `translate(calc(-50% + ${lerp(-4,16)}vw),calc(-50% + ${lerp(18,0)}vh)) rotate(${lerp(-8,4)}deg)`;
-  hfEl.style.opacity = (1 - Math.max(0, Math.min(1, (p - 0.72) / 0.22))).toFixed(3);
+/* ── FAN+ZOOM ANIMATION ── */
+// 4 keyframes × 3 frames: {x:vw, y:vh, s:scale, r:deg}
+const FAN_KF = [
+  // KF0 — fan arrangement (all small, fanned left)
+  [ {x:13, y:4,  s:.28, r:-5},  {x:1,  y:7,  s:.24, r:-13}, {x:-11, y:11, s:.21, r:-21} ],
+  // KF1 — frame 0 full screen
+  [ {x:0,  y:0,  s:1.0, r:0},   {x:-9, y:5,  s:.24, r:-13}, {x:-21, y:9,  s:.21, r:-21} ],
+  // KF2 — frame 1 full screen
+  [ {x:-160,y:-20,s:.7, r:4},   {x:0,  y:0,  s:1.0, r:0},   {x:-9,  y:5,  s:.24, r:-13} ],
+  // KF3 — frame 2 full screen
+  [ {x:-160,y:-20,s:.7, r:4},   {x:-160,y:-20,s:.7, r:4},   {x:0,   y:0,  s:1.0, r:0}   ],
+];
+
+function eio(t) { return t < 0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; }
+
+function animateFan(fanY) {
+  const H = window.innerHeight;
+  const raw   = fanY / H;
+  const phase = Math.min(Math.floor(raw), N_FAN - 1);
+  const fp    = phase < N_FAN - 1 ? eio(raw - Math.floor(raw)) : eio(Math.min(1, raw - (N_FAN - 1)));
+  const kfA   = FAN_KF[phase];
+  const kfB   = FAN_KF[phase + 1] || FAN_KF[N_FAN]; // KF3 is the last
+  hfEls.forEach((el, i) => {
+    const a = kfA[i], b = kfB[i];
+    const x = (a.x + (b.x - a.x) * fp).toFixed(2);
+    const y = (a.y + (b.y - a.y) * fp).toFixed(2);
+    const s = (a.s + (b.s - a.s) * fp).toFixed(4);
+    const r = (a.r + (b.r - a.r) * fp).toFixed(2);
+    el.style.transform = `translate(calc(-50% + ${x}vw),calc(-50% + ${y}vh)) scale(${s}) rotate(${r}deg)`;
+    el.style.zIndex    = i === phase ? '3' : i < phase ? '1' : '2';
+    const fullScreen   = i === phase && fp > 0.88;
+    el.classList.toggle('clickable', fullScreen);
+  });
 }
 
 /* ══════════════════════════════════════
@@ -527,45 +514,57 @@ window.addEventListener('scroll', () => {
     progEl.style.width = (y / max * 100) + '%';
 
     if (y <= H) {
+      // Phase 1: star mask opens
       const p = Math.min(1, y / H);
-      if (p > 0.25) { activateSlide(0); }
-      else if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
       const eased = p < 0.5 ? 2*p*p : 1 - Math.pow(-2*p+2, 2)/2;
       const pct = (100 + eased * (ZOOM_MAX - 100)).toFixed(1);
       const sz  = pct + '% ' + pct + '%';
-
       yellowOverlay.style.webkitMaskSize = sz;
       yellowOverlay.style.maskSize       = sz;
-
       letterOverlay.style.webkitMaskSize = sz;
       letterOverlay.style.maskSize       = sz;
       letterOverlay.style.opacity = Math.max(0, 1 - p / 0.30).toFixed(3);
-
       yellowOverlay.style.opacity = (1 - Math.max(0, Math.min(1, (p - 0.82) / 0.18))).toFixed(3);
-
       blobContent.style.transform = 'translateY(0)';
+      hfEl.style.opacity = '0';
       heroHl.style.opacity = Math.max(0, 1 - p * 2.5).toFixed(3);
       scuEl.style.opacity  = Math.max(0, 1 - p * 2).toFixed(3);
       dotsEl.forEach((d, i) => d.classList.toggle('on', i === 0));
-      // Nav: interpolate smoothly 0→1 between p=0.10 and p=0.28
       const nt = Math.max(0, Math.min(1, (p - 0.10) / 0.18));
       const col = `rgb(${Math.round(0x38+(0xfe-0x38)*nt)},${Math.round(0x38+(0xcd-0x38)*nt)},${Math.round(0x38+(0x52-0x38)*nt)})`;
       navLogoEl.style.color = col;
       navMenuBtn.style.color = col;
-      posFrames(p);
+      if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
+
+    } else if (y <= (1 + N_FAN) * H) {
+      // Fan phase: frames appear in fan, then zoom one by one
+      yellowOverlay.style.opacity = '0';
+      letterOverlay.style.opacity = '0';
+      navLogoEl.style.color = '#fecd52';
+      navMenuBtn.style.color = '#fecd52';
+      blobContent.style.transform = 'translateY(0)';
+      hfEl.style.opacity = '1';
+      heroHl.style.opacity = '0';
+      scuEl.style.opacity  = '0';
+      const fanY = y - H;
+      animateFan(fanY);
+      const fanDot = Math.min(Math.floor(fanY / H), N_FAN - 1);
+      dotsEl.forEach((d, i) => d.classList.toggle('on', i === fanDot));
+      if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
 
     } else {
+      // Content phase: sv and ct
       yellowOverlay.style.opacity = '0';
       letterOverlay.style.opacity = '0';
       navLogoEl.style.color = '#fecd52';
       navMenuBtn.style.color = '#fecd52';
       hfEl.style.opacity = '0';
-      const contentY = y - H;
-      blobContent.style.transform = `translateY(${-contentY}px)`;
       heroHl.style.opacity = '0';
       scuEl.style.opacity  = '0';
-      const idx = Math.min(Math.floor(contentY / H), N - 1);
-      dotsEl.forEach((d, i) => d.classList.toggle('on', i === idx));
+      const contentY = y - (1 + N_FAN) * H;
+      blobContent.style.transform = `translateY(${-contentY}px)`;
+      const idx = Math.min(Math.floor(contentY / H), N_CONTENT - 1);
+      dotsEl.forEach((d, i) => d.classList.toggle('on', i === N_FAN + idx));
       activateSlide(idx);
     }
   });
@@ -615,6 +614,10 @@ document.addEventListener('mousemove', e => {
   requestAnimationFrame(loop);
 })();
 document.querySelectorAll('a,button,.wk-row,.cl-nm,.at-nm').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('hl'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('hl'));
+});
+hfEls.forEach(el => {
   el.addEventListener('mouseenter', () => document.body.classList.add('hl'));
   el.addEventListener('mouseleave', () => document.body.classList.remove('hl'));
 });
