@@ -58,6 +58,13 @@
     .mo-soc{display:flex;align-items:center;gap:10px;font-size:clamp(14px,1.6vw,20px);font-weight:900;letter-spacing:-.03em;text-transform:uppercase;color:rgba(255,255,255,.28);transition:color .25s;text-decoration:none;cursor:none}
     .mo-soc:hover{color:rgba(255,255,255,.6)}
 
+    /* ── HERO FRAMES ── */
+    #hero-frames{position:fixed;inset:0;z-index:20;pointer-events:none}
+    .hf{position:absolute;left:50%;top:50%;border-radius:12px;will-change:transform,opacity}
+    .hf-1{width:clamp(130px,18vw,240px);height:clamp(180px,25vw,320px);background:#1c3528;z-index:1}
+    .hf-2{width:clamp(150px,21vw,280px);height:clamp(200px,28vw,370px);background:#121b30;z-index:3}
+    .hf-3{width:clamp(120px,17vw,220px);height:clamp(165px,23vw,300px);background:#2e160a;z-index:2}
+
     /* ── HERO HEADLINE (bottom-left, outside blob) ── */
     #hero-hl{
       position:fixed;bottom:44px;left:40px;z-index:300;
@@ -405,6 +412,13 @@
   </div><!-- /blob-content -->
 </div><!-- /blob-win -->
 
+<!-- HERO FRAMES — floating project cards, organize on scroll -->
+<div id="hero-frames">
+  <div class="hf hf-1"></div>
+  <div class="hf hf-2"></div>
+  <div class="hf hf-3"></div>
+</div>
+
 <!-- FIXED UI — outside the blob -->
 <div id="hero-hl">DISEÑO GRÁFICO<br>Y WEB</div>
 <div id="scue"><div class="sc-ln"></div><span>Scroll Down</span></div>
@@ -420,6 +434,8 @@
 'use strict';
 
 const N = 7; // number of slides
+const hfEl  = document.getElementById('hero-frames');
+const hfEls = document.querySelectorAll('.hf');
 const blobWin       = document.getElementById('blob-win');
 const blobContent   = document.getElementById('blob-content');
 const yellowOverlay = document.getElementById('yellow-overlay');
@@ -490,6 +506,18 @@ function applyMask() {
   letterOverlay.style.opacity = '1';
   blobContent.style.transform = 'translateY(0)';
   document.getElementById('spacer').style.height = (N + 1) * H + 'px';
+  posFrames(0);
+}
+
+/* ── HERO FRAMES: scatter → organize as scroll progresses ── */
+function posFrames(p) {
+  const t = Math.min(1, p / 0.55);
+  const e = t < 0.5 ? 2*t*t : 1-(Math.pow(-2*t+2,2)/2);
+  const lerp = (a,b) => (a + (b-a)*e).toFixed(2);
+  hfEls[0].style.transform = `translate(calc(-50% + ${lerp(-24,-16)}vw),calc(-50% + ${lerp(-16,0)}vh)) rotate(${lerp(-14,-4)}deg)`;
+  hfEls[1].style.transform = `translate(calc(-50% + ${lerp(20,0)}vw),calc(-50% + ${lerp(6,0)}vh)) rotate(${lerp(11,0)}deg)`;
+  hfEls[2].style.transform = `translate(calc(-50% + ${lerp(-4,16)}vw),calc(-50% + ${lerp(18,0)}vh)) rotate(${lerp(-8,4)}deg)`;
+  hfEl.style.opacity = (1 - Math.max(0, Math.min(1, (p - 0.82) / 0.18))).toFixed(3);
 }
 
 /* ══════════════════════════════════════
@@ -539,12 +567,14 @@ window.addEventListener('scroll', () => {
       const col = `rgb(${Math.round(0x38+(0xfe-0x38)*nt)},${Math.round(0x38+(0xcd-0x38)*nt)},${Math.round(0x38+(0x52-0x38)*nt)})`;
       navLogoEl.style.color = col;
       navMenuBtn.style.color = col;
+      posFrames(p);
 
     } else {
       yellowOverlay.style.opacity = '0';
       letterOverlay.style.opacity = '0';
       navLogoEl.style.color = '#fecd52';
       navMenuBtn.style.color = '#fecd52';
+      hfEl.style.opacity = '0';
       const contentY = y - H;
       blobContent.style.transform = `translateY(${-contentY}px)`;
       heroHl.style.opacity = '0';
