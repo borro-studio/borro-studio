@@ -34,16 +34,27 @@
     #prog{position:fixed;top:0;left:0;z-index:600;height:2px;width:0%;background:#0a0a0a;pointer-events:none}
 
     /* ── NAV ── */
-    nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:flex-start;justify-content:space-between;padding:28px 40px}
-    .n-logo{display:flex;align-items:center}
+    nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:28px 40px}
+    .n-logo{display:flex;align-items:center;color:#383838}
     .n-logo svg{height:64px;width:auto}
-    .n-links{display:flex;flex-direction:column;align-items:flex-end;gap:0px;list-style:none}
-    .n-links a{font-size:38px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.4;transition:opacity .25s;line-height:1.1}
-    .n-links a:hover{opacity:1}
-    .n-logo{color:#383838}
-    .n-star{position:absolute;top:28px;right:40px;opacity:0;pointer-events:none}
-    @media(max-width:768px){.n-star{top:18px;right:20px}}
-    @media(max-width:480px){.n-star{top:16px;right:18px}}
+    .n-menu-btn{background:none;border:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;cursor:none;color:inherit;padding:0;line-height:1}
+
+    /* ── MENU OVERLAY ── */
+    #menu-overlay{position:fixed;inset:0;z-index:800;background:#080808;display:flex;flex-direction:column;padding:28px 40px 52px;opacity:0;pointer-events:none;transition:opacity .45s cubic-bezier(.4,0,.2,1)}
+    #menu-overlay.open{opacity:1;pointer-events:all}
+    .mo-top{flex-shrink:0;display:flex;align-items:center;justify-content:flex-end}
+    .mo-close{background:none;border:none;display:flex;align-items:center;gap:10px;font-family:'Inter',sans-serif;font-size:13px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6);cursor:none;padding:0;transition:color .25s}
+    .mo-close:hover{color:#fff}
+    .mo-links{flex:1;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:0}
+    .mo-link{font-size:clamp(58px,13vw,148px);font-weight:900;letter-spacing:-.04em;line-height:.9;color:#fff;text-transform:uppercase;text-decoration:none;display:block;transform:translateY(48px);opacity:0;transition:transform .65s cubic-bezier(.77,0,.18,1),opacity .65s ease;cursor:none}
+    #menu-overlay.open .mo-link{transform:translateY(0);opacity:1}
+    #menu-overlay.open .mo-link:nth-child(1){transition-delay:.08s}
+    #menu-overlay.open .mo-link:nth-child(2){transition-delay:.16s}
+    #menu-overlay.open .mo-link:nth-child(3){transition-delay:.24s}
+    #menu-overlay.open .mo-link:hover{opacity:.4}
+    .mo-social{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+    .mo-soc{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.25);transition:color .25s;text-decoration:none;cursor:none}
+    .mo-soc:hover{color:rgba(255,255,255,.6)}
 
     /* ── HERO HEADLINE (bottom-left, outside blob) ── */
     #hero-hl{
@@ -172,8 +183,7 @@
     @media(max-width:768px){
       nav{padding:18px 20px}
       .n-logo svg{height:52px}
-      .n-links{gap:0px}
-      .n-links a{font-size:28px;letter-spacing:.05em}
+      #menu-overlay{padding:18px 20px 40px}
 
       #hero-hl{
         bottom:72px;left:20px;right:20px;
@@ -201,8 +211,7 @@
     @media(max-width:480px){
       nav{padding:16px 18px;gap:12px}
       .n-logo svg{height:30px}
-      .n-links{gap:0px}
-      .n-links a{font-size:22px;letter-spacing:.05em}
+      #menu-overlay{padding:16px 18px 36px}
 
       #hero-hl{
         bottom:64px;left:18px;right:18px;
@@ -258,17 +267,29 @@
       <path d="M2383.11,1307.05c18.95-19.57,42.64-29.32,71.04-29.32s51.72,9.74,70.75,29.32c18.95,19.53,28.44,43.76,28.44,72.7s-9.49,53.47-28.44,73.04c-18.82,19.32-42.39,29.02-70.75,29.02s-52.26-9.7-71.04-29.02c-18.82-19.36-28.19-43.72-28.19-73.04s9.37-53.38,28.19-72.7M2398.6,1438.67c14.82,15.78,33.35,23.65,55.55,23.65s40.64-7.87,55.51-23.65c15.03-15.99,22.53-35.6,22.53-58.92s-7.49-42.93-22.53-58.92c-14.87-15.78-33.35-23.65-55.51-23.65s-40.72,7.87-55.55,23.65c-15.03,15.99-22.57,35.64-22.57,58.92s7.54,42.93,22.57,58.92"/>
     </svg>
   </a>
-  <ul class="n-links">
-    <li><a href="#">Trabajos</a></li>
-    <li><a href="#">Servicios</a></li>
-    <li><a href="#">Contacto</a></li>
-  </ul>
-  <div class="n-star">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="550 550 2250 2250" width="48" height="48">
-      <polygon fill="#fecd52" points="2215.36,1709.09 2749.15,1954.23 2577.64,2327.57 2044.08,2082.41 2248.07,2633.25 1862.77,2776.11 1658.55,2225.3 1413.42,2759.13 1040.07,2587.63 1285.2,2053.8 734.37,2257.79 591.69,1872.46 1142.3,1668.5 608.74,1423.34 780.24,1049.99 1313.81,1295.15 1109.82,744.32 1495.15,601.41 1699.11,1152.02 1944.28,618.45 2317.85,789.93 2072.72,1323.76 2623.33,1119.8 2766.19,1505.1"/>
-    </svg>
-  </div>
+  <button class="n-menu-btn" id="menu-open">Menu</button>
 </nav>
+
+<!-- MENU OVERLAY -->
+<div id="menu-overlay">
+  <div class="mo-top">
+    <button class="mo-close" id="menu-close">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="550 550 2250 2250" width="20" height="20">
+        <polygon fill="#fecd52" points="2215.36,1709.09 2749.15,1954.23 2577.64,2327.57 2044.08,2082.41 2248.07,2633.25 1862.77,2776.11 1658.55,2225.3 1413.42,2759.13 1040.07,2587.63 1285.2,2053.8 734.37,2257.79 591.69,1872.46 1142.3,1668.5 608.74,1423.34 780.24,1049.99 1313.81,1295.15 1109.82,744.32 1495.15,601.41 1699.11,1152.02 1944.28,618.45 2317.85,789.93 2072.72,1323.76 2623.33,1119.8 2766.19,1505.1"/>
+      </svg>
+      Close
+    </button>
+  </div>
+  <div class="mo-links">
+    <a href="#" class="mo-link" data-target="2">Trabajos</a>
+    <a href="#" class="mo-link" data-target="6">Servicios</a>
+    <a href="#" class="mo-link" data-target="7">Contacto</a>
+  </div>
+  <div class="mo-social">
+    <a href="#" class="mo-soc">Instagram</a>
+    <a href="#" class="mo-soc">Behance</a>
+  </div>
+</div>
 
 <!-- YELLOW OVERLAY — star hole grows as user scrolls -->
 <div id="yellow-overlay"></div>
@@ -381,8 +402,7 @@ const letterOverlay = document.getElementById('letter-overlay');
 const dotsEl        = document.querySelectorAll('.dot');
 const progEl        = document.getElementById('prog');
 const navLogoEl  = document.querySelector('.n-logo');
-const navLinksEl = document.querySelector('.n-links');
-const navStarEl  = document.querySelector('.n-star');
+const navMenuBtn = document.getElementById('menu-open');
 const slides     = document.querySelectorAll('#blob-content .slide');
 let lastActiveIdx = -1;
 
@@ -444,7 +464,7 @@ function applyMask() {
   yellowOverlay.style.opacity = '1';
   letterOverlay.style.opacity = '1';
   blobContent.style.transform = 'translateY(0)';
-  document.getElementById('spacer').style.height = N * H + 'px';
+  document.getElementById('spacer').style.height = (N + 1) * H + 'px';
 }
 
 /* ══════════════════════════════════════
@@ -491,18 +511,15 @@ window.addEventListener('scroll', () => {
       dotsEl.forEach((d, i) => d.classList.toggle('on', i === 0));
       // Nav: interpolate smoothly 0→1 between p=0.10 and p=0.28
       const nt = Math.max(0, Math.min(1, (p - 0.10) / 0.18));
-      navLogoEl.style.color = `rgb(${Math.round(0x38+(0xfe-0x38)*nt)},${Math.round(0x38+(0xcd-0x38)*nt)},${Math.round(0x38+(0x52-0x38)*nt)})`;
-      navLinksEl.style.opacity = (1 - nt).toFixed(3);
-      navLinksEl.style.pointerEvents = nt > 0.8 ? 'none' : '';
-      navStarEl.style.opacity = nt.toFixed(3);
+      const col = `rgb(${Math.round(0x38+(0xfe-0x38)*nt)},${Math.round(0x38+(0xcd-0x38)*nt)},${Math.round(0x38+(0x52-0x38)*nt)})`;
+      navLogoEl.style.color = col;
+      navMenuBtn.style.color = col;
 
     } else {
       yellowOverlay.style.opacity = '0';
       letterOverlay.style.opacity = '0';
       navLogoEl.style.color = '#fecd52';
-      navLinksEl.style.opacity = '0';
-      navLinksEl.style.pointerEvents = 'none';
-      navStarEl.style.opacity = '1';
+      navMenuBtn.style.color = '#fecd52';
       const contentY = y - H;
       blobContent.style.transform = `translateY(${-contentY}px)`;
       heroHl.style.opacity = '0';
@@ -513,6 +530,30 @@ window.addEventListener('scroll', () => {
     }
   });
 }, { passive: true });
+
+/* ══════════════════════════════════════
+   MENU OVERLAY
+══════════════════════════════════════ */
+const menuOverlay = document.getElementById('menu-overlay');
+function openMenu() {
+  menuOverlay.classList.add('open');
+  document.body.style.overflowY = 'hidden';
+}
+function closeMenu() {
+  menuOverlay.classList.remove('open');
+  document.body.style.overflowY = '';
+}
+document.getElementById('menu-open').addEventListener('click', openMenu);
+document.getElementById('menu-close').addEventListener('click', closeMenu);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+document.querySelectorAll('.mo-link').forEach(el => {
+  el.addEventListener('click', e => {
+    e.preventDefault();
+    closeMenu();
+    const mult = parseInt(el.dataset.target, 10);
+    window.scrollTo({ top: mult * window.innerHeight, behavior: 'smooth' });
+  });
+});
 
 /* ══════════════════════════════════════
    CURSOR
