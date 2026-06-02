@@ -59,7 +59,7 @@
     .mo-soc:hover{color:rgba(255,255,255,.6)}
 
     /* ── HERO FRAMES ── */
-    #hero-frames{position:fixed;inset:0;z-index:20;pointer-events:none}
+    #hero-frames{position:fixed;inset:0;z-index:13;pointer-events:none}
     .hf{position:absolute;left:50%;top:50%;border-radius:12px;will-change:transform,opacity}
     .hf-1{width:clamp(130px,18vw,240px);height:clamp(180px,25vw,320px);background:#1c3528;z-index:1}
     .hf-2{width:clamp(150px,21vw,280px);height:clamp(200px,28vw,370px);background:#121b30;z-index:3}
@@ -135,12 +135,6 @@
     /* fade-up for supporting text */
     .fu{opacity:0;transform:translateY(16px)}
     .slide.active .fu{opacity:1;transform:translateY(0);transition:opacity .65s ease,transform .65s cubic-bezier(.22,1,.36,1)}
-
-    /* ── MENU SLIDE ── */
-    #s0{background:#0d0d0d;display:flex;align-items:center;justify-content:center}
-    .s0-inner{display:flex;flex-direction:column;align-items:center;gap:0}
-    .s0-link{font-size:clamp(52px,13vw,170px);font-weight:900;letter-spacing:-.04em;line-height:.88;color:#fff;text-transform:uppercase;text-align:center;text-decoration:none;transition:opacity .25s}
-    .s0-link:hover{opacity:.5}
 
     /* ── PROJECT SLIDES ── */
     .proj-slide{display:flex;flex-direction:column;justify-content:flex-end;padding:0 52px 60px}
@@ -307,9 +301,9 @@
     </button>
   </div>
   <div class="mo-links">
-    <a href="#" class="mo-link" data-target="2">Trabajos</a>
-    <a href="#" class="mo-link" data-target="6">Servicios</a>
-    <a href="#" class="mo-link" data-target="7">Contacto</a>
+    <a href="#" class="mo-link" data-target="1">Trabajos</a>
+    <a href="#" class="mo-link" data-target="5">Servicios</a>
+    <a href="#" class="mo-link" data-target="6">Contacto</a>
   </div>
   <div class="mo-social">
     <a href="https://instagram.com/borrostudio" class="mo-soc" target="_blank" rel="noopener">
@@ -331,15 +325,6 @@
 <!-- BLOB WINDOW — dark content scrolls inside -->
 <div id="blob-win">
   <div id="blob-content">
-
-    <!-- S0: Menu reveal -->
-    <div class="slide" id="s0">
-      <div class="s0-inner">
-        <div class="rev-wrap"><a href="#" class="rev s0-link">Trabajos</a></div>
-        <div class="rev-wrap"><a href="#" class="rev s0-link" style="transition-delay:.12s">Servicios</a></div>
-        <div class="rev-wrap"><a href="#" class="rev s0-link" style="transition-delay:.24s">Contacto</a></div>
-      </div>
-    </div>
 
     <!-- P1: Proyecto 1 -->
     <div class="slide proj-slide" id="p1">
@@ -424,7 +409,7 @@
 <div id="scue"><div class="sc-ln"></div><span>Scroll Down</span></div>
 <div id="dots">
   <div class="dot on"></div><div class="dot"></div><div class="dot"></div>
-  <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  <div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
 
 <!-- Scroll spacer -->
@@ -433,7 +418,7 @@
 <script>
 'use strict';
 
-const N = 7; // number of slides
+const N = 6; // number of slides
 const hfEl  = document.getElementById('hero-frames');
 const hfEls = document.querySelectorAll('.hf');
 const blobWin       = document.getElementById('blob-win');
@@ -517,7 +502,7 @@ function posFrames(p) {
   hfEls[0].style.transform = `translate(calc(-50% + ${lerp(-24,-16)}vw),calc(-50% + ${lerp(-16,0)}vh)) rotate(${lerp(-14,-4)}deg)`;
   hfEls[1].style.transform = `translate(calc(-50% + ${lerp(20,0)}vw),calc(-50% + ${lerp(6,0)}vh)) rotate(${lerp(11,0)}deg)`;
   hfEls[2].style.transform = `translate(calc(-50% + ${lerp(-4,16)}vw),calc(-50% + ${lerp(18,0)}vh)) rotate(${lerp(-8,4)}deg)`;
-  hfEl.style.opacity = (1 - Math.max(0, Math.min(1, (p - 0.82) / 0.18))).toFixed(3);
+  hfEl.style.opacity = (1 - Math.max(0, Math.min(1, (p - 0.72) / 0.22))).toFixed(3);
 }
 
 /* ══════════════════════════════════════
