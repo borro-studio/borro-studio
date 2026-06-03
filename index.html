@@ -29,6 +29,9 @@
     #loader.out{opacity:0;visibility:hidden}
     .ld-logo{width:clamp(200px,60vw,420px);height:auto;clip-path:inset(0 100% 0 0);animation:revLogo .85s cubic-bezier(.77,0,.18,1) .2s forwards}
     @keyframes revLogo{to{clip-path:inset(0 0% 0 0)}}
+    #load-pct{position:absolute;top:28px;right:40px;font-family:'Inter',sans-serif;font-size:clamp(18px,2.2vw,26px);font-weight:900;letter-spacing:-.03em;text-transform:uppercase;color:#383838;line-height:1}
+    @media(max-width:768px){#load-pct{top:18px;right:20px}}
+    @media(max-width:480px){#load-pct{top:16px;right:18px}}
 
     /* ── PROGRESS BAR ── */
     #prog{position:fixed;top:0;left:0;z-index:600;height:2px;width:0%;background:#0a0a0a;pointer-events:none}
@@ -224,6 +227,7 @@
 
 <!-- LOADER -->
 <div id="loader">
+  <div id="load-pct">0%</div>
   <svg class="ld-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3949.35 1481.81" fill="#383838">
     <path d="M708.55,369.39c-78.83-73.95-177.51-111.01-295.9-111.01-58.67,0-112.47,9.16-161.48,27.4V0H0v1028.94h251.17c66.87,5.37,122.38,3.16,161.48,0,82.66-7,152.86-13.58,226.36-57.01,24.82-14.78,48.05-32.27,69.54-52.68,77.91-73.12,116.93-165.06,116.93-275.62s-39.02-201.12-116.93-274.24M528.83,763.35c-30.19,31.77-68.96,47.68-116.18,47.68s-85.82-15.91-116.14-47.68c-30.19-31.77-45.35-71.66-45.35-119.72s15.41-86.82,46.1-119.09c30.81-32.27,69.29-48.3,115.39-48.3s84.74,16.03,115.55,48.3c30.69,32.27,46.1,71.91,46.1,119.09s-15.16,87.95-45.47,119.72"/>
     <path d="M1616.14,919.26c-76.99,73.12-175.6,109.64-295.81,109.64s-218.86-36.52-295.81-109.64c-77.91-73.12-116.88-164.98-116.88-275.62s38.98-201.04,116.88-274.16c78.87-74.08,177.47-111.1,295.81-111.1s216.9,37.02,295.81,111.1c77.91,73.12,116.88,164.48,116.88,274.16s-38.98,202.5-116.88,275.62M1481.94,643.64c0-47.14-15.41-86.82-46.18-119.05-30.81-32.23-69.25-48.34-115.43-48.34s-84.65,16.11-115.43,48.34c-30.81,32.23-46.18,71.91-46.18,119.05s15.16,88.03,45.43,119.76c30.31,31.73,69.04,47.64,116.18,47.64s85.86-15.91,116.14-47.64c30.31-31.73,45.47-71.62,45.47-119.76"/>
@@ -692,23 +696,46 @@ hfEls.forEach(el => {
 /* ══════════════════════════════════════
    INIT + LOADER
 ══════════════════════════════════════ */
-function init() {
-  applyMask();
-}
+const PRELOAD_IMGS = [
+  'https://images.unsplash.com/photo-1561070791-2526d30994b5?fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1486325212027-8081e485255e?fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1509815017432-ed21ad98d42b?fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?fit=crop&w=1920&q=80',
+];
+const loadPctEl = document.getElementById('load-pct');
+let imgLoaded = 0;
+let loadDone = false;
+let loadFallback;
 
-window.addEventListener('load', () => {
-  init();
+function completeLoading() {
+  if (loadDone) return;
+  loadDone = true;
+  clearTimeout(loadFallback);
+  loadPctEl.textContent = '100%';
+  applyMask();
   setTimeout(() => {
     document.getElementById('loader').classList.add('out');
     document.getElementById('hero-hl').classList.add('in');
-  }, 1400);
+  }, 1000);
+}
+
+PRELOAD_IMGS.forEach(src => {
+  const img = new Image();
+  img.onload = img.onerror = () => {
+    imgLoaded++;
+    loadPctEl.textContent = Math.round(imgLoaded / PRELOAD_IMGS.length * 100) + '%';
+    if (imgLoaded >= PRELOAD_IMGS.length) completeLoading();
+  };
+  img.src = src;
 });
+
+loadFallback = setTimeout(completeLoading, 6000);
 
 // Rebuild mask on resize (debounced)
 let resizeTimer;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(init, 200);
+  resizeTimer = setTimeout(applyMask, 200);
 });
 </script>
 </body>
