@@ -130,7 +130,7 @@
     /* ── REVEAL ANIMATIONS ── */
     /* clip-up title reveal */
     .rev-wrap{overflow:hidden}
-    .rev{display:block;transform:translateY(105%)}
+    .rev{display:block;transform:translateY(112%)}
     .slide.active .rev,.hf.active .rev{transform:translateY(0);transition:transform .9s cubic-bezier(.77,0,.18,1)}
 
     /* fade-up for supporting text */
@@ -605,8 +605,8 @@ window.addEventListener('scroll', () => {
         hfEl.style.opacity = fadeAlpha;
         const adjustedY = contentY - H;
         blobContent.style.transform = `translateY(${-adjustedY}px)`;
-        // Trigger slide activate 30% before slide is fully in view
-        const idx = Math.min(Math.floor((adjustedY + H * 0.3) / H), N_CONTENT - 1);
+        // Trigger slide activate just as it enters view
+        const idx = Math.min(Math.floor((adjustedY + H * 0.05) / H), N_CONTENT - 1);
         dotsEl.forEach((d, i) => d.classList.toggle('on', i === 2 + idx));
         activateSlide(idx);
       }
