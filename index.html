@@ -489,19 +489,40 @@ function applyMask() {
 /* ── HERO FRAMES: scatter → organize in phase 1, frame 1 zooms in ── */
 function eio(t) { return t < 0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; }
 
+let floatP = 0; // current phase-1 progress, updated by scroll handler
+
 function posFrames(p) {
-  const t = Math.min(1, p / 0.55);
-  const e = t < 0.5 ? 2*t*t : 1-(Math.pow(-2*t+2,2)/2);
+  const t  = Math.min(1, p / 0.55);
+  const e  = t < 0.5 ? 2*t*t : 1-(Math.pow(-2*t+2,2)/2);
   const lerp = (a,b) => (a + (b-a)*e).toFixed(2);
-  hfEls[0].style.transform = `translate(calc(-50% + ${lerp(-24,-16)}vw),calc(-50% + ${lerp(-16,0)}vh)) scale(0.28) rotate(${lerp(-14,-4)}deg)`;
-  hfEls[1].style.transform = `translate(calc(-50% + ${lerp(20,0)}vw),calc(-50% + ${lerp(6,0)}vh)) scale(0.24) rotate(${lerp(11,0)}deg)`;
-  hfEls[2].style.transform = `translate(calc(-50% + ${lerp(-4,16)}vw),calc(-50% + ${lerp(18,0)}vh)) scale(0.21) rotate(${lerp(-8,4)}deg)`;
-  hfEls[3].style.transform = `translate(calc(-50% + ${lerp(10,-8)}vw),calc(-50% + ${lerp(-22,14)}vh)) scale(0.18) rotate(${lerp(16,-5)}deg)`;
+
+  // Floating: amplitude fades to 0 as frames organize (p > 0.6)
+  const now = Date.now() * 0.001;
+  const amp = Math.max(0, 1 - p / 0.6) * 10;
+  const fy0 = (Math.sin(now * 0.80)       * amp).toFixed(1);
+  const fy1 = (Math.sin(now * 0.70 + 1.8) * amp * 0.85).toFixed(1);
+  const fy2 = (Math.sin(now * 0.90 + 3.2) * amp * 0.90).toFixed(1);
+  const fy3 = (Math.sin(now * 0.65 + 0.9) * amp * 0.80).toFixed(1);
+  const fr0 = (Math.sin(now * 0.50 + 0.3) * amp * 0.12).toFixed(2);
+  const fr1 = (Math.sin(now * 0.55 + 2.1) * amp * 0.10).toFixed(2);
+  const fr2 = (Math.sin(now * 0.45 + 1.0) * amp * 0.11).toFixed(2);
+  const fr3 = (Math.sin(now * 0.60 + 2.7) * amp * 0.09).toFixed(2);
+
+  hfEls[0].style.transform = `translate(calc(-50% + ${lerp(-24,-16)}vw),calc(-50% + ${lerp(-16,0)}vh + ${fy0}px)) scale(0.28) rotate(${(+lerp(-14,-4) + +fr0).toFixed(2)}deg)`;
+  hfEls[1].style.transform = `translate(calc(-50% + ${lerp(20,0)}vw),calc(-50% + ${lerp(6,0)}vh + ${fy1}px)) scale(0.24) rotate(${(+lerp(11,0) + +fr1).toFixed(2)}deg)`;
+  hfEls[2].style.transform = `translate(calc(-50% + ${lerp(-4,16)}vw),calc(-50% + ${lerp(18,0)}vh + ${fy2}px)) scale(0.21) rotate(${(+lerp(-8,4) + +fr2).toFixed(2)}deg)`;
+  hfEls[3].style.transform = `translate(calc(-50% + ${lerp(10,-8)}vw),calc(-50% + ${lerp(-22,14)}vh + ${fy3}px)) scale(0.18) rotate(${(+lerp(16,-5) + +fr3).toFixed(2)}deg)`;
   hfEls[0].style.zIndex = '4';
   hfEls[1].style.zIndex = '3';
   hfEls[2].style.zIndex = '2';
   hfEls[3].style.zIndex = '1';
 }
+
+// Continuous float loop — only active in phase 1
+;(function floatLoop() {
+  if (lastPhase === 1) posFrames(floatP);
+  requestAnimationFrame(floatLoop);
+})();
 
 function zoomFrame1(zp) {
   const e = eio(Math.min(1, zp));
@@ -595,7 +616,7 @@ window.addEventListener('scroll', () => {
       const col = `rgb(${Math.round(0x38+(0xfe-0x38)*nt)},${Math.round(0x38+(0xcd-0x38)*nt)},${Math.round(0x38+(0x52-0x38)*nt)})`;
       navLogoEl.style.color = col;
       navMenuBtn.style.color = col;
-      posFrames(p);
+      floatP = p; // floatLoop drives posFrames continuously
 
     } else if (y <= 2 * H) {
       enterPhase(2);
