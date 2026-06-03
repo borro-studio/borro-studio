@@ -493,6 +493,9 @@ function applyMask() {
 /* ── HERO FRAMES: scatter → organize in phase 1, frame 1 zooms in ── */
 function eio(t) { return t < 0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; }
 
+let rafPending = false;
+let lastPhase  = -1;
+let lastDotIdx = -1;
 let floatP = 0; // current phase-1 progress, updated by scroll handler
 
 function posFrames(p) {
@@ -552,10 +555,6 @@ function zoomFrame1(zp) {
 const ZOOM_MAX = 2000;
 const heroHl = document.getElementById('hero-hl');
 const scuEl  = document.getElementById('scue');
-
-let rafPending = false;
-let lastPhase  = -1;
-let lastDotIdx = -1;
 
 function enterPhase(ph) {
   if (ph === lastPhase) return;
