@@ -10,7 +10,7 @@
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     html,body{height:100%}
     body{
-      background:#0d0d0d;
+      background:#000;
       color:#0a0a0a;
       font-family:'Inter',sans-serif;
       cursor:none;
@@ -65,6 +65,7 @@
     .hf-1{background-color:#1c3528;background-image:url('https://images.unsplash.com/photo-1561070791-2526d30994b5?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
     .hf-2{background-color:#121b30;background-image:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
     .hf-3{background-color:#2e160a;background-image:url('https://images.unsplash.com/photo-1509815017432-ed21ad98d42b?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
+    .hf-4{background-color:#1a1028;background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
 
     /* ── HERO HEADLINE (bottom-left, outside blob) ── */
     #hero-hl{
@@ -363,6 +364,16 @@
       <div class="fu proj-year" style="transition-delay:.46s">2023 — Barcelona, Spain</div>
     </div>
 
+    <!-- P4: Proyecto 4 -->
+    <div class="slide proj-slide" id="p4">
+      <div class="proj-bg" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?fit=crop&w=1920&q=80');background-color:#1a1028"></div>
+      <div class="proj-over"></div>
+      <div class="fu" style="transition-delay:0s"><div class="proj-sec">Trabajos — 04</div></div>
+      <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">ISLA<br>ESTUDIO</div></div>
+      <div class="fu proj-cat" style="transition-delay:.32s">Branding · Motion Design</div>
+      <div class="fu proj-year" style="transition-delay:.46s">2024 — Madrid, Spain</div>
+    </div>
+
     <!-- Servicios -->
     <div class="slide" id="sv">
       <div class="sv-hd">
@@ -399,6 +410,7 @@
   <div class="hf hf-1"></div>
   <div class="hf hf-2"></div>
   <div class="hf hf-3"></div>
+  <div class="hf hf-4"></div>
 </div>
 
 <!-- FIXED UI — outside the blob -->
@@ -407,6 +419,7 @@
 <div id="dots">
   <div class="dot on"></div><div class="dot"></div><div class="dot"></div>
   <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  <div class="dot"></div>
 </div>
 
 <!-- Scroll spacer -->
@@ -415,7 +428,7 @@
 <script>
 'use strict';
 
-const N_CONTENT = 5; // p1, p2, p3, sv, ct
+const N_CONTENT = 6; // p1, p2, p3, p4, sv, ct
 const hfEl  = document.getElementById('hero-frames');
 const hfEls = document.querySelectorAll('.hf');
 const blobWin       = document.getElementById('blob-win');
@@ -502,20 +515,24 @@ function posFrames(p) {
   hfEls[0].style.transform = `translate(calc(-50% + ${lerp(-24,-16)}vw),calc(-50% + ${lerp(-16,0)}vh)) scale(0.28) rotate(${lerp(-14,-4)}deg)`;
   hfEls[1].style.transform = `translate(calc(-50% + ${lerp(20,0)}vw),calc(-50% + ${lerp(6,0)}vh)) scale(0.24) rotate(${lerp(11,0)}deg)`;
   hfEls[2].style.transform = `translate(calc(-50% + ${lerp(-4,16)}vw),calc(-50% + ${lerp(18,0)}vh)) scale(0.21) rotate(${lerp(-8,4)}deg)`;
-  hfEls[0].style.zIndex = '3';
-  hfEls[1].style.zIndex = '2';
-  hfEls[2].style.zIndex = '1';
+  hfEls[3].style.transform = `translate(calc(-50% + ${lerp(10,-8)}vw),calc(-50% + ${lerp(-22,14)}vh)) scale(0.18) rotate(${lerp(16,-5)}deg)`;
+  hfEls[0].style.zIndex = '4';
+  hfEls[1].style.zIndex = '3';
+  hfEls[2].style.zIndex = '2';
+  hfEls[3].style.zIndex = '1';
 }
 
 function zoomFrame1(zp) {
   const e = eio(Math.min(1, zp));
   const lrp = (a,b) => (a + (b-a)*e).toFixed(3);
   hfEls[0].style.transform = `translate(calc(-50% + ${lrp(-16,0)}vw),calc(-50% + 0vh)) scale(${lrp(0.28,1.0)}) rotate(${lrp(-4,0)}deg)`;
-  hfEls[0].style.zIndex = '3';
+  hfEls[0].style.zIndex = '4';
   hfEls[1].style.transform = `translate(calc(-50% + 0vw),calc(-50% + 0vh)) scale(0.24) rotate(0deg)`;
-  hfEls[1].style.zIndex = '2';
+  hfEls[1].style.zIndex = '3';
   hfEls[2].style.transform = `translate(calc(-50% + 16vw),calc(-50% + 0vh)) scale(0.21) rotate(4deg)`;
-  hfEls[2].style.zIndex = '1';
+  hfEls[2].style.zIndex = '2';
+  hfEls[3].style.transform = `translate(calc(-50% + -8vw),calc(-50% + 14vh)) scale(0.18) rotate(-5deg)`;
+  hfEls[3].style.zIndex = '1';
   hfEls[0].classList.toggle('clickable', zp > 0.92);
   hfEls[1].classList.remove('clickable');
   hfEls[2].classList.remove('clickable');
@@ -596,7 +613,7 @@ window.addEventListener('scroll', () => {
       hfEl.style.opacity = Math.max(0, 1 - contentY / (H * 0.12)).toFixed(3);
       hfEls[0].classList.remove('active');
       blobContent.style.transform = `translateY(${-contentY}px)`;
-      const idx = Math.min(Math.floor((contentY + H * 0.05) / H), N_CONTENT - 1);
+      const idx = Math.min(Math.floor((contentY + H * 0.2) / H), N_CONTENT - 1);
       dotsEl.forEach((d, i) => d.classList.toggle('on', i === 1 + idx));
       activateSlide(idx);
     }
