@@ -101,29 +101,8 @@
       will-change:transform;
     }
 
-    /* yellow overlay — star hole grows as user scrolls (no mask-image change during scroll) */
-    #yellow-overlay{
-      position:fixed;inset:0;z-index:15;background:#fecd52;pointer-events:none;
-      will-change:mask-size,opacity;
-      -webkit-mask-size:100% 100%;
-      mask-size:100% 100%;
-      -webkit-mask-repeat:no-repeat;
-      mask-repeat:no-repeat;
-      -webkit-mask-position:50% 50%;
-      mask-position:50% 50%;
-    }
-
-    /* letter overlay — shows only LB letters, fades out early (GPU opacity only, no mask rebuild) */
-    #letter-overlay{
-      position:fixed;inset:0;z-index:16;background:#fecd52;pointer-events:none;
-      will-change:mask-size,opacity;
-      -webkit-mask-size:100% 100%;
-      mask-size:100% 100%;
-      -webkit-mask-repeat:no-repeat;
-      mask-repeat:no-repeat;
-      -webkit-mask-position:50% 50%;
-      mask-position:50% 50%;
-    }
+    /* star canvas — GPU-composited, replaces mask-size animation */
+    #star-canvas{position:fixed;inset:0;z-index:15;pointer-events:none;}
 
     /* ── SLIDES ── */
     .slide{width:100%;height:100vh;position:relative;overflow:hidden}
@@ -325,10 +304,8 @@
   </div>
 </div>
 
-<!-- YELLOW OVERLAY — star hole grows as user scrolls -->
-<div id="yellow-overlay"></div>
-<!-- LETTER OVERLAY — LB letters over dark slides, fades out early -->
-<div id="letter-overlay"></div>
+<!-- STAR CANVAS — GPU-composited yellow overlay with growing star hole -->
+<canvas id="star-canvas"></canvas>
 
 <!-- BLOB WINDOW — dark content scrolls inside -->
 <div id="blob-win">
@@ -430,11 +407,11 @@
 const N_CONTENT = 6; // p1, p2, p3, p4, sv, ct
 const hfEl  = document.getElementById('hero-frames');
 const hfEls = document.querySelectorAll('.hf');
-const blobWin       = document.getElementById('blob-win');
-const blobContent   = document.getElementById('blob-content');
-const yellowOverlay = document.getElementById('yellow-overlay');
-const letterOverlay = document.getElementById('letter-overlay');
-const dotsEl        = document.querySelectorAll('.dot');
+const blobWin     = document.getElementById('blob-win');
+const blobContent = document.getElementById('blob-content');
+const starCanvas  = document.getElementById('star-canvas');
+const starCtx     = starCanvas.getContext('2d');
+const dotsEl      = document.querySelectorAll('.dot');
 const progEl        = document.getElementById('prog');
 const navLogoEl  = document.querySelector('.n-logo');
 const navMenuBtn = document.getElementById('menu-open');
@@ -449,55 +426,59 @@ function activateSlide(idx) {
 }
 
 /* ══════════════════════════════════════
-   SVG MASKS — built once on init/resize, never rebuilt during scroll
+   STAR CANVAS — GPU-composited, no mask-size (Safari-safe)
 ══════════════════════════════════════ */
-function makeSvgMask(W, H, shapes) {
-  const svgW = 3371.28, svgH = 3375.54;
-  const svgCX = svgW / 2, svgCY = svgH / 2;
-  const scale = (Math.min(W, H) * 0.55) / Math.max(svgW, svgH);
-  function tp(pts) {
-    const out = [];
-    for (let i = 0; i < pts.length; i += 2)
-      out.push(((pts[i]-svgCX)*scale+W/2).toFixed(2)+','+((pts[i+1]-svgCY)*scale+H/2).toFixed(2));
-    return out.join(' ');
-  }
-  const starPts = [
-    2215.36,1709.09, 2749.15,1954.23, 2577.64,2327.57, 2044.08,2082.41,
-    2248.07,2633.25, 1862.77,2776.11, 1658.55,2225.3,  1413.42,2759.13,
-    1040.07,2587.63, 1285.2, 2053.8,  734.37, 2257.79,  591.69, 1872.46,
-    1142.3, 1668.5,   608.74,1423.34,  780.24,1049.99, 1313.81,1295.15,
-    1109.82, 744.32, 1495.15, 601.41, 1699.11,1152.02, 1944.28, 618.45,
-    2317.85, 789.93, 2072.72,1323.76, 2623.33,1119.8,  2766.19,1505.1
-  ];
-  const letterL = [1657.94,1512.73,1655.34,1629.04,1515.69,1625.94,1510.31,1866.6,1394.01,1864.01,1401.99,1507.04];
-  const letterB = [1983.06,1516.61,1980.46,1632.92,1840.81,1629.82,1835.43,1870.48,1719.13,1867.89,1727.11,1510.92];
+const STAR_PTS = [
+  2215.36,1709.09, 2749.15,1954.23, 2577.64,2327.57, 2044.08,2082.41,
+  2248.07,2633.25, 1862.77,2776.11, 1658.55,2225.3,  1413.42,2759.13,
+  1040.07,2587.63, 1285.2, 2053.8,  734.37, 2257.79,  591.69, 1872.46,
+  1142.3, 1668.5,   608.74,1423.34,  780.24,1049.99, 1313.81,1295.15,
+  1109.82, 744.32, 1495.15, 601.41, 1699.11,1152.02, 1944.28, 618.45,
+  2317.85, 789.93, 2072.72,1323.76, 2623.33,1119.8,  2766.19,1505.1
+];
+const SVG_W = 3371.28, SVG_H = 3375.54;
+const SVG_CX = SVG_W / 2, SVG_CY = SVG_H / 2;
+const CDR = Math.min(window.devicePixelRatio || 1, 2);
+let cvW = 0, cvH = 0;
 
-  let inner = '';
-  if (shapes === 'star-hole') {
-    inner = `<rect width="${W}" height="${H}" fill="white"/><polygon fill="black" points="${tp(starPts)}"/>`;
-  } else if (shapes === 'letters') {
-    inner = `<rect width="${W}" height="${H}" fill="black"/><polygon fill="white" points="${tp(letterL)}"/><polygon fill="white" points="${tp(letterB)}"/>`;
-  }
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><defs><mask id="m">${inner}</mask></defs><rect width="${W}" height="${H}" fill="white" mask="url(#m)"/></svg>`;
-  return 'data:image/svg+xml,' + encodeURIComponent(svg);
+function resizeStarCanvas() {
+  cvW = window.innerWidth; cvH = window.innerHeight;
+  starCanvas.width  = cvW * CDR;
+  starCanvas.height = cvH * CDR;
+  starCanvas.style.width  = cvW + 'px';
+  starCanvas.style.height = cvH + 'px';
 }
 
-function setOverlayMask(el, url) {
-  el.style.webkitMaskImage = `url("${url}")`;
-  el.style.maskImage       = `url("${url}")`;
-  el.style.webkitMaskPosition = '50% 50%';
-  el.style.maskPosition       = '50% 50%';
-  el.style.webkitMaskSize  = '100% 100%';
-  el.style.maskSize        = '100% 100%';
+function drawStar(eased, alpha) {
+  const W = cvW * CDR, H = cvH * CDR;
+  starCtx.clearRect(0, 0, W, H);
+  if (alpha <= 0) return;
+  starCtx.globalAlpha = alpha;
+  starCtx.globalCompositeOperation = 'source-over';
+  starCtx.fillStyle = '#fecd52';
+  starCtx.fillRect(0, 0, W, H);
+  const base = (Math.min(cvW, cvH) * 0.55) / Math.max(SVG_W, SVG_H);
+  const sc   = base * (1 + eased * (ZOOM_MAX / 100 - 1)) * CDR;
+  starCtx.globalAlpha = 1;
+  starCtx.globalCompositeOperation = 'destination-out';
+  starCtx.beginPath();
+  for (let i = 0; i < STAR_PTS.length; i += 2) {
+    const x = (STAR_PTS[i]   - SVG_CX) * sc + W / 2;
+    const y = (STAR_PTS[i+1] - SVG_CY) * sc + H / 2;
+    i === 0 ? starCtx.moveTo(x, y) : starCtx.lineTo(x, y);
+  }
+  starCtx.closePath();
+  starCtx.fill();
 }
 
-/* ── Build masks once (on init / resize only) ── */
+function clearStar() {
+  starCtx.clearRect(0, 0, cvW * CDR, cvH * CDR);
+}
+
 function applyMask() {
-  const W = window.innerWidth, H = window.innerHeight;
-  setOverlayMask(yellowOverlay, makeSvgMask(W, H, 'star-hole'));
-  setOverlayMask(letterOverlay, makeSvgMask(W, H, 'letters'));
-  yellowOverlay.style.opacity = '1';
-  letterOverlay.style.opacity = '1';
+  const H = window.innerHeight;
+  resizeStarCanvas();
+  drawStar(0, 1);
   blobContent.style.transform = 'translateY(0)';
   blobWin.style.opacity = '0';
   document.getElementById('spacer').style.height = (N_CONTENT + 3) * H + 'px';
@@ -561,8 +542,7 @@ function enterPhase(ph) {
     hfEls[0].classList.remove('active');
     if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
   } else if (ph === 2) {
-    yellowOverlay.style.opacity = '0';
-    letterOverlay.style.opacity = '0';
+    clearStar();
     navLogoEl.style.color = '#fecd52';
     navMenuBtn.style.color = '#fecd52';
     heroHl.style.opacity = '0';
@@ -574,8 +554,7 @@ function enterPhase(ph) {
     hfEls[0].classList.remove('active');
     if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
   } else {
-    yellowOverlay.style.opacity = '0';
-    letterOverlay.style.opacity = '0';
+    clearStar();
     navLogoEl.style.color = '#fecd52';
     navMenuBtn.style.color = '#fecd52';
     heroHl.style.opacity = '0';
@@ -606,14 +585,8 @@ window.addEventListener('scroll', () => {
       enterPhase(1);
       const p = y / H;
       const eased = p < 0.5 ? 2*p*p : 1 - Math.pow(-2*p+2,2)/2;
-      const pct = (100 + eased * (ZOOM_MAX - 100)).toFixed(1) + '%';
-      const sz = pct + ' ' + pct;
-      yellowOverlay.style.webkitMaskSize = sz;
-      yellowOverlay.style.maskSize = sz;
-      letterOverlay.style.webkitMaskSize = sz;
-      letterOverlay.style.maskSize = sz;
-      letterOverlay.style.opacity = Math.max(0, 1 - p / 0.30).toFixed(3);
-      yellowOverlay.style.opacity = (1 - Math.max(0, Math.min(1, (p - 0.82) / 0.18))).toFixed(3);
+      const alpha = 1 - Math.max(0, Math.min(1, (p - 0.82) / 0.18));
+      drawStar(eased, alpha);
       hfEl.style.opacity = '1';
       heroHl.style.opacity = Math.max(0, 1 - p * 8).toFixed(3);
       scuEl.style.opacity = Math.max(0, 1 - p * 2).toFixed(3);
