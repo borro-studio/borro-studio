@@ -548,83 +548,96 @@ const heroHl = document.getElementById('hero-hl');
 const scuEl  = document.getElementById('scue');
 
 let rafPending = false;
+let lastPhase  = -1;
+let lastDotIdx = -1;
+
+function enterPhase(ph) {
+  if (ph === lastPhase) return;
+  lastPhase = ph;
+  if (ph === 1) {
+    hfEl.style.zIndex = '13';
+    blobWin.style.opacity = '0';
+    blobContent.style.transform = 'translateY(0)';
+    hfEls[0].classList.remove('active');
+    if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
+  } else if (ph === 2) {
+    yellowOverlay.style.opacity = '0';
+    letterOverlay.style.opacity = '0';
+    navLogoEl.style.color = '#fecd52';
+    navMenuBtn.style.color = '#fecd52';
+    heroHl.style.opacity = '0';
+    scuEl.style.opacity = '0';
+    hfEl.style.zIndex = '13';
+    hfEl.style.opacity = '1';
+    blobWin.style.opacity = '0';
+    blobContent.style.transform = 'translateY(0)';
+    hfEls[0].classList.remove('active');
+    if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
+  } else {
+    yellowOverlay.style.opacity = '0';
+    letterOverlay.style.opacity = '0';
+    navLogoEl.style.color = '#fecd52';
+    navMenuBtn.style.color = '#fecd52';
+    heroHl.style.opacity = '0';
+    scuEl.style.opacity = '0';
+    hfEl.style.zIndex = '9';
+    blobWin.style.opacity = '1';
+    hfEls[0].classList.remove('active');
+  }
+}
+
+function setDot(i) {
+  if (i === lastDotIdx) return;
+  lastDotIdx = i;
+  dotsEl.forEach((d, j) => d.classList.toggle('on', j === i));
+}
+
 window.addEventListener('scroll', () => {
   if (rafPending) return;
   rafPending = true;
   requestAnimationFrame(() => {
     rafPending = false;
-    const y   = Math.max(0, window.scrollY);
-    const H   = window.innerHeight;
+    const y = Math.max(0, window.scrollY);
+    const H = window.innerHeight;
     const max = document.documentElement.scrollHeight - H;
-
     progEl.style.width = (y / max * 100) + '%';
 
     if (y <= H) {
-      // Phase 1: star mask opens, frames animate inside mask
-      const p = Math.min(1, y / H);
-      const eased = p < 0.5 ? 2*p*p : 1 - Math.pow(-2*p+2, 2)/2;
-      const pct = (100 + eased * (ZOOM_MAX - 100)).toFixed(1);
-      const sz  = pct + '% ' + pct + '%';
+      enterPhase(1);
+      const p = y / H;
+      const eased = p < 0.5 ? 2*p*p : 1 - Math.pow(-2*p+2,2)/2;
+      const pct = (100 + eased * (ZOOM_MAX - 100)).toFixed(1) + '%';
+      const sz = pct + ' ' + pct;
       yellowOverlay.style.webkitMaskSize = sz;
-      yellowOverlay.style.maskSize       = sz;
+      yellowOverlay.style.maskSize = sz;
       letterOverlay.style.webkitMaskSize = sz;
-      letterOverlay.style.maskSize       = sz;
+      letterOverlay.style.maskSize = sz;
       letterOverlay.style.opacity = Math.max(0, 1 - p / 0.30).toFixed(3);
       yellowOverlay.style.opacity = (1 - Math.max(0, Math.min(1, (p - 0.82) / 0.18))).toFixed(3);
-      blobContent.style.transform = 'translateY(0)';
-      blobWin.style.opacity = '0';
-      hfEl.style.zIndex = '13';
       hfEl.style.opacity = '1';
       heroHl.style.opacity = Math.max(0, 1 - p * 8).toFixed(3);
-      scuEl.style.opacity  = Math.max(0, 1 - p * 2).toFixed(3);
-      dotsEl.forEach((d, i) => d.classList.toggle('on', i === 0));
+      scuEl.style.opacity = Math.max(0, 1 - p * 2).toFixed(3);
+      setDot(0);
       const nt = Math.max(0, Math.min(1, (p - 0.10) / 0.18));
       const col = `rgb(${Math.round(0x38+(0xfe-0x38)*nt)},${Math.round(0x38+(0xcd-0x38)*nt)},${Math.round(0x38+(0x52-0x38)*nt)})`;
       navLogoEl.style.color = col;
       navMenuBtn.style.color = col;
       posFrames(p);
-      hfEls[0].classList.remove('active');
-      if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
 
     } else if (y <= 2 * H) {
-      // Zoom phase: frame 1 zooms to full screen
-      yellowOverlay.style.opacity = '0';
-      letterOverlay.style.opacity = '0';
-      navLogoEl.style.color = '#fecd52';
-      navMenuBtn.style.color = '#fecd52';
-      blobContent.style.transform = 'translateY(0)';
-      blobWin.style.opacity = '0';
-      hfEl.style.zIndex = '13';
-      hfEl.style.opacity = '1';
-      heroHl.style.opacity = '0';
-      scuEl.style.opacity  = '0';
-      dotsEl.forEach((d, i) => d.classList.toggle('on', i === 0));
+      enterPhase(2);
       zoomFrame1((y - H) / H);
-      hfEls[0].classList.remove('active');
-      if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
+      setDot(0);
 
     } else {
-      // Phase 3
-      yellowOverlay.style.opacity = '0';
-      letterOverlay.style.opacity = '0';
-      navLogoEl.style.color = '#fecd52';
-      navMenuBtn.style.color = '#fecd52';
-      heroHl.style.opacity = '0';
-      scuEl.style.opacity  = '0';
-
+      enterPhase(3);
       const contentY = y - 2 * H;
-      // hero-frames drops behind blob-win; hf-1 IS the background of p1
-      hfEl.style.zIndex = '9';
-      blobWin.style.opacity = '1';
-      // hf-1 fades out once p2 fully enters (p1 scrolled off)
       hfEl.style.opacity = Math.max(0, 1 - Math.max(0, contentY - H * 0.7) / (H * 0.3)).toFixed(3);
-      hfEls[0].classList.remove('active');
       blobContent.style.transform = `translateY(${-contentY}px)`;
-      // First slide activates immediately; rest activate 20% before entering view
       const idx = contentY < H * 0.05
         ? 0
         : Math.min(Math.floor((contentY + H * 0.2) / H), N_CONTENT - 1);
-      dotsEl.forEach((d, i) => d.classList.toggle('on', i === 1 + idx));
+      setDot(1 + idx);
       activateSlide(idx);
     }
   });
