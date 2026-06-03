@@ -333,6 +333,16 @@
 <div id="blob-win">
   <div id="blob-content">
 
+    <!-- P1: Proyecto 1 (misma bg que el frame verde) -->
+    <div class="slide proj-slide" id="p1">
+      <div class="proj-bg" style="background:#1c3528"></div>
+      <div class="proj-over"></div>
+      <div class="fu" style="transition-delay:0s"><div class="proj-sec">Trabajos — 01</div></div>
+      <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">BORRO<br>STUDIO</div></div>
+      <div class="fu proj-cat" style="transition-delay:.32s">Dirección Creativa · Identidad</div>
+      <div class="fu proj-year" style="transition-delay:.46s">2024 — Montréal, Canada</div>
+    </div>
+
     <!-- P2: Proyecto 2 -->
     <div class="slide proj-slide" id="p2">
       <div class="proj-bg" style="background:linear-gradient(160deg,#141b2d 0%,#070b14 100%)"></div>
@@ -386,15 +396,7 @@
 
 <!-- HERO FRAMES — floating project cards, organize on scroll -->
 <div id="hero-frames">
-  <div class="hf hf-1">
-    <div class="proj-over"></div>
-    <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:0 52px 60px">
-      <div class="fu" style="transition-delay:0s"><div class="proj-sec">Trabajos — 01</div></div>
-      <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">BORRO<br>STUDIO</div></div>
-      <div class="fu proj-cat" style="transition-delay:.32s">Dirección Creativa · Identidad</div>
-      <div class="fu proj-year" style="transition-delay:.46s">2024 — Montréal, Canada</div>
-    </div>
-  </div>
+  <div class="hf hf-1"></div>
   <div class="hf hf-2"></div>
   <div class="hf hf-3"></div>
 </div>
@@ -413,7 +415,7 @@
 <script>
 'use strict';
 
-const N_CONTENT = 4; // proj2, proj3, sv, ct
+const N_CONTENT = 5; // p1, p2, p3, sv, ct
 const hfEl  = document.getElementById('hero-frames');
 const hfEls = document.querySelectorAll('.hf');
 const blobWin       = document.getElementById('blob-win');
@@ -485,7 +487,7 @@ function applyMask() {
   yellowOverlay.style.opacity = '1';
   letterOverlay.style.opacity = '1';
   blobContent.style.transform = 'translateY(0)';
-  document.getElementById('spacer').style.height = (N_CONTENT + 4) * H + 'px';
+  document.getElementById('spacer').style.height = (N_CONTENT + 3) * H + 'px';
   posFrames(0);
   hfEl.style.opacity = '1';
 }
@@ -590,26 +592,13 @@ window.addEventListener('scroll', () => {
       scuEl.style.opacity  = '0';
 
       const contentY = y - 2 * H;
-
-      if (contentY < H) {
-        // Slot 0: green frame stays full screen as a content slide
-        hfEl.style.opacity = '1';
-        hfEls[0].classList.add('active');
-        blobContent.style.transform = 'translateY(0)';
-        dotsEl.forEach((d, i) => d.classList.toggle('on', i === 1));
-        if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
-      } else {
-        // Content slides: s0, p2, p3, sv, ct
-        hfEls[0].classList.remove('active');
-        const fadeAlpha = Math.max(0, 1 - (contentY - H) / (H * 0.3)).toFixed(3);
-        hfEl.style.opacity = fadeAlpha;
-        const adjustedY = contentY - H;
-        blobContent.style.transform = `translateY(${-adjustedY}px)`;
-        // Trigger slide activate just as it enters view
-        const idx = Math.min(Math.floor((adjustedY + H * 0.05) / H), N_CONTENT - 1);
-        dotsEl.forEach((d, i) => d.classList.toggle('on', i === 2 + idx));
-        activateSlide(idx);
-      }
+      // Hero frame fades out as first real slide scrolls in (same green bg = seamless)
+      hfEl.style.opacity = Math.max(0, 1 - contentY / (H * 0.9)).toFixed(3);
+      hfEls[0].classList.remove('active');
+      blobContent.style.transform = `translateY(${-contentY}px)`;
+      const idx = Math.min(Math.floor((contentY + H * 0.05) / H), N_CONTENT - 1);
+      dotsEl.forEach((d, i) => d.classList.toggle('on', i === 1 + idx));
+      activateSlide(idx);
     }
   });
 }, { passive: true });
