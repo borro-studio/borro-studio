@@ -333,15 +333,6 @@
 <div id="blob-win">
   <div id="blob-content">
 
-    <!-- S0: Menú reveal — primera pantalla de contenido -->
-    <div class="slide" id="s0">
-      <div class="s0-inner">
-        <div class="rev-wrap"><a href="#" class="rev s0-link">Trabajos</a></div>
-        <div class="rev-wrap"><a href="#" class="rev s0-link" style="transition-delay:.14s">Servicios</a></div>
-        <div class="rev-wrap"><a href="#" class="rev s0-link" style="transition-delay:.28s">Contacto</a></div>
-      </div>
-    </div>
-
     <!-- P2: Proyecto 2 -->
     <div class="slide proj-slide" id="p2">
       <div class="proj-bg" style="background:linear-gradient(160deg,#141b2d 0%,#070b14 100%)"></div>
@@ -414,7 +405,6 @@
 <div id="dots">
   <div class="dot on"></div><div class="dot"></div><div class="dot"></div>
   <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-  <div class="dot"></div>
 </div>
 
 <!-- Scroll spacer -->
@@ -423,7 +413,7 @@
 <script>
 'use strict';
 
-const N_CONTENT = 5; // s0 (menu), proj2, proj3, sv, ct
+const N_CONTENT = 4; // proj2, proj3, sv, ct
 const hfEl  = document.getElementById('hero-frames');
 const hfEls = document.querySelectorAll('.hf');
 const blobWin       = document.getElementById('blob-win');
