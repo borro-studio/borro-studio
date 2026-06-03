@@ -334,9 +334,8 @@
 <div id="blob-win">
   <div id="blob-content">
 
-    <!-- P1: Proyecto 1 (misma bg que el frame verde) -->
+    <!-- P1: Proyecto 1 — sin background, el frame hf-1 es el fondo -->
     <div class="slide proj-slide" id="p1">
-      <div class="proj-bg" style="background-image:url('https://images.unsplash.com/photo-1561070791-2526d30994b5?fit=crop&w=1920&q=80');background-color:#1c3528"></div>
       <div class="proj-over"></div>
       <div class="fu" style="transition-delay:0s"><div class="proj-sec">Trabajos — 01</div></div>
       <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">BORRO<br>STUDIO</div></div>
@@ -574,6 +573,7 @@ window.addEventListener('scroll', () => {
       yellowOverlay.style.opacity = (1 - Math.max(0, Math.min(1, (p - 0.82) / 0.18))).toFixed(3);
       blobContent.style.transform = 'translateY(0)';
       blobWin.style.opacity = '0';
+      hfEl.style.zIndex = '13';
       hfEl.style.opacity = '1';
       heroHl.style.opacity = Math.max(0, 1 - p * 8).toFixed(3);
       scuEl.style.opacity  = Math.max(0, 1 - p * 2).toFixed(3);
@@ -594,6 +594,7 @@ window.addEventListener('scroll', () => {
       navMenuBtn.style.color = '#fecd52';
       blobContent.style.transform = 'translateY(0)';
       blobWin.style.opacity = '0';
+      hfEl.style.zIndex = '13';
       hfEl.style.opacity = '1';
       heroHl.style.opacity = '0';
       scuEl.style.opacity  = '0';
@@ -612,9 +613,11 @@ window.addEventListener('scroll', () => {
       scuEl.style.opacity  = '0';
 
       const contentY = y - 2 * H;
-      // blob-win fades in as hf-1 fades out (same bg color = seamless)
-      blobWin.style.opacity = Math.min(1, contentY / (H * 0.12)).toFixed(3);
-      hfEl.style.opacity = Math.max(0, 1 - contentY / (H * 0.12)).toFixed(3);
+      // hero-frames drops behind blob-win; hf-1 IS the background of p1
+      hfEl.style.zIndex = '9';
+      blobWin.style.opacity = '1';
+      // hf-1 fades out once p2 fully enters (p1 scrolled off)
+      hfEl.style.opacity = Math.max(0, 1 - Math.max(0, contentY - H * 0.7) / (H * 0.3)).toFixed(3);
       hfEls[0].classList.remove('active');
       blobContent.style.transform = `translateY(${-contentY}px)`;
       // First slide activates immediately; rest activate 20% before entering view
