@@ -335,7 +335,7 @@
 
     <!-- P1: Proyecto 1 (misma bg que el frame verde) -->
     <div class="slide proj-slide" id="p1">
-      <div class="proj-bg" style="background:#1c3528"></div>
+      <div class="proj-bg" style="background-image:url('https://images.unsplash.com/photo-1561070791-2526d30994b5?fit=crop&w=1920&q=80');background-color:#1c3528"></div>
       <div class="proj-over"></div>
       <div class="fu" style="transition-delay:0s"><div class="proj-sec">Trabajos — 01</div></div>
       <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">BORRO<br>STUDIO</div></div>
@@ -345,7 +345,7 @@
 
     <!-- P2: Proyecto 2 -->
     <div class="slide proj-slide" id="p2">
-      <div class="proj-bg" style="background:linear-gradient(160deg,#141b2d 0%,#070b14 100%)"></div>
+      <div class="proj-bg" style="background-image:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?fit=crop&w=1920&q=80');background-color:#141b2d"></div>
       <div class="proj-over"></div>
       <div class="fu" style="transition-delay:0s"><div class="proj-sec">Trabajos — 02</div></div>
       <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">NORDIC<br>STUDIO</div></div>
@@ -355,7 +355,7 @@
 
     <!-- P3: Proyecto 3 -->
     <div class="slide proj-slide" id="p3">
-      <div class="proj-bg" style="background:linear-gradient(160deg,#2a1a0d 0%,#110a04 100%)"></div>
+      <div class="proj-bg" style="background-image:url('https://images.unsplash.com/photo-1509815017432-ed21ad98d42b?fit=crop&w=1920&q=80');background-color:#2a1a0d"></div>
       <div class="proj-over"></div>
       <div class="fu" style="transition-delay:0s"><div class="proj-sec">Trabajos — 03</div></div>
       <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">BORRO<br>EDITORIAL</div></div>
@@ -592,8 +592,8 @@ window.addEventListener('scroll', () => {
       scuEl.style.opacity  = '0';
 
       const contentY = y - 2 * H;
-      // Hero frame fades out as first real slide scrolls in (same green bg = seamless)
-      hfEl.style.opacity = Math.max(0, 1 - contentY / (H * 0.9)).toFixed(3);
+      // Hero frame fades out fast so p1 animation is visible from the start
+      hfEl.style.opacity = Math.max(0, 1 - contentY / (H * 0.12)).toFixed(3);
       hfEls[0].classList.remove('active');
       blobContent.style.transform = `translateY(${-contentY}px)`;
       const idx = Math.min(Math.floor((contentY + H * 0.05) / H), N_CONTENT - 1);
