@@ -64,7 +64,7 @@
 
     /* ── HERO FRAMES ── */
     #hero-frames{position:fixed;inset:0;z-index:13;pointer-events:none}
-    .hf{position:absolute;left:50%;top:50%;width:100vw;height:100vh;border-radius:16px;will-change:transform,opacity;overflow:hidden;transform-origin:center center}
+    .hf{position:absolute;left:50%;top:50%;width:100vw;height:100vh;border-radius:16px;will-change:transform,opacity;overflow:hidden;transform-origin:center center;touch-action:pan-y}
     .hf.clickable{pointer-events:auto}
     .hf-1{background-color:#1c3528;background-image:url('https://images.unsplash.com/photo-1561070791-2526d30994b5?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
     .hf-2{background-color:#121b30;background-image:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
@@ -98,14 +98,14 @@
        BLOB WINDOW  (dark content, always fully visible)
     ══════════════════════════════════ */
     #blob-win{
-      position:fixed;inset:0;z-index:10;pointer-events:none;
+      position:fixed;inset:0;z-index:10;pointer-events:none;overflow:hidden;
     }
     #blob-content{
       position:absolute;top:0;left:0;right:0;
       will-change:transform;
       pointer-events:none;
     }
-    #blob-content a,#blob-content button{pointer-events:auto}
+    #blob-content a,#blob-content button{pointer-events:auto;touch-action:pan-y}
 
     /* star canvas — GPU-composited, replaces mask-size animation */
     #star-canvas{position:fixed;inset:0;z-index:15;pointer-events:none;}
@@ -486,7 +486,7 @@ function applyMask() {
   H = window.innerHeight;
   resizeStarCanvas();
   drawStar(0, 1);
-  blobContent.style.transform = 'translateY(0)';
+  blobContent.style.transform = 'translate3d(0,0,0)';
   blobWin.style.opacity = '0';
   document.getElementById('spacer').style.height = (N_CONTENT + 3) * H + 'px';
   posFrames(0);
