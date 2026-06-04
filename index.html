@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=Playfair+Display:ital,wght@0,400;1,400;1,700&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    html,body{height:100%}
+    html{height:100%}
     body{
       background:#000;
       color:#0a0a0a;
@@ -16,6 +16,7 @@
       cursor:none;
       overflow-x:hidden;
       touch-action:pan-y;
+      min-height:100%;
     }
     a{color:inherit;text-decoration:none;cursor:none}
 
@@ -98,7 +99,7 @@
        BLOB WINDOW  (dark content, always fully visible)
     ══════════════════════════════════ */
     #blob-win{
-      position:fixed;inset:0;z-index:10;pointer-events:none;overflow:hidden;
+      position:fixed;inset:0;z-index:10;pointer-events:none;
     }
     #blob-content{
       position:absolute;top:0;left:0;right:0;
@@ -591,7 +592,7 @@ function enterPhase(ph) {
     scuEl.style.opacity = '0';
     hfEl.style.zIndex = '9';
     blobWin.style.opacity = '1';
-    hfEls[0].classList.remove('active');
+    hfEls[0].classList.remove('active', 'clickable');
   }
 }
 
