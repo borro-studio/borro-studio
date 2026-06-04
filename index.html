@@ -108,7 +108,7 @@
     #blob-content a,#blob-content button{pointer-events:auto;touch-action:pan-y}
 
     /* star canvas — GPU-composited, replaces mask-size animation */
-    #star-canvas{position:fixed;inset:0;z-index:15;pointer-events:none;}
+    #star-canvas{position:fixed;inset:0;z-index:15;pointer-events:none;transition:opacity .25s ease;}
 
     /* ── SLIDES ── */
     .slide{width:100%;height:100vh;position:relative;overflow:hidden}
@@ -456,17 +456,15 @@ function resizeStarCanvas() {
   starCanvas.style.height = cvH + 'px';
 }
 
-function drawStar(eased, alpha) {
+function drawStar(eased) {
   const W = cvW * CDR, H = cvH * CDR;
   starCtx.clearRect(0, 0, W, H);
-  if (alpha <= 0) return;
-  starCtx.globalAlpha = alpha;
+  starCtx.globalAlpha = 1;
   starCtx.globalCompositeOperation = 'source-over';
   starCtx.fillStyle = '#fecd52';
   starCtx.fillRect(0, 0, W, H);
   const base = (Math.min(cvW, cvH) * 0.55) / Math.max(SVG_W, SVG_H);
   const sc   = base * (1 + eased * (ZOOM_MAX / 100 - 1)) * CDR;
-  starCtx.globalAlpha = 1;
   starCtx.globalCompositeOperation = 'destination-out';
   starCtx.beginPath();
   for (let i = 0; i < STAR_PTS.length; i += 2) {
@@ -480,12 +478,14 @@ function drawStar(eased, alpha) {
 
 function clearStar() {
   starCtx.clearRect(0, 0, cvW * CDR, cvH * CDR);
+  starCanvas.style.opacity = '0';
 }
 
 function applyMask() {
   H = window.innerHeight;
   resizeStarCanvas();
-  drawStar(0, 1);
+  drawStar(0);
+  starCanvas.style.opacity = '1';
   blobContent.style.transform = 'translate3d(0,0,0)';
   blobWin.style.opacity = '0';
   document.getElementById('spacer').style.height = (N_CONTENT + 3) * H + 'px';
@@ -615,7 +615,8 @@ window.addEventListener('scroll', () => {
       const p = y / H;
       const eased = p < 0.5 ? 2*p*p : 1 - Math.pow(-2*p+2,2)/2;
       const alpha = 1 - Math.max(0, Math.min(1, (p - 0.82) / 0.18));
-      drawStar(eased, alpha);
+      drawStar(eased);
+      starCanvas.style.opacity = alpha.toFixed(3);
       hfEl.style.opacity = '1';
       heroHl.style.opacity = Math.max(0, 1 - p * 8).toFixed(3);
       scuEl.style.opacity = Math.max(0, 1 - p * 2).toFixed(3);
