@@ -643,6 +643,9 @@ window.addEventListener('scroll', () => {
         : Math.min(Math.floor((contentY + H * 0.2) / H), N_CONTENT - 1);
       setDot(1 + idx);
       activateSlide(idx);
+      const navCol = idx >= 4 ? '#ffffff' : '#fecd52';
+      navLogoEl.style.color = navCol;
+      navMenuBtn.style.color = navCol;
     }
   });
 }, { passive: true });
