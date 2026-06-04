@@ -737,12 +737,26 @@ PRELOAD_IMGS.forEach(src => {
 
 loadFallback = setTimeout(completeLoading, 6000);
 
-// Rebuild mask on resize (debounced) — also update cached H
 let resizeTimer;
 window.addEventListener('resize', () => {
   H = window.innerHeight;
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(applyMask, 200);
+  resizeTimer = setTimeout(() => {
+    H = window.innerHeight;
+    document.getElementById('spacer').style.height = (N_CONTENT + 3) * H + 'px';
+    resizeStarCanvas();
+    if (window.scrollY < 5) {
+      drawStar(0);
+      starCanvas.style.opacity = '1';
+      blobContent.style.transform = 'translate3d(0,0,0)';
+      blobWin.style.opacity = '0';
+      posFrames(0);
+      hfEl.style.opacity = '1';
+    } else {
+      lastPhase = -1;
+      window.dispatchEvent(new Event('scroll'));
+    }
+  }, 200);
 });
 </script>
 </body>
