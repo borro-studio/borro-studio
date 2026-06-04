@@ -15,6 +15,7 @@
       font-family:'Inter',sans-serif;
       cursor:none;
       overflow-x:hidden;
+      touch-action:pan-y;
     }
     a{color:inherit;text-decoration:none;cursor:none}
 
@@ -102,7 +103,9 @@
     #blob-content{
       position:absolute;top:0;left:0;right:0;
       will-change:transform;
+      pointer-events:none;
     }
+    #blob-content a,#blob-content button{pointer-events:auto}
 
     /* star canvas — GPU-composited, replaces mask-size animation */
     #star-canvas{position:fixed;inset:0;z-index:15;pointer-events:none;}
@@ -564,7 +567,7 @@ function enterPhase(ph) {
     hfEl.style.zIndex = '13';
     hfEl.style.opacity = '1';
     blobWin.style.opacity = '0';
-    blobContent.style.transform = 'translateY(0)';
+    blobContent.style.transform = 'translate3d(0,0,0)';
     hfEls.forEach(el => el.classList.remove('active', 'clickable'));
     posFrames(floatP);
     if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
@@ -577,7 +580,7 @@ function enterPhase(ph) {
     hfEl.style.zIndex = '13';
     hfEl.style.opacity = '1';
     blobWin.style.opacity = '0';
-    blobContent.style.transform = 'translateY(0)';
+    blobContent.style.transform = 'translate3d(0,0,0)';
     hfEls[0].classList.remove('active');
     if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
   } else {
@@ -632,7 +635,7 @@ window.addEventListener('scroll', () => {
       enterPhase(3);
       const contentY = y - 2 * H;
       hfEl.style.opacity = Math.max(0, 1 - Math.max(0, contentY - H * 0.7) / (H * 0.3)).toFixed(3);
-      blobContent.style.transform = `translateY(${-contentY}px)`;
+      blobContent.style.transform = `translate3d(0,${-contentY}px,0)`;
       const idx = contentY < H * 0.05
         ? 0
         : Math.min(Math.floor((contentY + H * 0.2) / H), N_CONTENT - 1);
