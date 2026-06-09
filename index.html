@@ -67,6 +67,10 @@
     #hero-frames{position:fixed;inset:0;z-index:13;pointer-events:none}
     .hf{position:absolute;left:50%;top:50%;width:100vw;height:100vh;border-radius:16px;will-change:transform,opacity;overflow:hidden;transform-origin:center center;touch-action:pan-y}
     .hf.clickable{pointer-events:auto}
+    .hf-inner{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:60px 52px}
+    .hf-inner::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,rgba(0,0,0,.08) 55%,transparent 100%)}
+    .hf-text{position:relative;opacity:0;transform:translateY(24px);transition:opacity .45s ease,transform .45s cubic-bezier(.22,1,.36,1)}
+    .hf-1.full .hf-text{opacity:1;transform:translateY(0)}
     .hf-1{background-color:#1c3528;background-image:url('https://images.unsplash.com/photo-1561070791-2526d30994b5?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
     .hf-2{background-color:#121b30;background-image:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
     .hf-3{background-color:#2e160a;background-image:url('https://images.unsplash.com/photo-1509815017432-ed21ad98d42b?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
@@ -403,7 +407,16 @@
 
 <!-- HERO FRAMES — floating project cards, organize on scroll -->
 <div id="hero-frames">
-  <div class="hf hf-1"></div>
+  <div class="hf hf-1">
+    <div class="hf-inner">
+      <div class="hf-text">
+        <div class="proj-sec">Trabajos — 01</div>
+        <div class="proj-title">SALOMON<br>CAMPAIGN</div>
+        <div class="proj-cat">Sport Photography · Branding</div>
+        <div class="proj-year">2024 — Chamonix, France</div>
+      </div>
+    </div>
+  </div>
   <div class="hf hf-2"></div>
   <div class="hf hf-3"></div>
   <div class="hf hf-4"></div>
@@ -560,6 +573,7 @@ function zoomFrame1(zp) {
   hfEls[3].style.transform = `translate(calc(-50% + -8vw),calc(-50% + 14vh)) scale(0.18) rotate(-5deg)`;
   hfEls[3].style.zIndex = '1';
   hfEls[0].classList.toggle('clickable', zp > 0.92);
+  hfEls[0].classList.toggle('full', zp > 0.92);
   hfEls[1].classList.remove('clickable');
   hfEls[2].classList.remove('clickable');
 }
