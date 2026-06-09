@@ -172,10 +172,10 @@
     /* ── SPACER ── */
     #spacer{pointer-events:none}
 
-    /* ── SCROLL CUE — dark so visible on yellow overlay ── */
-    #scue{color:rgba(40,40,40,.7)}
-    .sc-ln{background:rgba(40,40,40,.18)}
-    .sc-ln::after{background:rgba(40,40,40,.55)}
+    /* ── SCROLL CUE — white so visible on dark background ── */
+    #scue{color:rgba(255,255,255,.7)}
+    .sc-ln{background:rgba(255,255,255,.18)}
+    .sc-ln::after{background:rgba(255,255,255,.6)}
 
     /* ── TOUCH DEVICES — hide custom cursor ── */
     @media(hover:none){
@@ -329,10 +329,6 @@
     <!-- P1: Proyecto 1 — sin background, el frame hf-1 es el fondo -->
     <div class="slide proj-slide" id="p1">
       <div class="proj-over"></div>
-      <div class="fu" style="transition-delay:0s"><div class="proj-sec">Trabajos — 01</div></div>
-      <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">BORRO<br>STUDIO</div></div>
-      <div class="fu proj-cat" style="transition-delay:.32s">Dirección Creativa · Identidad</div>
-      <div class="fu proj-year" style="transition-delay:.46s">2024 — Montréal, Canada</div>
     </div>
 
     <!-- P2: Proyecto 2 -->
@@ -619,6 +615,7 @@ function enterPhase(ph) {
     hfEl.style.zIndex = '9';
     blobWin.style.opacity = '1';
     hfEls[0].classList.remove('active', 'clickable');
+    hfEls[0].classList.add('full');
   }
 }
 
@@ -669,9 +666,8 @@ window.addEventListener('scroll', () => {
         : Math.min(Math.floor((contentY + H * 0.2) / H), N_CONTENT - 1);
       setDot(1 + idx);
       activateSlide(idx);
-      const navCol = idx >= 4 ? '#ffffff' : '#fecd52';
-      navLogoEl.style.color = navCol;
-      navMenuBtn.style.color = navCol;
+      navLogoEl.style.color = '#fecd52';
+      navMenuBtn.style.color = '#fecd52';
     }
   });
 }, { passive: true });
