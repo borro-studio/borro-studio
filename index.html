@@ -283,23 +283,17 @@
     .pd-im-val{font-size:clamp(12px,1.2vw,14px);font-weight:700;color:#fff;line-height:1.5}
 
     /* 2 — LOGO SECTION (brand beige) */
+    /* 2 — LOGO SECTION (brand beige) */
     .pd-logo-section{background:#d4c3ae;display:flex;align-items:center;justify-content:center;padding:80px 52px;min-height:60vh}
     .pd-logo-bg{display:flex;align-items:center;justify-content:center;width:100%}
-    .pd-stilo-logo{display:flex;flex-direction:column;align-items:center;gap:14px;opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
+    .pd-stilo-logo{width:clamp(160px,28vw,360px);height:auto;display:block;opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
     #proj-overlay.open .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.1s}
-    .pd-stilo-wordmark{display:flex;align-items:baseline;font-family:'Inter',sans-serif;font-size:clamp(64px,12vw,160px);font-weight:300;letter-spacing:-.02em;color:#2c2420;line-height:1}
-    .stilo-sti{font-weight:300}
-    .stilo-bar{font-weight:200;margin:0 2px;position:relative;top:-.05em;font-size:1.15em;line-height:1}
-    .stilo-o{font-weight:300}
-    .pd-stilo-sub{font-size:clamp(9px,1vw,12px);font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:#2c2420;text-align:center;opacity:.55}
 
-    /* Card logo (same mark, smaller) */
+    /* Card (hf-1) — beige + real SVG logo */
     .hf-1{background:#d4c3ae;background-image:none!important}
     .hf-stilo-card{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-    .hf-stilo-logo{display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;transform:scale(.96);transition:opacity .6s ease,transform .6s cubic-bezier(.22,1,.36,1)}
+    .hf-stilo-logo{width:clamp(120px,22vw,220px);height:auto;display:block;opacity:0;transform:scale(.96);transition:opacity .6s ease,transform .6s cubic-bezier(.22,1,.36,1)}
     .hf-1.full .hf-stilo-logo{opacity:1;transform:scale(1)}
-    .hf-stilo-wordmark{display:flex;align-items:baseline;font-family:'Inter',sans-serif;font-size:clamp(36px,6vw,80px);font-weight:300;letter-spacing:-.02em;color:#2c2420;line-height:1}
-    .hf-stilo-sub{font-size:clamp(7px,.7vw,9px);font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:#2c2420;text-align:center;opacity:.5}
 
     /* 3 — IMAGE GRID */
     .pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:#0d0d0d}
@@ -534,12 +528,7 @@
   <!-- 2. LOGO — on brand beige -->
   <div class="pd-logo-section">
     <div class="pd-logo-bg">
-      <div class="pd-stilo-logo">
-        <div class="pd-stilo-wordmark">
-          <span class="stilo-sti">sti</span><span class="stilo-bar">|</span><span class="stilo-o">o</span>
-        </div>
-        <div class="pd-stilo-sub">POLE DANCE<br>STUDIO</div>
-      </div>
+      <img class="pd-stilo-logo" src="assets/stilo-logo.svg" alt="Stilo Pole Dance Studio">
     </div>
   </div>
 
@@ -555,12 +544,7 @@
 <div id="hero-frames">
   <div class="hf hf-1">
     <div class="hf-stilo-card">
-      <div class="hf-stilo-logo">
-        <div class="hf-stilo-wordmark">
-          <span class="stilo-sti">sti</span><span class="stilo-bar">|</span><span class="stilo-o">o</span>
-        </div>
-        <div class="hf-stilo-sub">POLE DANCE<br>STUDIO</div>
-      </div>
+      <img class="hf-stilo-logo" src="assets/stilo-logo.svg" alt="Stilo Pole Dance Studio">
     </div>
   </div>
   <div class="hf hf-2"></div>
