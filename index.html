@@ -306,6 +306,7 @@
     #proj-overlay.open .pd-grid-item:nth-child(4){opacity:1;transform:none;transition-delay:.36s}
     #proj-overlay.open .pd-grid-item:nth-child(5){opacity:1;transform:none;transition-delay:.44s}
     #proj-overlay.open .pd-grid-item:nth-child(6){opacity:1;transform:none;transition-delay:.52s}
+    #proj-overlay.open .pd-grid-item:nth-child(7){opacity:1;transform:none;transition-delay:.6s}
     .pd-grid-wide{grid-column:span 2;aspect-ratio:21/9}
     /* Business card mockup */
     .pd-mock-card{background:#ece8e1;display:flex;align-items:center;justify-content:center}
@@ -333,6 +334,10 @@
     .pd-mock-pattern{background:#d4c3ae;display:flex;align-items:center;justify-content:center;overflow:hidden}
     .pd-pattern-wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;opacity:.25;transform:rotate(-8deg) scale(1.3);width:140%;height:140%}
     .pd-pattern-wrap img{width:100%;height:auto;filter:brightness(0)}
+    /* Photo + logo overlay */
+    .pd-mock-photo{background:#1a1816;display:flex;align-items:center;justify-content:center}
+    .pd-mock-photo img.pd-photo-img{width:100%;height:100%;object-fit:contain;display:block}
+    .pd-photo-logo{position:absolute;bottom:24px;left:24px;width:clamp(80px,12%,140px);height:auto;filter:brightness(0) invert(1);opacity:.9}
 
     @media(max-width:768px){
       .pd-intro{padding:28px 20px 32px;height:100vh}
@@ -571,6 +576,12 @@
 
     <!-- Foto real -->
     <img class="pd-grid-item" src="assets/stilo-01.jpg" alt="Stilo Pole Dance Studio" style="object-fit:cover;width:100%;height:100%">
+
+    <!-- Foto con logo blanco -->
+    <div class="pd-grid-item pd-mock-photo">
+      <img class="pd-photo-img" src="assets/stilo-02.webp" alt="Stilo Pole Dance Studio">
+      <img class="pd-photo-logo" src="assets/stilo-logo.svg" alt="Stilo">
+    </div>
 
     <!-- Tarjeta de visita -->
     <div class="pd-grid-item pd-mock-card">
