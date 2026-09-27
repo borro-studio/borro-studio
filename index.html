@@ -265,7 +265,7 @@
     /* 1 — INTRO SCREEN (100vh dark, title as phrase) */
     .pd-intro{position:relative;height:100vh;min-height:480px;display:flex;flex-direction:column;justify-content:space-between;padding:52px 52px 48px;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.07)}
     /* Large decorative circle — top right, stroke only */
-    .pd-intro-circle{position:absolute;top:-18vw;right:-18vw;width:52vw;height:52vw;border-radius:50%;background:transparent;border:18px solid rgba(236,232,225,.55);opacity:0;transform:scale(.9);transition:opacity .9s .05s ease,transform .9s .05s cubic-bezier(.16,1,.3,1)}
+    .pd-intro-circle{position:absolute;top:-12vw;right:-12vw;width:42vw;height:42vw;border-radius:50%;background:transparent;border:36px solid rgba(236,232,225,.5);opacity:0;transform:scale(.9);transition:opacity .9s .05s ease,transform .9s .05s cubic-bezier(.16,1,.3,1)}
     #proj-overlay.open .pd-intro-circle{opacity:1;transform:scale(1)}
     /* Top block: title + volver */
     .pd-intro-top{position:relative;z-index:1;overflow:hidden}
@@ -309,7 +309,7 @@
 
     @media(max-width:768px){
       .pd-intro{padding:28px 20px 32px;height:100vh}
-      .pd-intro-circle{top:-40vw;right:-40vw;width:110vw;height:110vw}
+      .pd-intro-circle{top:-28vw;right:-28vw;width:88vw;height:88vw;border-width:24px}
       .pd-intro-title{font-size:clamp(40px,12vw,80px)}
       .pd-intro-footer{flex-direction:column;align-items:flex-start;gap:20px}
       .pd-intro-meta{gap:24px}
