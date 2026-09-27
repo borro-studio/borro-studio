@@ -337,7 +337,7 @@
     /* Photo + logo overlay */
     .pd-mock-photo{background:#1a1816;display:flex;align-items:center;justify-content:center}
     .pd-mock-photo img.pd-photo-img{width:100%;height:100%;object-fit:contain;display:block}
-    .pd-photo-logo{position:absolute;bottom:24px;left:24px;width:clamp(80px,12%,140px);height:auto;filter:brightness(0) invert(1);opacity:.9}
+    .pd-photo-logo{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:clamp(100px,16%,180px);height:auto;filter:brightness(0) invert(1);opacity:.9}
 
     @media(max-width:768px){
       .pd-intro{padding:28px 20px 32px;height:100vh}
@@ -574,51 +574,20 @@
   <!-- 3. IMAGE GRID -->
   <div class="pd-grid">
 
-    <!-- Foto con logo blanco -->
+    <!-- Bailarina con logo -->
     <div class="pd-grid-item pd-mock-photo">
       <img class="pd-photo-img" src="assets/stilo-02.webp" alt="Stilo Pole Dance Studio">
       <img class="pd-photo-logo" src="assets/stilo-logo.svg" alt="Stilo">
     </div>
 
-    <!-- Tarjeta de visita -->
-    <div class="pd-grid-item pd-mock-card">
-      <div class="pd-bc">
-        <img src="assets/stilo-logo.svg" alt="Stilo">
-      </div>
-    </div>
+    <!-- Phone mockup -->
+    <img class="pd-grid-item" src="assets/stilo-03.webp" alt="Stilo app mockup" style="object-fit:cover;width:100%;height:100%">
 
-    <!-- Paleta de colores (full width) -->
-    <div class="pd-grid-item pd-grid-wide pd-mock-palette">
-      <div class="pd-sw" style="background:#d4c3ae"><span class="pd-sw-label" style="color:#353435">Beige<br>#D4C3AE</span></div>
-      <div class="pd-sw" style="background:#353435"><span class="pd-sw-label" style="color:#d4c3ae">Oscuro<br>#353435</span></div>
-      <div class="pd-sw" style="background:#ece8e1"><span class="pd-sw-label" style="color:#353435">Crema<br>#ECE8E1</span></div>
-      <div class="pd-sw" style="background:#fff"><span class="pd-sw-label" style="color:#353435">Blanco<br>#FFFFFF</span></div>
-      <div class="pd-sw" style="background:#0d0d0d"><span class="pd-sw-label" style="color:#ece8e1">Negro<br>#0D0D0D</span></div>
-    </div>
+    <!-- Sudadera (full width) -->
+    <img class="pd-grid-item pd-grid-wide" src="assets/stilo-04.webp" alt="Stilo sweatshirt" style="object-fit:cover;width:100%;height:100%">
 
-    <!-- Mockup phone (Instagram story) -->
-    <div class="pd-grid-item pd-mock-phone">
-      <div class="pd-phone">
-        <div class="pd-phone-screen">
-          <img src="assets/stilo-logo.svg" alt="Stilo">
-        </div>
-      </div>
-    </div>
-
-    <!-- Tipografía -->
-    <div class="pd-grid-item pd-mock-typo">
-      <div class="pd-typo-aa">Aa</div>
-      <div class="pd-typo-meta">
-        <div class="pd-typo-name">Inter · Helvetica</div>
-        <div class="pd-typo-weights">
-          <span style="font-weight:300">Light 300</span>
-          <span style="font-weight:500">Medium 500</span>
-          <span style="font-weight:700">Bold 700</span>
-          <span style="font-weight:900">Black 900</span>
-        </div>
-        <div class="pd-typo-abc">ABCDEFGHIJKLMNOPQRS</div>
-      </div>
-    </div>
+    <!-- Tote bag -->
+    <img class="pd-grid-item pd-grid-wide" src="assets/stilo-05.webp" alt="Stilo tote bag" style="object-fit:cover;width:100%;height:100%">
 
   </div>
 </div>
