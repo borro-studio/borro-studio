@@ -193,9 +193,10 @@
 
     /* ── TABLET / MOBILE ── */
     @media(max-width:768px){
-      nav{padding:18px 20px}
-      .n-logo svg{height:52px}
-      .mo-logo svg{height:52px}
+      nav{padding:20px 20px}
+      .n-logo svg{height:60px}
+      .mo-logo svg{height:60px}
+      .n-menu-btn{font-size:clamp(20px,5vw,28px)}
       #menu-overlay{padding:18px 20px 40px}
 
       #hero-hl{
@@ -214,8 +215,8 @@
       .wk-row{gap:10px}
 
       .sv-ar{display:none}
-      #sv{grid-template-columns:1fr;gap:40px 0;padding:60px 24px}
-      #ct{flex-direction:column;align-items:flex-start;gap:40px;padding:60px 24px}
+      #sv{display:flex;flex-direction:column;justify-content:center;gap:32px}
+      #ct{flex-direction:column;align-items:flex-start;justify-content:center;gap:32px}
       .ct-links{align-items:flex-start}
 
       .cl-nm{font-size:clamp(18px,5vw,32px)}
@@ -225,9 +226,10 @@
 
     /* ── SMALL MOBILE ── */
     @media(max-width:480px){
-      nav{padding:16px 18px;gap:12px}
-      .n-logo svg{height:30px}
-      .mo-logo svg{height:30px}
+      nav{padding:18px 18px;gap:12px}
+      .n-logo svg{height:44px}
+      .mo-logo svg{height:44px}
+      .n-menu-btn{font-size:clamp(22px,6vw,28px)}
       #menu-overlay{padding:16px 18px 36px}
 
       #hero-hl{
@@ -646,7 +648,7 @@ window.addEventListener('scroll', () => {
     const y = Math.max(0, window.scrollY);
     const scrollDir = y >= lastY ? 'down' : 'up';
     lastY = y;
-    navEl.style.transform = (y > 2 * H && scrollDir === 'down') ? 'translateY(-110%)' : 'translateY(0)';
+    navEl.style.transform = (y > 2 * H && scrollDir === 'down' && window.innerWidth > 768) ? 'translateY(-110%)' : 'translateY(0)';
     const max = document.documentElement.scrollHeight - H;
     progEl.style.width = (y / max * 100) + '%';
 
