@@ -288,9 +288,12 @@
     .pd-logo-bg{display:flex;align-items:center;justify-content:center;width:100%}
     .pd-stilo-logo{width:clamp(160px,28vw,360px);height:auto;display:block;opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
     #proj-overlay.open .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.1s}
-    .hf-stilo-card{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+    .hf-stilo-card{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
     .hf-stilo-logo{width:clamp(120px,22vw,220px);height:auto;display:block;opacity:0;transform:scale(.96);transition:opacity .6s ease,transform .6s cubic-bezier(.22,1,.36,1)}
     .hf-1.full .hf-stilo-logo{opacity:1;transform:scale(1)}
+    .hf-1 .hf-inner::before{display:none}
+    .hf-1 .proj-title{font-family:Helvetica,Arial,sans-serif;color:#2c2420}
+    .hf-1 .proj-cat{color:rgba(44,36,32,.45)}
 
     /* 3 — IMAGE GRID */
     .pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:#0d0d0d}
@@ -542,6 +545,12 @@
   <div class="hf hf-1">
     <div class="hf-stilo-card">
       <img class="hf-stilo-logo" src="assets/stilo-logo.svg" alt="Stilo Pole Dance Studio">
+    </div>
+    <div class="hf-inner">
+      <div class="hf-text">
+        <div class="proj-title">Stilo Pole Dance<br>Studio.</div>
+        <div class="proj-cat">Identidad Corporativa · 2025</div>
+      </div>
     </div>
   </div>
   <div class="hf hf-2"></div>
