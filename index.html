@@ -712,7 +712,7 @@ document.querySelectorAll('.mo-link').forEach(el => {
     e.preventDefault();
     closeMenu();
     const mult = parseInt(el.dataset.target, 10);
-    window.scrollTo({ top: mult * window.innerHeight, behavior: 'smooth' });
+    window.scrollTo({ top: mult * H, behavior: 'smooth' });
   });
 });
 
@@ -782,8 +782,14 @@ PRELOAD_IMGS.forEach(src => {
 loadFallback = setTimeout(completeLoading, 6000);
 
 let resizeTimer;
+let lastResizeW = window.innerWidth;
 window.addEventListener('resize', () => {
-  H = window.innerHeight;
+  const newW = window.innerWidth;
+  const newH = window.innerHeight;
+  const widthChanged = newW !== lastResizeW;
+  lastResizeW = newW;
+  if (!widthChanged && Math.abs(newH - H) < 120) return; // ignora el browser chrome en móvil
+  H = newH;
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
     H = window.innerHeight;
