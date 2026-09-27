@@ -650,7 +650,7 @@ window.addEventListener('scroll', () => {
     const y = Math.max(0, window.scrollY);
     const scrollDir = y >= lastY ? 'down' : 'up';
     lastY = y;
-    navEl.style.transform = (y > 2 * H && scrollDir === 'down' && window.innerWidth > 768) ? 'translateY(-110%)' : 'translateY(0)';
+    navEl.style.transform = 'translateY(0)';
     const max = document.documentElement.scrollHeight - H;
     progEl.style.width = (y / max * 100) + '%';
 
