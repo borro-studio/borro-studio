@@ -168,13 +168,14 @@
 
     /* ── CONTACTO ── */
     #ct{background:#080808;display:flex;flex-direction:row;align-items:center;justify-content:space-between;padding:80px 52px;gap:60px;overflow:hidden}
-    .ct-bg-star{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:clamp(600px,95vw,1400px);height:clamp(300px,47.5vw,700px);overflow:hidden;pointer-events:none;z-index:0}
+    .ct-bg-star{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:clamp(380px,55vw,780px);height:clamp(190px,27.5vw,390px);overflow:hidden;pointer-events:none;z-index:0}
     .ct-bg-star svg{width:100%;height:auto;display:block;transform:translateY(110%);transition:transform 1.1s .6s cubic-bezier(.16,1,.3,1)}
     .slide.active .ct-bg-star svg{transform:translateY(0)}
     @media(max-width:768px){
-      .ct-bg-star{bottom:auto;top:50%;left:-30vw;transform:translateY(-50%) rotate(-12deg);width:130vw;height:65vw}
-      .ct-bg-star svg{height:auto;transform:translateX(-115%);transition:transform 1.1s .6s cubic-bezier(.16,1,.3,1)}
-      .slide.active .ct-bg-star svg{transform:translateX(0)}
+      .ct-bg-star{bottom:auto;top:50%;left:-10vw;transform:translateX(-110vw) translateY(-50%) rotate(-12deg);width:80vw;height:40vw;transition:transform 1.1s .6s cubic-bezier(.16,1,.3,1)}
+      .slide.active .ct-bg-star{transform:translateX(0) translateY(-50%) rotate(-12deg)}
+      .ct-bg-star svg{height:auto;transform:none!important;transition:none!important}
+      .slide.active .ct-bg-star svg{transform:none!important}
     }
     .ct-hd,.ct-links{position:relative;z-index:1}
     .ct-hd{margin-bottom:0;flex-shrink:0}
