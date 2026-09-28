@@ -81,7 +81,7 @@
     .hf-inner::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,rgba(0,0,0,.08) 55%,transparent 100%)}
     .hf-text{position:relative;opacity:0;transform:translateY(24px);transition:opacity .45s ease,transform .45s cubic-bezier(.22,1,.36,1)}
     .hf-1.full .hf-text{opacity:1;transform:translateY(0)}
-    .hf-1{background:#d4c3ae;background-image:none!important}
+    .hf-1{background:#d4c3ae;background-image:url('assets/stilo-pole-h.webp')!important;background-size:cover;background-position:center}
     .hf-2{background-color:#121b30;background-image:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
     .hf-3{background-color:#2e160a;background-image:url('https://images.unsplash.com/photo-1509815017432-ed21ad98d42b?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
     .hf-4{background-color:#1a1028;background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
@@ -255,10 +255,9 @@
 
       .s4-title{font-size:clamp(28px,10vw,60px)}
 
-      .hf-stilo-logo-wrap{left:20px;width:52%;transform:translateY(-55%)}
-      .hf-stilo-pole{right:6%;width:clamp(22px,6vw,34px)}
-      .hf-stilo-wall-shadow{right:calc(6% - 50px);width:90px}
-      .hf-1 .hf-inner{right:14%}
+      .hf-1{background-image:url('assets/stilo-pole-v.jpg')!important;background-position:left center}
+      .hf-stilo-logo-wrap{left:18px;width:50%;transform:translateY(-55%)}
+      .hf-1 .hf-inner{right:10%}
     }
 
     /* ── PROJECT OVERLAY ── */
@@ -300,8 +299,6 @@
     #proj-overlay.open .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.1s}
     .hf-stilo-logo-wrap{position:absolute;top:50%;left:clamp(28px,5vw,60px);transform:translateY(-58%);width:38%;z-index:2;pointer-events:none}
     .hf-stilo-logo{width:100%;height:auto;display:block}
-    .hf-stilo-wall-shadow{position:absolute;top:0;bottom:0;right:calc(18% - 60px);width:120px;background:linear-gradient(to right,transparent 0%,rgba(90,65,30,.10) 30%,rgba(90,65,30,.22) 75%,rgba(90,65,30,.08) 90%,transparent 100%);z-index:3;pointer-events:none}
-    .hf-stilo-pole{position:absolute;top:0;bottom:0;right:18%;width:13px;z-index:4;background:linear-gradient(to right,#1e150a 0%,#4a3318 6%,#8a6e40 14%,#c8a860 24%,#ede0c0 36%,#faf6ee 46%,#f0e8d4 52%,#d4c090 62%,#9a7c50 75%,#5a4025 88%,#2a1a08 100%);border-radius:50%}
     .hf-1 .hf-inner{right:22%}
     .hf-1 .hf-inner::before{display:none}
     .hf-1 .proj-title{font-family:Helvetica,Arial,sans-serif;color:#2c2420}
@@ -618,8 +615,6 @@
     <div class="hf-stilo-logo-wrap">
       <img class="hf-stilo-logo" src="assets/stilo-logo.svg" alt="Stilo Pole Dance Studio">
     </div>
-    <div class="hf-stilo-wall-shadow"></div>
-    <div class="hf-stilo-pole"></div>
     <div class="hf-inner">
       <div class="hf-text">
         <div class="proj-title">Stilo Pole Dance<br>Studio.</div>
