@@ -258,6 +258,9 @@
       .hf-1{background-image:url('assets/stilo-pole-v.jpg')!important;background-position:left center}
       .hf-stilo-logo-wrap{display:none}
       .hf-stilo-tap{display:block;animation:stilo-tap 2s ease-in-out infinite}
+    }
+    @media(max-width:768px){
+      .hf-stilo-tap{display:block;animation:stilo-tap 2s ease-in-out infinite}
       .hf-1 .hf-inner{right:12%}
     }
 
@@ -300,7 +303,7 @@
     #proj-overlay.open .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.1s}
     .hf-stilo-logo-wrap{position:absolute;top:50%;left:clamp(32px,6vw,80px);transform:translateY(-58%);width:clamp(110px,18vw,240px);z-index:2;pointer-events:none}
     .hf-stilo-logo{width:100%;height:auto;display:block}
-    .hf-stilo-tap{display:none;margin-bottom:14px}
+    .hf-stilo-tap{display:none;position:absolute;bottom:130px;left:0;right:0;z-index:6;text-align:center}
     @keyframes stilo-tap{0%,100%{transform:translateY(0);opacity:.5}40%{transform:translateY(5px);opacity:.9}60%{transform:translateY(0);opacity:.5}}
     .hf-1 .hf-inner{right:22%}
     .hf-1 .hf-inner::before{display:none}
@@ -618,15 +621,15 @@
     <div class="hf-stilo-logo-wrap">
       <img class="hf-stilo-logo" src="assets/stilo-logo.svg" alt="Stilo Pole Dance Studio">
     </div>
+    <div class="hf-stilo-tap">
+      <svg width="28" height="40" viewBox="0 0 28 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="9" y="0" width="10" height="22" rx="5" fill="rgba(44,36,32,.55)"/>
+        <rect x="7" y="16" width="14" height="18" rx="7" fill="rgba(44,36,32,.55)"/>
+        <rect x="0"  y="20" width="8"  height="12" rx="4" fill="rgba(44,36,32,.4)"/>
+        <rect x="20" y="20" width="8"  height="12" rx="4" fill="rgba(44,36,32,.4)"/>
+      </svg>
+    </div>
     <div class="hf-inner">
-      <div class="hf-stilo-tap">
-        <svg width="28" height="40" viewBox="0 0 28 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="9" y="0" width="10" height="22" rx="5" fill="rgba(44,36,32,.55)"/>
-          <rect x="7" y="16" width="14" height="18" rx="7" fill="rgba(44,36,32,.55)"/>
-          <rect x="0"  y="20" width="8"  height="12" rx="4" fill="rgba(44,36,32,.4)"/>
-          <rect x="20" y="20" width="8"  height="12" rx="4" fill="rgba(44,36,32,.4)"/>
-        </svg>
-      </div>
       <div class="hf-text">
         <div class="proj-title">Stilo Pole Dance<br>Studio.</div>
         <div class="proj-cat">Identidad Corporativa · 2025</div>
