@@ -301,8 +301,13 @@
     #proj-overlay.open .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.1s}
     .hf-stilo-logo-wrap{position:absolute;top:50%;left:clamp(32px,6vw,80px);transform:translateY(-58%);width:clamp(110px,18vw,240px);z-index:2;pointer-events:none}
     .hf-stilo-logo{width:100%;height:auto;display:block}
-    .hf-stilo-tap{position:absolute;bottom:130px;left:0;right:0;z-index:6;text-align:center;animation:stilo-tap 2s ease-in-out infinite}
-    @keyframes stilo-tap{0%,100%{transform:translateY(0);opacity:.5}40%{transform:translateY(6px);opacity:1}60%{transform:translateY(0);opacity:.5}}
+    .hf-stilo-tap{position:absolute;bottom:130px;left:0;right:0;z-index:6;display:flex;justify-content:center;align-items:center}
+    .hf-stilo-ripple{position:relative;width:44px;height:44px}
+    .hf-stilo-ripple::before,.hf-stilo-ripple::after{content:'';position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(44,36,32,.4);animation:stilo-ripple 2s cubic-bezier(.2,.6,.4,1) infinite}
+    .hf-stilo-ripple::after{animation-delay:.75s}
+    .hf-stilo-ripple-dot{position:absolute;inset:0;margin:auto;width:10px;height:10px;border-radius:50%;background:rgba(44,36,32,.55);animation:stilo-dot 2s ease-in-out infinite}
+    @keyframes stilo-ripple{0%{transform:scale(.4);opacity:.8}100%{transform:scale(2.4);opacity:0}}
+    @keyframes stilo-dot{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(.85);opacity:.45}}
     @media(min-width:769px){.hf-stilo-tap{display:none}}
     .hf-1 .hf-inner{right:22%}
     .hf-1 .hf-inner::before{display:none}
@@ -621,12 +626,9 @@
       <img class="hf-stilo-logo" src="assets/stilo-logo.svg" alt="Stilo Pole Dance Studio">
     </div>
     <div class="hf-stilo-tap">
-      <svg width="40" height="56" viewBox="0 0 28 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="9" y="0" width="10" height="22" rx="5" fill="rgba(44,36,32,.65)"/>
-        <rect x="7" y="16" width="14" height="18" rx="7" fill="rgba(44,36,32,.65)"/>
-        <rect x="0"  y="20" width="8"  height="12" rx="4" fill="rgba(44,36,32,.45)"/>
-        <rect x="20" y="20" width="8"  height="12" rx="4" fill="rgba(44,36,32,.45)"/>
-      </svg>
+      <div class="hf-stilo-ripple">
+        <div class="hf-stilo-ripple-dot"></div>
+      </div>
     </div>
     <div class="hf-inner">
       <div class="hf-text">
