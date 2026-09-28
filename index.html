@@ -293,8 +293,11 @@
     .pd-logo-bg{display:flex;align-items:center;justify-content:center;width:100%}
     .pd-stilo-logo{width:clamp(120px,40vw,360px);height:auto;display:block;opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
     #proj-overlay.open .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.1s}
-    .hf-stilo-card{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
-    .hf-stilo-logo{width:clamp(120px,22vw,220px);height:auto;display:block;opacity:1;transform:scale(1)}
+    .hf-stilo-logo-wrap{position:absolute;top:50%;left:clamp(28px,5vw,60px);transform:translateY(-58%);width:38%;z-index:2;pointer-events:none}
+    .hf-stilo-logo{width:100%;height:auto;display:block}
+    .hf-stilo-wall-shadow{position:absolute;top:0;bottom:0;right:calc(18% - 60px);width:120px;background:linear-gradient(to right,transparent 0%,rgba(90,65,30,.10) 30%,rgba(90,65,30,.22) 75%,rgba(90,65,30,.08) 90%,transparent 100%);z-index:3;pointer-events:none}
+    .hf-stilo-pole{position:absolute;top:0;bottom:0;right:18%;width:13px;z-index:4;background:linear-gradient(to right,#1e150a 0%,#4a3318 6%,#8a6e40 14%,#c8a860 24%,#ede0c0 36%,#faf6ee 46%,#f0e8d4 52%,#d4c090 62%,#9a7c50 75%,#5a4025 88%,#2a1a08 100%);border-radius:50%}
+    .hf-1 .hf-inner{right:22%}
     .hf-1 .hf-inner::before{display:none}
     .hf-1 .proj-title{font-family:Helvetica,Arial,sans-serif;color:#2c2420}
     .hf-1 .proj-cat{color:rgba(44,36,32,.45)}
@@ -607,9 +610,11 @@
 <!-- HERO FRAMES — floating project cards, organize on scroll -->
 <div id="hero-frames">
   <div class="hf hf-1">
-    <div class="hf-stilo-card">
+    <div class="hf-stilo-logo-wrap">
       <img class="hf-stilo-logo" src="assets/stilo-logo.svg" alt="Stilo Pole Dance Studio">
     </div>
+    <div class="hf-stilo-wall-shadow"></div>
+    <div class="hf-stilo-pole"></div>
     <div class="hf-inner">
       <div class="hf-text">
         <div class="proj-title">Stilo Pole Dance<br>Studio.</div>
