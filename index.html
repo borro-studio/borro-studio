@@ -301,14 +301,15 @@
     #proj-overlay.open .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.1s}
     .hf-stilo-logo-wrap{position:absolute;top:50%;left:clamp(32px,6vw,80px);transform:translateY(-58%);width:clamp(110px,18vw,240px);z-index:2;pointer-events:none}
     .hf-stilo-logo{width:100%;height:auto;display:block}
-    .hf-stilo-tap{position:absolute;bottom:130px;left:0;right:0;z-index:6;display:flex;justify-content:center;align-items:center}
+    .hf-stilo-tap{position:absolute;bottom:150px;left:0;right:0;z-index:6;display:flex;justify-content:center;align-items:center;opacity:0;transition:opacity .5s ease;pointer-events:none}
+    .hf-stilo-tap.show{opacity:1}
     .hf-stilo-ripple{position:relative;width:44px;height:44px}
     .hf-stilo-ripple::before,.hf-stilo-ripple::after{content:'';position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(44,36,32,.4);animation:stilo-ripple 2s cubic-bezier(.2,.6,.4,1) infinite}
     .hf-stilo-ripple::after{animation-delay:.75s}
     .hf-stilo-ripple-dot{position:absolute;inset:0;margin:auto;width:10px;height:10px;border-radius:50%;background:rgba(44,36,32,.55);animation:stilo-dot 2s ease-in-out infinite}
     @keyframes stilo-ripple{0%{transform:scale(.4);opacity:.8}100%{transform:scale(2.4);opacity:0}}
     @keyframes stilo-dot{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(.85);opacity:.45}}
-    @media(min-width:769px){.hf-stilo-tap{display:none}}
+    @media(min-width:769px){.hf-stilo-tap{display:none!important}}
     .hf-1 .hf-inner{right:22%}
     .hf-1 .hf-inner::before{display:none}
     .hf-1 .proj-title{font-family:Helvetica,Arial,sans-serif;color:#2c2420}
@@ -845,6 +846,12 @@ function enterPhase(ph) {
     blobContent.style.transform = 'translate3d(0,0,0)';
     hfEls[0].classList.add('active', 'clickable', 'full');
     if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
+    const tapEl = document.querySelector('.hf-stilo-tap');
+    if (tapEl && !tapEl._shown) {
+      tapEl._shown = true;
+      requestAnimationFrame(() => { tapEl.classList.add('show'); });
+      setTimeout(() => { tapEl.classList.remove('show'); }, 5000);
+    }
   } else {
     clearStar();
     navLogoEl.style.color = '#fecd52';
