@@ -434,8 +434,9 @@
     #proj-overlay-2 .pd-logo-section{background:#2d5382}
     /* ENE palette swatches */
     #proj-overlay-2 .pd-typo-aa{color:#bacede}
-    /* p2 clickable */
+    /* p2 clickable + reduce dark gradient over blue photo */
     #p2{cursor:none}
+    @media(min-width:769px){#p2 .proj-over{background:linear-gradient(to top,rgba(0,0,0,.28) 0%,rgba(0,0,0,.04) 45%,transparent 100%)}}
     #p2.active .proj-title,#p2.active .proj-cat,#p2.active .proj-year{cursor:none}
   </style>
 </head>
@@ -1136,8 +1137,9 @@ window.addEventListener('scroll', () => {
         : Math.min(Math.floor((contentY + H * 0.2) / H), N_CONTENT - 1);
       setDot(1 + idx);
       activateSlide(idx);
-      navLogoEl.style.color = '#fecd52';
-      navMenuBtn.style.color = '#fecd52';
+      const navCol = idx === 1 ? '#fff' : '#fecd52';
+      navLogoEl.style.color = navCol;
+      navMenuBtn.style.color = navCol;
     }
   });
 }, { passive: true });
