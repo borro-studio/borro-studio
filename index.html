@@ -86,7 +86,9 @@
     .hf-1-bg-h{transform:scaleX(-1);object-position:center}
     .hf-1-bg-v{object-position:left center;display:none}
     .hf-2{background:#7ba7c4}
-    .hf-2-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;z-index:0;object-position:center}
+    .hf-2-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;z-index:0}
+    .hf-2-bg-h{object-position:center}
+    .hf-2-bg-v{object-position:center top;display:none}
     .hf-2 .hf-inner{right:22%}
     .hf-2 .hf-inner::before{display:none}
     .hf-2 .proj-title{font-family:Helvetica,Arial,sans-serif;font-weight:300;color:#fff}
@@ -267,6 +269,8 @@
       .hf-1-bg-h{display:none}
       .hf-1-bg-v{display:block}
       .hf-stilo-logo-wrap{display:none}
+      .hf-2-bg-h{display:none}
+      .hf-2-bg-v{display:block}
     }
     @media(max-width:768px){
       .hf-1 .hf-inner{right:12%;padding-bottom:28px;padding-left:20px}
@@ -830,7 +834,8 @@
     </div>
   </div>
   <div class="hf hf-2">
-    <img class="hf-2-bg" src="assets/ene-card-h.webp" alt="">
+    <img class="hf-2-bg hf-2-bg-h" src="assets/ene-card-h.webp" alt="">
+    <img class="hf-2-bg hf-2-bg-v" src="assets/ene-card-v.webp" alt="">
     <div class="hf-inner">
       <div class="hf-text">
         <div class="proj-title">ENE<br>Fisioterapia.</div>
@@ -1128,8 +1133,10 @@ window.addEventListener('scroll', () => {
         : Math.min(Math.floor((contentY + H * 0.2) / H), N_CONTENT - 1);
       setDot(1 + idx);
       activateSlide(idx);
-      navLogoEl.style.color = '#fecd52';
-      navMenuBtn.style.color = '#fecd52';
+      // White nav on ENE slide (idx 1 = p2), yellow elsewhere
+      const navCol = idx === 1 ? '#fff' : '#fecd52';
+      navLogoEl.style.color = navCol;
+      navMenuBtn.style.color = navCol;
     }
   });
 }, { passive: true });
