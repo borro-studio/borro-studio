@@ -941,7 +941,7 @@ function applyMask() {
   starCanvas.style.opacity = '1';
   blobContent.style.transform = 'translate3d(0,0,0)';
   blobWin.style.opacity = '0';
-  document.getElementById('spacer').style.height = (N_CONTENT + 5) * H + 'px';
+  document.getElementById('spacer').style.height = (N_CONTENT + 3) * H + 'px';
   posFrames(0);
   hfEl.style.opacity = '1';
 }
@@ -1006,22 +1006,6 @@ function zoomFrame1(zp) {
   hfEls[2].classList.remove('clickable');
 }
 
-function zoomFrame2(zp) {
-  const e = eio(Math.min(1, zp));
-  const lrp = (a,b) => (a + (b-a)*e).toFixed(3);
-  // hf-1 slides left and shrinks back; hf-2 zooms to center full
-  hfEls[0].style.transform = `translate(calc(-50% + ${lrp(0,-16)}vw),calc(-50% + 0vh)) scale(${lrp(1.0,0.28)}) rotate(${lrp(0,-4)}deg)`;
-  hfEls[0].style.zIndex = '3';
-  hfEls[1].style.transform = `translate(calc(-50% + ${lrp(0,0)}vw),calc(-50% + 0vh)) scale(${lrp(0.28,1.0)}) rotate(0deg)`;
-  hfEls[1].style.zIndex = '4';
-  hfEls[2].style.transform = `translate(calc(-50% + 16vw),calc(-50% + 0vh)) scale(0.21) rotate(4deg)`;
-  hfEls[2].style.zIndex = '2';
-  hfEls[3].style.transform = `translate(calc(-50% + -8vw),calc(-50% + 14vh)) scale(0.18) rotate(-5deg)`;
-  hfEls[3].style.zIndex = '1';
-  hfEls[0].classList.remove('clickable','full');
-  hfEls[1].classList.toggle('clickable', zp > 0.92);
-  hfEls[1].classList.toggle('full', zp > 0.92);
-}
 
 /* ══════════════════════════════════════
    SCROLL — pure GPU properties only during animation (mask-size + opacity)
@@ -1073,30 +1057,6 @@ function enterPhase(ph) {
       tapEl.classList.add('show');
       tapEl._tapTimer = setTimeout(() => { tapEl.classList.remove('show'); }, 5000);
     }
-  } else if (ph === 5) {
-    clearStar();
-    heroHl.style.opacity = '0';
-    scuEl.style.opacity = '0';
-    hfEl.style.zIndex = '13';
-    hfEl.style.opacity = '1';
-    blobWin.style.opacity = '0';
-    blobContent.style.transform = 'translate3d(0,0,0)';
-    hfEls[0].classList.remove('active','clickable','full');
-    hfEls[1].classList.remove('active');
-    if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
-  } else if (ph === 6) {
-    clearStar();
-    navLogoEl.style.color = '#fff';
-    navMenuBtn.style.color = '#fff';
-    heroHl.style.opacity = '0';
-    scuEl.style.opacity = '0';
-    hfEl.style.zIndex = '13';
-    hfEl.style.opacity = '1';
-    blobWin.style.opacity = '0';
-    blobContent.style.transform = 'translate3d(0,0,0)';
-    hfEls[0].classList.remove('active','clickable','full');
-    hfEls[1].classList.add('active','clickable','full');
-    if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
   } else {
     clearStar();
     navLogoEl.style.color = '#fecd52';
@@ -1166,31 +1126,9 @@ window.addEventListener('scroll', () => {
       zoomFrame1(1);
       setDot(0);
 
-    } else if (y <= 4 * H) {
-      enterPhase(5);
-      const zp = (y - 3 * H) / H;
-      zoomFrame2(zp);
-      if (zp > 0.82) {
-        const t = Math.min(1, (zp - 0.82) / 0.18);
-        const r = Math.round(0x35 + (0xff - 0x35) * t);
-        const g = Math.round(0x34 + (0xff - 0x34) * t);
-        const b = Math.round(0x35 + (0xff - 0x35) * t);
-        navLogoEl.style.color = `rgb(${r},${g},${b})`;
-        navMenuBtn.style.color = `rgb(${r},${g},${b})`;
-      } else {
-        navLogoEl.style.color = '#353435';
-        navMenuBtn.style.color = '#353435';
-      }
-      setDot(0);
-
-    } else if (y <= 5 * H) {
-      enterPhase(6);
-      zoomFrame2(1);
-      setDot(0);
-
     } else {
       enterPhase(3);
-      const contentY = y - 5 * H;
+      const contentY = y - 3 * H;
       hfEl.style.opacity = Math.max(0, 1 - Math.max(0, contentY - H * 0.7) / (H * 0.3)).toFixed(3);
       blobContent.style.transform = `translate3d(0,${-contentY}px,0)`;
       const idx = contentY < H * 0.05
@@ -1338,9 +1276,6 @@ function closeProj2() {
   }, 140);
 }
 
-hfEls[1].addEventListener('click', () => {
-  if (hfEls[1].classList.contains('clickable')) openProj2();
-});
 document.getElementById('p2').addEventListener('click', openProj2);
 projClose2.addEventListener('click', closeProj2);
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && projOverlay2.classList.contains('open')) closeProj2(); });
@@ -1398,7 +1333,7 @@ window.addEventListener('resize', () => {
   resizeTimer = setTimeout(() => {
     H = window.innerHeight;
     document.documentElement.style.setProperty('--vh', H * 0.01 + 'px');
-    document.getElementById('spacer').style.height = (N_CONTENT + 5) * H + 'px';
+    document.getElementById('spacer').style.height = (N_CONTENT + 3) * H + 'px';
     resizeStarCanvas();
     if (window.scrollY < 5) {
       drawStar(0);
