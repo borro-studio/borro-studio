@@ -847,10 +847,10 @@ function enterPhase(ph) {
     hfEls[0].classList.add('active', 'clickable', 'full');
     if (lastActiveIdx >= 0) { if (slides[lastActiveIdx]) slides[lastActiveIdx].classList.remove('active'); lastActiveIdx = -1; }
     const tapEl = document.querySelector('.hf-stilo-tap');
-    if (tapEl && !tapEl._shown) {
-      tapEl._shown = true;
-      requestAnimationFrame(() => { tapEl.classList.add('show'); });
-      setTimeout(() => { tapEl.classList.remove('show'); }, 5000);
+    if (tapEl) {
+      clearTimeout(tapEl._tapTimer);
+      tapEl.classList.add('show');
+      tapEl._tapTimer = setTimeout(() => { tapEl.classList.remove('show'); }, 5000);
     }
   } else {
     clearStar();
