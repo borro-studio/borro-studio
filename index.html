@@ -15,7 +15,7 @@
   <meta name="theme-color" content="#000000"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=Playfair+Display:ital,wght@0,400;1,400;1,700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=Playfair+Display:ital,wght@0,400;1,400;1,700&family=Fraunces:opsz,wght@9..144,900&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     html{height:100%;background:#000}
@@ -434,10 +434,57 @@
     #proj-overlay-2 .pd-im-label{color:rgba(255,255,255,.5)}
     #proj-overlay-2 .pd-im-val{color:#fff}
     #proj-overlay-2 .pd-intro-footer{border-top-color:rgba(255,255,255,.2)}
-    /* ENE logo section bg */
-    #proj-overlay-2 .pd-logo-section{background:#2d5382}
-    /* ENE palette swatches */
-    #proj-overlay-2 .pd-typo-aa{color:#bacede}
+    /* ── ENE GRID NUEVO ── */
+    .pd-ene-grid{background:#0d1f35}
+    /* ROW 1 — Hero isotipo */
+    .pd-ene-hero{position:relative;min-height:70vh;background:#4a6e9a;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .pd-ene-swatches{position:absolute;top:24px;right:24px;display:flex;gap:5px}
+    .pd-ene-sw{width:28px;height:28px}
+    .pd-ene-hero-mark{width:clamp(120px,22vw,260px);height:auto;display:block;filter:brightness(0) invert(1);opacity:.92}
+    /* ROW 2 — Trío */
+    .pd-ene-trio{display:flex;min-height:clamp(200px,34vw,440px)}
+    .pd-ene-trio-photo{flex:0 0 45%;overflow:hidden;position:relative;background:#2d5382}
+    .pd-ene-trio-photo img{width:100%;height:100%;object-fit:cover}
+    .pd-ene-trio-wm{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px}
+    .pd-ene-wm-light{background:#fff;color:#2d5382}
+    .pd-ene-wm-dark{background:#4a6e9a;color:#fff}
+    .pd-ene-wm-mark{width:clamp(36px,7vw,72px);height:auto;display:block}
+    .pd-ene-wm-light .pd-ene-wm-mark{filter:brightness(0) saturate(100%) invert(22%) sepia(35%) saturate(700%) hue-rotate(188deg)}
+    .pd-ene-wm-dark .pd-ene-wm-mark{filter:brightness(0) invert(1)}
+    .pd-ene-wm-sub{font-family:Helvetica,Arial,sans-serif;font-size:clamp(7px,1.1vw,11px);letter-spacing:.3em;font-weight:400}
+    /* ROW 3 — Dúo fisio card + foto overlay */
+    .pd-ene-duo{display:flex;min-height:clamp(320px,52vw,620px)}
+    .pd-ene-fisio-card{flex:0 0 50%;background:#4a6e9a;padding:clamp(24px,4.5vw,56px);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+    .pd-ene-ftype{font-family:'Fraunces',serif;font-size:clamp(56px,11vw,148px);font-weight:900;line-height:.86;color:#eef3f8;letter-spacing:-.02em;flex-shrink:0}
+    .pd-ene-fcard-footer{display:flex;flex-direction:column;gap:18px}
+    .pd-ene-fcard-rule{width:24px;height:2px;background:rgba(255,255,255,.45);margin-bottom:7px}
+    .pd-ene-fcard-job{font-family:Helvetica,Arial,sans-serif;font-size:clamp(8px,.9vw,10px);font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:#fff;margin-bottom:5px}
+    .pd-ene-fcard-desc{font-family:Helvetica,Arial,sans-serif;font-size:clamp(10px,1.1vw,13px);color:rgba(255,255,255,.65);line-height:1.55}
+    .pd-ene-fcard-contact{display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+    .pd-ene-fcard-name{font-family:Helvetica,Arial,sans-serif;font-size:clamp(11px,1.2vw,14px);font-weight:700;color:#fff;line-height:1.35}
+    .pd-ene-fcard-logo{width:clamp(28px,4vw,46px);height:auto;flex-shrink:0;filter:brightness(0) invert(1);opacity:.55}
+    /* Foto con overlay tipografía */
+    .pd-ene-photo-type{flex:1;position:relative;background:#bacede;overflow:hidden;display:flex;align-items:flex-start;padding:clamp(20px,3.5vw,44px)}
+    .pd-ene-photo-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+    .pd-ene-pt-overlay{font-family:'Fraunces',serif;font-size:clamp(48px,9.5vw,128px);font-weight:900;line-height:.86;color:rgba(255,255,255,.88);letter-spacing:-.02em;position:relative;z-index:1;pointer-events:none}
+    .pd-ene-pt-mark{position:absolute;bottom:clamp(18px,2.5vw,36px);left:clamp(20px,3.5vw,44px);width:clamp(26px,4vw,46px);height:auto;filter:brightness(0) invert(1);z-index:1}
+    /* ROW 4 — Isotipo claro + merch */
+    .pd-ene-duo-sm{display:flex;min-height:clamp(160px,26vw,320px)}
+    .pd-ene-mark-cell{flex:0 0 50%;background:#bacede;display:flex;align-items:center;justify-content:center}
+    .pd-ene-cell-mark{width:clamp(56px,11vw,130px);height:auto;filter:brightness(0) saturate(100%) invert(22%) sepia(35%) saturate(700%) hue-rotate(188deg)}
+    .pd-ene-merch-cell{flex:1;background:#0d1f35;display:flex;align-items:center;justify-content:center;padding:32px;overflow:hidden}
+    .pd-ene-mtype{font-family:'Fraunces',serif;font-size:clamp(44px,8.5vw,104px);font-weight:900;line-height:.86;color:rgba(255,255,255,.1);letter-spacing:-.02em;text-align:center}
+    @media(max-width:768px){
+      .pd-ene-hero{min-height:52vh}
+      .pd-ene-trio{flex-direction:column;min-height:auto}
+      .pd-ene-trio-photo{flex:none;min-height:52vw}
+      .pd-ene-trio-wm{min-height:120px;flex-direction:row;padding:16px}
+      .pd-ene-duo{flex-direction:column;min-height:auto}
+      .pd-ene-fisio-card{min-height:380px}
+      .pd-ene-photo-type{min-height:260px}
+      .pd-ene-duo-sm{flex-direction:column}
+      .pd-ene-mark-cell,.pd-ene-merch-cell{flex:none;min-height:140px}
+    }
     /* p2 clickable + reduce dark gradient over blue photo */
     #p2{cursor:none}
     #p2 .proj-over{background:linear-gradient(to top,rgba(0,0,0,.28) 0%,rgba(0,0,0,.04) 45%,transparent 100%)}
@@ -761,57 +808,68 @@
     </div>
   </div>
 
-  <!-- GRID -->
-  <div class="pd-grid">
+  <!-- GRID ENE -->
+  <div class="pd-ene-grid">
 
-    <!-- Paleta de colores -->
-    <div class="pd-grid-item pd-grid-wide pd-mock-palette">
-      <div class="pd-sw" style="background:#2d5382"><span class="pd-sw-label" style="color:#bacede">Azul<br>#2D5382</span></div>
-      <div class="pd-sw" style="background:#4a6e9a"><span class="pd-sw-label" style="color:#eef3f8">Medio<br>#4A6E9A</span></div>
-      <div class="pd-sw" style="background:#bacede"><span class="pd-sw-label" style="color:#1c3556">Claro<br>#BACED E</span></div>
-      <div class="pd-sw" style="background:#eef3f8"><span class="pd-sw-label" style="color:#2d5382">Fondo<br>#EEF3F8</span></div>
-      <div class="pd-sw" style="background:#0d1f35"><span class="pd-sw-label" style="color:#bacede">Oscuro<br>#0D1F35</span></div>
+    <!-- ROW 1: Hero isotipo + swatches -->
+    <div class="pd-ene-hero">
+      <div class="pd-ene-swatches">
+        <div class="pd-ene-sw" style="background:#2d5382"></div>
+        <div class="pd-ene-sw" style="background:#4a6e9a"></div>
+        <div class="pd-ene-sw" style="background:#bacede"></div>
+        <div class="pd-ene-sw" style="background:#eef3f8"></div>
+      </div>
+      <img src="assets/ene-logo.svg" alt="ENE" class="pd-ene-hero-mark">
     </div>
 
-    <!-- Logo sobre fondo azul -->
-    <div class="pd-grid-item pd-grid-wide pd-logo-section" style="aspect-ratio:unset;min-height:50vh">
-      <div class="pd-logo-bg">
-        <img class="pd-stilo-logo" src="assets/ene-logo.svg" alt="ENE Fisioterapia" style="color:#fff">
+    <!-- ROW 2: Foto tarjetas | Wordmark blanco | Wordmark azul -->
+    <div class="pd-ene-trio">
+      <div class="pd-ene-trio-photo">
+        <img src="assets/ene-card-h.webp" alt="ENE Fisioterapia tarjetas">
+      </div>
+      <div class="pd-ene-trio-wm pd-ene-wm-light">
+        <img src="assets/ene-logo.svg" alt="ENE" class="pd-ene-wm-mark">
+        <span class="pd-ene-wm-sub">FISIOTERAPIA</span>
+      </div>
+      <div class="pd-ene-trio-wm pd-ene-wm-dark">
+        <img src="assets/ene-logo.svg" alt="ENE" class="pd-ene-wm-mark">
+        <span class="pd-ene-wm-sub">FISIOTERAPIA</span>
       </div>
     </div>
 
-    <!-- Mockup tarjeta de visita -->
-    <div class="pd-grid-item pd-mock-card" style="background:#eef3f8">
-      <div class="pd-bc" style="background:#fff;transform:rotate(-4deg)">
-        <img src="assets/ene-logo.svg" style="width:60%;color:#2d5382">
-      </div>
-    </div>
-
-    <!-- Tipografía -->
-    <div class="pd-grid-item pd-mock-typo" style="background:#0d1f35">
-      <div class="pd-typo-aa">Aa</div>
-      <div class="pd-typo-meta">
-        <div class="pd-typo-name">Helvetica Neue</div>
-        <div class="pd-typo-weights">
-          <span style="font-weight:300">Light 300</span>
-          <span style="font-weight:400">Regular 400</span>
-          <span style="font-weight:700">Bold 700</span>
+    <!-- ROW 3: Tarjeta fisio | Foto con overlay -->
+    <div class="pd-ene-duo">
+      <div class="pd-ene-fisio-card">
+        <div class="pd-ene-ftype">fisio<br>tera<br>pia</div>
+        <div class="pd-ene-fcard-footer">
+          <div>
+            <div class="pd-ene-fcard-rule"></div>
+            <div class="pd-ene-fcard-job">FISIOTERAPEUTA</div>
+            <div class="pd-ene-fcard-desc">Atención integral<br>Especialización en suelo pélvico<br>y ejercicio terapéutico.</div>
+          </div>
+          <div class="pd-ene-fcard-contact">
+            <div>
+              <div class="pd-ene-fcard-rule"></div>
+              <div class="pd-ene-fcard-name">Oihane<br>Labayen<br>Zudaire<br>684808484</div>
+            </div>
+            <img src="assets/ene-logo.svg" alt="" class="pd-ene-fcard-logo">
+          </div>
         </div>
-        <div class="pd-typo-abc">ABCDEFGHIJKLMNOPQRSTUVWXYZ</div>
+      </div>
+      <div class="pd-ene-photo-type">
+        <img src="assets/ene-card-h.webp" alt="" class="pd-ene-photo-bg">
+        <div class="pd-ene-pt-overlay">fisio<br>tera<br>pia</div>
+        <img src="assets/ene-logo.svg" alt="" class="pd-ene-pt-mark">
       </div>
     </div>
 
-    <!-- Patrón / marca gráfica -->
-    <div class="pd-grid-item pd-grid-wide pd-mock-pattern" style="background:#2d5382;min-height:280px">
-      <div class="pd-pattern-wrap" style="opacity:.18">
-        <img src="assets/ene-logo.svg" style="color:#fff">
-        <img src="assets/ene-logo.svg" style="color:#fff">
-        <img src="assets/ene-logo.svg" style="color:#fff">
-        <img src="assets/ene-logo.svg" style="color:#fff">
-        <img src="assets/ene-logo.svg" style="color:#fff">
-        <img src="assets/ene-logo.svg" style="color:#fff">
-        <img src="assets/ene-logo.svg" style="color:#fff">
-        <img src="assets/ene-logo.svg" style="color:#fff">
+    <!-- ROW 4: Isotipo azul claro | Merch -->
+    <div class="pd-ene-duo-sm">
+      <div class="pd-ene-mark-cell">
+        <img src="assets/ene-logo.svg" alt="ENE" class="pd-ene-cell-mark">
+      </div>
+      <div class="pd-ene-merch-cell">
+        <div class="pd-ene-mtype">fisio<br>tera<br>pia</div>
       </div>
     </div>
 
