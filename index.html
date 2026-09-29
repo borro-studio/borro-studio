@@ -132,7 +132,7 @@
     #star-canvas{position:fixed;inset:0;z-index:15;pointer-events:none;transition:opacity .25s ease;}
 
     /* ── SLIDES ── */
-    .slide{width:100%;height:100vh;height:calc(var(--vh,1vh)*100);position:relative;overflow:hidden}
+    .slide{width:100%;height:100vh;height:100dvh;position:relative;overflow:hidden}
 
     /* ── REVEAL ANIMATIONS ── */
     /* clip-up title reveal */
@@ -1311,6 +1311,17 @@ PRELOAD_IMGS.forEach(src => {
 });
 
 loadFallback = setTimeout(completeLoading, 6000);
+
+/* visualViewport fires when iOS address bar shows/hides — update spacer/H silently */
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', () => {
+    const newH = Math.round(window.visualViewport.height);
+    if (Math.abs(newH - H) > 60) {
+      H = newH;
+      document.getElementById('spacer').style.height = (N_CONTENT + 3) * H + 'px';
+    }
+  });
+}
 
 let resizeTimer;
 let lastResizeW = window.innerWidth;
