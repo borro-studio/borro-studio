@@ -423,10 +423,17 @@
     #proj-overlay-2 .pd-film-logo.pf-dark{color:#1c3556}
     #proj-overlay-2 .pd-stilo-logo{width:clamp(120px,40vw,360px);height:auto;display:block;opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
     #proj-overlay-2.open .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.1s}
-    /* ENE overlay bg — dark brand blue */
-    #proj-overlay-2{background:#0d1f35}
-    /* ENE intro circle color */
-    #proj-overlay-2 .pd-intro-circle{border-color:rgba(186,206,222,.45)}
+    /* ENE overlay bg — medium brand blue */
+    #proj-overlay-2{background:#4a6e9a}
+    /* ENE intro — ocultar círculo genérico, usar logo como watermark */
+    #proj-overlay-2 .pd-intro-circle{display:none}
+    #proj-overlay-2 .pd-intro-wm{position:absolute;top:50%;left:58%;transform:translate(-50%,-50%);width:clamp(280px,62vw,780px);opacity:.22;pointer-events:none;color:#fff}
+    #proj-overlay-2 .pd-intro-wm img{width:100%;height:auto;display:block}
+    /* ENE intro — texto adaptado al fondo azul medio */
+    #proj-overlay-2 .pd-intro-desc{color:rgba(255,255,255,.75)}
+    #proj-overlay-2 .pd-im-label{color:rgba(255,255,255,.5)}
+    #proj-overlay-2 .pd-im-val{color:#fff}
+    #proj-overlay-2 .pd-intro-footer{border-top-color:rgba(255,255,255,.2)}
     /* ENE logo section bg */
     #proj-overlay-2 .pd-logo-section{background:#2d5382}
     /* ENE palette swatches */
@@ -707,6 +714,7 @@
   <!-- 1. INTRO -->
   <div class="pd-intro">
     <div class="pd-intro-circle"></div>
+    <div class="pd-intro-wm"><img src="assets/ene-logo.svg" alt=""></div>
     <div class="pd-intro-top">
       <div class="pd-intro-title-clip">
         <div class="pd-intro-title">ENE<br>Fisioterapia.</div>
