@@ -295,6 +295,28 @@
     .pd-im-label{font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.3)}
     .pd-im-val{font-family:Helvetica,Arial,sans-serif;font-size:clamp(12px,1.2vw,14px);font-weight:700;color:#fff;line-height:1.5}
 
+    /* ── FILM STRIP — logo positivo/negativo ── */
+    .pd-film{position:relative;width:100%;height:100vh;overflow:hidden}
+    .pd-film-frame{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;animation-play-state:paused}
+    #proj-overlay.open .pd-film-frame{animation-play-state:running}
+    .pff-3::before,.pff-5::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.28);z-index:0}
+    .pd-film-logo{width:clamp(180px,36vw,460px);position:relative;z-index:1;pointer-events:none}
+    .pd-film-logo img{width:100%;height:auto;display:block}
+    .pd-film-logo.pf-white img{filter:brightness(0) invert(1)}
+    .pff-1{background:#d4c3ae;animation:pff1 1.8s linear infinite}
+    .pff-2{background:#353435;animation:pff2 1.8s linear infinite}
+    .pff-3{background:url('assets/stilo-04.webp') center/cover;animation:pff3 1.8s linear infinite}
+    .pff-4{background:#ece8e1;animation:pff4 1.8s linear infinite}
+    .pff-5{background:url('assets/stilo-05.webp') center/cover;animation:pff5 1.8s linear infinite}
+    .pff-6{background:#0d0d0d;animation:pff6 1.8s linear infinite}
+    @keyframes pff1{0%,16.66%{opacity:1}16.67%,100%{opacity:0}}
+    @keyframes pff2{0%,16.66%{opacity:0}16.67%,33.33%{opacity:1}33.34%,100%{opacity:0}}
+    @keyframes pff3{0%,33.33%{opacity:0}33.34%,50%{opacity:1}50.01%,100%{opacity:0}}
+    @keyframes pff4{0%,50%{opacity:0}50.01%,66.66%{opacity:1}66.67%,100%{opacity:0}}
+    @keyframes pff5{0%,66.66%{opacity:0}66.67%,83.33%{opacity:1}83.34%,100%{opacity:0}}
+    @keyframes pff6{0%,83.33%{opacity:0}83.34%,100%{opacity:1}}
+    @media(max-width:768px){.pd-film-logo{width:clamp(140px,62vw,280px)}}
+
     /* 2 — LOGO SECTION (brand beige) */
     /* 2 — LOGO SECTION (brand beige) */
     .pd-logo-section{background:#d4c3ae;display:flex;align-items:center;justify-content:center;padding:120px 80px;min-height:60vh}
@@ -582,6 +604,28 @@
           <div class="pd-im-val">Actual<br>Dinámico<br>Confianza</div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- FILM STRIP — logo positivo/negativo en mockups -->
+  <div class="pd-film">
+    <div class="pd-film-frame pff-1">
+      <div class="pd-film-logo"><img src="assets/stilo-logo.svg" alt="Stilo"></div>
+    </div>
+    <div class="pd-film-frame pff-2">
+      <div class="pd-film-logo pf-white"><img src="assets/stilo-logo.svg" alt="Stilo"></div>
+    </div>
+    <div class="pd-film-frame pff-3">
+      <div class="pd-film-logo pf-white"><img src="assets/stilo-logo.svg" alt="Stilo"></div>
+    </div>
+    <div class="pd-film-frame pff-4">
+      <div class="pd-film-logo"><img src="assets/stilo-logo.svg" alt="Stilo"></div>
+    </div>
+    <div class="pd-film-frame pff-5">
+      <div class="pd-film-logo pf-white"><img src="assets/stilo-logo.svg" alt="Stilo"></div>
+    </div>
+    <div class="pd-film-frame pff-6">
+      <div class="pd-film-logo pf-white"><img src="assets/stilo-logo.svg" alt="Stilo"></div>
     </div>
   </div>
 
