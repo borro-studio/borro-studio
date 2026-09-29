@@ -974,7 +974,7 @@ function posFrames(p) {
   const fr3 = (Math.sin(now * 0.45 + 2.7) * amp * 0.16).toFixed(2);
 
   hfEls[0].style.transform = `translate(calc(-50% + ${lerp(-24,-16)}vw),calc(-50% + ${lerp(-16,0)}vh + ${fy0}px)) scale(0.28) rotate(${(+lerp(-14,-4) + +fr0).toFixed(2)}deg)`;
-  hfEls[1].style.transform = `translate(calc(-50% + ${lerp(20,0)}vw),calc(-50% + ${lerp(6,0)}vh + ${fy1}px)) scale(0.24) rotate(${(+lerp(11,0) + +fr1).toFixed(2)}deg)`;
+  hfEls[1].style.transform = `translate(calc(-50% + ${lerp(20,0)}vw),calc(-50% + ${lerp(6,0)}vh + ${fy1}px)) scale(0.28) rotate(${(+lerp(11,0) + +fr1).toFixed(2)}deg)`;
   hfEls[2].style.transform = `translate(calc(-50% + ${lerp(-4,16)}vw),calc(-50% + ${lerp(18,0)}vh + ${fy2}px)) scale(0.21) rotate(${(+lerp(-8,4) + +fr2).toFixed(2)}deg)`;
   hfEls[3].style.transform = `translate(calc(-50% + ${lerp(10,-8)}vw),calc(-50% + ${lerp(-22,14)}vh + ${fy3}px)) scale(0.18) rotate(${(+lerp(16,-5) + +fr3).toFixed(2)}deg)`;
   hfEls[0].style.zIndex = '4';
@@ -994,7 +994,7 @@ function zoomFrame1(zp) {
   const lrp = (a,b) => (a + (b-a)*e).toFixed(3);
   hfEls[0].style.transform = `translate(calc(-50% + ${lrp(-16,0)}vw),calc(-50% + 0vh)) scale(${lrp(0.28,1.0)}) rotate(${lrp(-4,0)}deg)`;
   hfEls[0].style.zIndex = '4';
-  hfEls[1].style.transform = `translate(calc(-50% + 0vw),calc(-50% + 0vh)) scale(0.24) rotate(0deg)`;
+  hfEls[1].style.transform = `translate(calc(-50% + 0vw),calc(-50% + 0vh)) scale(0.28) rotate(0deg)`;
   hfEls[1].style.zIndex = '3';
   hfEls[2].style.transform = `translate(calc(-50% + 16vw),calc(-50% + 0vh)) scale(0.21) rotate(4deg)`;
   hfEls[2].style.zIndex = '2';
