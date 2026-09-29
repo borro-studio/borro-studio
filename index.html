@@ -91,7 +91,7 @@
     .hf-2-bg-v{object-position:center top;display:none}
     .hf-2 .hf-inner{right:22%}
     .hf-2 .hf-inner::before{display:none}
-    .hf-2 .proj-title{font-family:Helvetica,Arial,sans-serif;font-weight:300;color:#fff}
+    .hf-2 .proj-title{font-family:Helvetica,Arial,sans-serif;color:#fff}
     .hf-2 .proj-cat{color:rgba(255,255,255,.6)}
     .hf-2.full .hf-text{opacity:1;transform:translateY(0)}
     .hf-3{background-color:#2e160a;background-image:url('https://images.unsplash.com/photo-1509815017432-ed21ad98d42b?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
@@ -273,9 +273,9 @@
       .hf-2-bg-v{display:block}
     }
     @media(max-width:768px){
-      .hf-1 .hf-inner{right:12%;padding-bottom:28px;padding-left:20px}
-      .hf-1 .proj-cat{margin-bottom:14px}
-      .hf-1 .proj-title{font-size:clamp(28px,8vw,48px)}
+      .hf-1 .hf-inner,.hf-2 .hf-inner{right:12%;padding-bottom:28px;padding-left:20px}
+      .hf-1 .proj-cat,.hf-2 .proj-cat{margin-bottom:14px}
+      .hf-1 .proj-title,.hf-2 .proj-title{font-size:clamp(28px,8vw,48px)}
     }
 
     /* ── PROJECT OVERLAY ── */
@@ -423,9 +423,9 @@
     @keyframes pffe4{0%,50%{opacity:0}50.01%,66.66%{opacity:1}66.67%,100%{opacity:0}}
     @keyframes pffe5{0%,66.66%{opacity:0}66.67%,83.33%{opacity:1}83.34%,100%{opacity:0}}
     @keyframes pffe6{0%,83.33%{opacity:0}83.34%,100%{opacity:1}}
-    /* ENE logo color in filmstrip */
-    #proj-overlay-2 .pd-film-logo img{filter:brightness(0) invert(1)}
-    #proj-overlay-2 .pd-film-logo.pf-dark img{filter:brightness(0)}
+    /* ENE logo color — currentColor via CSS color property */
+    #proj-overlay-2 .pd-film-logo{color:#fff}
+    #proj-overlay-2 .pd-film-logo.pf-dark{color:#1c3556}
     #proj-overlay-2 .pd-stilo-logo{width:clamp(120px,40vw,360px);height:auto;display:block;opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
     #proj-overlay-2.open .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.1s}
     /* ENE intro circle color */
@@ -544,7 +544,7 @@
       <div class="proj-bg" style="background-image:url('assets/ene-card-h.webp');background-color:#7ba7c4"></div>
       <div class="proj-over"></div>
       <div class="fu" style="transition-delay:0s"><div class="proj-sec">Trabajos — 02</div></div>
-      <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s;font-family:Helvetica,Arial,sans-serif;font-weight:300">ENE<br>Fisioterapia.</div></div>
+      <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s;font-family:Helvetica,Arial,sans-serif">ENE<br>Fisioterapia.</div></div>
       <div class="fu proj-cat" style="transition-delay:.32s">Identidad Corporativa · 2026</div>
     </div>
 
@@ -771,14 +771,14 @@
     <!-- Logo sobre fondo azul -->
     <div class="pd-grid-item pd-grid-wide pd-logo-section" style="aspect-ratio:unset;min-height:50vh">
       <div class="pd-logo-bg">
-        <img class="pd-stilo-logo" src="assets/ene-logo.svg" alt="ENE Fisioterapia" style="filter:brightness(0) invert(1)">
+        <img class="pd-stilo-logo" src="assets/ene-logo.svg" alt="ENE Fisioterapia" style="color:#fff">
       </div>
     </div>
 
     <!-- Mockup tarjeta de visita -->
     <div class="pd-grid-item pd-mock-card" style="background:#eef3f8">
       <div class="pd-bc" style="background:#fff;transform:rotate(-4deg)">
-        <img src="assets/ene-logo.svg" style="width:60%;filter:brightness(0) saturate(100%) invert(29%) sepia(50%) saturate(600%) hue-rotate(185deg) brightness(80%)">
+        <img src="assets/ene-logo.svg" style="width:60%;color:#2d5382">
       </div>
     </div>
 
@@ -799,14 +799,14 @@
     <!-- Patrón / marca gráfica -->
     <div class="pd-grid-item pd-grid-wide pd-mock-pattern" style="background:#2d5382;min-height:280px">
       <div class="pd-pattern-wrap" style="opacity:.18">
-        <img src="assets/ene-logo.svg" style="filter:brightness(0) invert(1)">
-        <img src="assets/ene-logo.svg" style="filter:brightness(0) invert(1)">
-        <img src="assets/ene-logo.svg" style="filter:brightness(0) invert(1)">
-        <img src="assets/ene-logo.svg" style="filter:brightness(0) invert(1)">
-        <img src="assets/ene-logo.svg" style="filter:brightness(0) invert(1)">
-        <img src="assets/ene-logo.svg" style="filter:brightness(0) invert(1)">
-        <img src="assets/ene-logo.svg" style="filter:brightness(0) invert(1)">
-        <img src="assets/ene-logo.svg" style="filter:brightness(0) invert(1)">
+        <img src="assets/ene-logo.svg" style="color:#fff">
+        <img src="assets/ene-logo.svg" style="color:#fff">
+        <img src="assets/ene-logo.svg" style="color:#fff">
+        <img src="assets/ene-logo.svg" style="color:#fff">
+        <img src="assets/ene-logo.svg" style="color:#fff">
+        <img src="assets/ene-logo.svg" style="color:#fff">
+        <img src="assets/ene-logo.svg" style="color:#fff">
+        <img src="assets/ene-logo.svg" style="color:#fff">
       </div>
     </div>
 
@@ -974,7 +974,7 @@ function posFrames(p) {
   const fr3 = (Math.sin(now * 0.45 + 2.7) * amp * 0.16).toFixed(2);
 
   hfEls[0].style.transform = `translate(calc(-50% + ${lerp(-24,-16)}vw),calc(-50% + ${lerp(-16,0)}vh + ${fy0}px)) scale(0.28) rotate(${(+lerp(-14,-4) + +fr0).toFixed(2)}deg)`;
-  hfEls[1].style.transform = `translate(calc(-50% + ${lerp(20,0)}vw),calc(-50% + ${lerp(6,0)}vh + ${fy1}px)) scale(0.24) rotate(${(+lerp(11,0) + +fr1).toFixed(2)}deg)`;
+  hfEls[1].style.transform = `translate(calc(-50% + ${lerp(20,0)}vw),calc(-50% + ${lerp(6,0)}vh + ${fy1}px)) scale(0.28) rotate(${(+lerp(11,0) + +fr1).toFixed(2)}deg)`;
   hfEls[2].style.transform = `translate(calc(-50% + ${lerp(-4,16)}vw),calc(-50% + ${lerp(18,0)}vh + ${fy2}px)) scale(0.21) rotate(${(+lerp(-8,4) + +fr2).toFixed(2)}deg)`;
   hfEls[3].style.transform = `translate(calc(-50% + ${lerp(10,-8)}vw),calc(-50% + ${lerp(-22,14)}vh + ${fy3}px)) scale(0.18) rotate(${(+lerp(16,-5) + +fr3).toFixed(2)}deg)`;
   hfEls[0].style.zIndex = '4';
@@ -994,7 +994,7 @@ function zoomFrame1(zp) {
   const lrp = (a,b) => (a + (b-a)*e).toFixed(3);
   hfEls[0].style.transform = `translate(calc(-50% + ${lrp(-16,0)}vw),calc(-50% + 0vh)) scale(${lrp(0.28,1.0)}) rotate(${lrp(-4,0)}deg)`;
   hfEls[0].style.zIndex = '4';
-  hfEls[1].style.transform = `translate(calc(-50% + 0vw),calc(-50% + 0vh)) scale(0.24) rotate(0deg)`;
+  hfEls[1].style.transform = `translate(calc(-50% + 0vw),calc(-50% + 0vh)) scale(0.28) rotate(0deg)`;
   hfEls[1].style.zIndex = '3';
   hfEls[2].style.transform = `translate(calc(-50% + 16vw),calc(-50% + 0vh)) scale(0.21) rotate(4deg)`;
   hfEls[2].style.zIndex = '2';
