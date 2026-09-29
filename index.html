@@ -85,7 +85,11 @@
     .hf-1-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;z-index:0}
     .hf-1-bg-h{transform:scaleX(-1);object-position:center}
     .hf-1-bg-v{object-position:left center;display:none}
-    .hf-2{background-color:#121b30;background-image:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
+    .hf-2{background:#2d5382}
+    .hf-2 .hf-inner::before{background:linear-gradient(to top,rgba(0,0,0,.6) 0%,rgba(0,0,0,.06) 55%,transparent 100%)}
+    .hf-2 .proj-title{font-family:Helvetica,Arial,sans-serif;font-weight:300;color:#fff}
+    .hf-2 .proj-cat{color:rgba(255,255,255,.5)}
+    .hf-2.full .hf-text{opacity:1;transform:translateY(0)}
     .hf-3{background-color:#2e160a;background-image:url('https://images.unsplash.com/photo-1509815017432-ed21ad98d42b?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
     .hf-4{background-color:#1a1028;background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
 
@@ -270,10 +274,10 @@
 
     /* ── PROJECT OVERLAY ── */
     body.proj-open{overflow:hidden;position:fixed;width:100%}
-    #proj-flash{position:fixed;inset:0;z-index:1501;background:#000;opacity:0;pointer-events:none;transition:opacity .14s ease}
-    #proj-flash.on{opacity:1}
-    #proj-overlay{position:fixed;inset:0;z-index:1500;background:#0d0d0d;overflow-y:auto;-webkit-overflow-scrolling:touch;opacity:0;pointer-events:none}
-    #proj-overlay.open{opacity:1;pointer-events:all}
+    #proj-flash,#proj-flash-2{position:fixed;inset:0;z-index:1501;background:#000;opacity:0;pointer-events:none;transition:opacity .14s ease}
+    #proj-flash.on,#proj-flash-2.on{opacity:1}
+    #proj-overlay,#proj-overlay-2{position:fixed;inset:0;z-index:1500;background:#0d0d0d;overflow-y:auto;-webkit-overflow-scrolling:touch;opacity:0;pointer-events:none}
+    #proj-overlay.open,#proj-overlay-2.open{opacity:1;pointer-events:all}
     /* 1 — INTRO SCREEN (100vh dark, title as phrase) */
     .pd-intro{position:relative;height:100vh;min-height:480px;display:flex;flex-direction:column;justify-content:space-between;padding:52px 52px 48px;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.07)}
     /* Large decorative circle — top right, stroke only */
@@ -398,6 +402,35 @@
       .pd-mock-typo{padding:20px;gap:16px}
       .pd-typo-aa{font-size:clamp(50px,16vw,90px)}
     }
+
+    /* ── ENE FILMSTRIP FRAMES ── */
+    #proj-overlay-2 .pff-e1{background:#2d5382;animation:pffe1 1.8s linear infinite}
+    #proj-overlay-2 .pff-e2{background:#bacede;animation:pffe2 1.8s linear infinite}
+    #proj-overlay-2 .pff-e3{background:#0d1f35;animation:pffe3 1.8s linear infinite}
+    #proj-overlay-2 .pff-e4{background:#eef3f8;animation:pffe4 1.8s linear infinite}
+    #proj-overlay-2 .pff-e5{background:#4a6e9a;animation:pffe5 1.8s linear infinite}
+    #proj-overlay-2 .pff-e6{background:#f5f7fa;animation:pffe6 1.8s linear infinite}
+    #proj-overlay-2.open .pd-film-frame{animation-play-state:running}
+    @keyframes pffe1{0%,16.66%{opacity:1}16.67%,100%{opacity:0}}
+    @keyframes pffe2{0%,16.66%{opacity:0}16.67%,33.33%{opacity:1}33.34%,100%{opacity:0}}
+    @keyframes pffe3{0%,33.33%{opacity:0}33.34%,50%{opacity:1}50.01%,100%{opacity:0}}
+    @keyframes pffe4{0%,50%{opacity:0}50.01%,66.66%{opacity:1}66.67%,100%{opacity:0}}
+    @keyframes pffe5{0%,66.66%{opacity:0}66.67%,83.33%{opacity:1}83.34%,100%{opacity:0}}
+    @keyframes pffe6{0%,83.33%{opacity:0}83.34%,100%{opacity:1}}
+    /* ENE logo color in filmstrip */
+    #proj-overlay-2 .pd-film-logo img{filter:brightness(0) invert(1)}
+    #proj-overlay-2 .pd-film-logo.pf-dark img{filter:brightness(0)}
+    #proj-overlay-2 .pd-stilo-logo{width:clamp(120px,40vw,360px);height:auto;display:block;opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
+    #proj-overlay-2.open .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.1s}
+    /* ENE intro circle color */
+    #proj-overlay-2 .pd-intro-circle{border-color:rgba(186,206,222,.45)}
+    /* ENE logo section bg */
+    #proj-overlay-2 .pd-logo-section{background:#2d5382}
+    /* ENE palette swatches */
+    #proj-overlay-2 .pd-typo-aa{color:#bacede}
+    /* p2 clickable */
+    #p2{cursor:none}
+    #p2.active .proj-title,#p2.active .proj-cat,#p2.active .proj-year{cursor:none}
   </style>
 </head>
 <body>
@@ -500,14 +533,13 @@
       <div class="proj-over"></div>
     </div>
 
-    <!-- P2: Proyecto 2 -->
+    <!-- P2: Proyecto 2 — ENE Fisioterapia -->
     <div class="slide proj-slide" id="p2">
-      <div class="proj-bg" style="background-image:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?fit=crop&w=1920&q=80');background-color:#141b2d"></div>
+      <div class="proj-bg" style="background-color:#2d5382"></div>
       <div class="proj-over"></div>
       <div class="fu" style="transition-delay:0s"><div class="proj-sec">Trabajos — 02</div></div>
-      <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s">NORDIC<br>STUDIO</div></div>
-      <div class="fu proj-cat" style="transition-delay:.32s">Diseño Web · UX/UI</div>
-      <div class="fu proj-year" style="transition-delay:.46s">2024 — Oslo, Norway</div>
+      <div class="rev-wrap"><div class="rev proj-title" style="transition-delay:.1s;font-family:Helvetica,Arial,sans-serif;font-weight:300">ENE<br>Fisioterapia.</div></div>
+      <div class="fu proj-cat" style="transition-delay:.32s">Identidad Corporativa · 2026</div>
     </div>
 
     <!-- P3: Proyecto 3 -->
@@ -579,8 +611,9 @@
 
 <!-- PROJECT FLASH (jump-cut curtain) -->
 <div id="proj-flash"></div>
+<div id="proj-flash-2"></div>
 
-<!-- PROJECT OVERLAY -->
+<!-- PROJECT OVERLAY — Stilo -->
 <div id="proj-overlay" aria-hidden="true">
 
   <!-- 1. INTRO — full viewport title screen -->
@@ -665,6 +698,115 @@
   </div>
 </div>
 
+<!-- PROJECT OVERLAY — ENE Fisioterapia -->
+<div id="proj-overlay-2" aria-hidden="true">
+
+  <!-- 1. INTRO -->
+  <div class="pd-intro">
+    <div class="pd-intro-circle"></div>
+    <div class="pd-intro-top">
+      <div class="pd-intro-title-clip">
+        <div class="pd-intro-title">ENE<br>Fisioterapia.</div>
+      </div>
+      <button class="pd-volver pd-volver-2">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="7 4 3 8 7 12"/></svg>
+        Volver
+      </button>
+    </div>
+    <div class="pd-intro-footer">
+      <p class="pd-intro-desc">ENE Fisioterapia es una clínica creada con un enfoque humano y cercano. Desde Borro Studio diseñamos una identidad que transmite profesionalidad, calidez y confianza para conectar con cada paciente.</p>
+      <div class="pd-intro-meta">
+        <div class="pd-im-col">
+          <div class="pd-im-label">AÑO</div>
+          <div class="pd-im-val">2026</div>
+        </div>
+        <div class="pd-im-col">
+          <div class="pd-im-label">OBJETIVOS</div>
+          <div class="pd-im-val">Actual<br>Cercano<br>Familiar</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILM STRIP — logo positivo/negativo -->
+  <div class="pd-film">
+    <div class="pd-film-frame pff-e1">
+      <div class="pd-film-logo"><img src="assets/ene-logo.svg" alt="ENE Fisioterapia"></div>
+    </div>
+    <div class="pd-film-frame pff-e2">
+      <div class="pd-film-logo pf-dark"><img src="assets/ene-logo.svg" alt="ENE Fisioterapia"></div>
+    </div>
+    <div class="pd-film-frame pff-e3">
+      <div class="pd-film-logo"><img src="assets/ene-logo.svg" alt="ENE Fisioterapia"></div>
+    </div>
+    <div class="pd-film-frame pff-e4">
+      <div class="pd-film-logo pf-dark"><img src="assets/ene-logo.svg" alt="ENE Fisioterapia"></div>
+    </div>
+    <div class="pd-film-frame pff-e5">
+      <div class="pd-film-logo"><img src="assets/ene-logo.svg" alt="ENE Fisioterapia"></div>
+    </div>
+    <div class="pd-film-frame pff-e6">
+      <div class="pd-film-logo pf-dark"><img src="assets/ene-logo.svg" alt="ENE Fisioterapia"></div>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div class="pd-grid">
+
+    <!-- Paleta de colores -->
+    <div class="pd-grid-item pd-grid-wide pd-mock-palette">
+      <div class="pd-sw" style="background:#2d5382"><span class="pd-sw-label" style="color:#bacede">Azul<br>#2D5382</span></div>
+      <div class="pd-sw" style="background:#4a6e9a"><span class="pd-sw-label" style="color:#eef3f8">Medio<br>#4A6E9A</span></div>
+      <div class="pd-sw" style="background:#bacede"><span class="pd-sw-label" style="color:#1c3556">Claro<br>#BACED E</span></div>
+      <div class="pd-sw" style="background:#eef3f8"><span class="pd-sw-label" style="color:#2d5382">Fondo<br>#EEF3F8</span></div>
+      <div class="pd-sw" style="background:#0d1f35"><span class="pd-sw-label" style="color:#bacede">Oscuro<br>#0D1F35</span></div>
+    </div>
+
+    <!-- Logo sobre fondo azul -->
+    <div class="pd-grid-item pd-grid-wide pd-logo-section" style="aspect-ratio:unset;min-height:50vh">
+      <div class="pd-logo-bg">
+        <img class="pd-stilo-logo" src="assets/ene-logo.svg" alt="ENE Fisioterapia" style="filter:brightness(0) invert(1)">
+      </div>
+    </div>
+
+    <!-- Mockup tarjeta de visita -->
+    <div class="pd-grid-item pd-mock-card" style="background:#eef3f8">
+      <div class="pd-bc" style="background:#fff;transform:rotate(-4deg)">
+        <img src="assets/ene-logo.svg" style="width:60%;filter:brightness(0) saturate(100%) invert(29%) sepia(50%) saturate(600%) hue-rotate(185deg) brightness(80%)">
+      </div>
+    </div>
+
+    <!-- Tipografía -->
+    <div class="pd-grid-item pd-mock-typo" style="background:#0d1f35">
+      <div class="pd-typo-aa">Aa</div>
+      <div class="pd-typo-meta">
+        <div class="pd-typo-name">Helvetica Neue</div>
+        <div class="pd-typo-weights">
+          <span style="font-weight:300">Light 300</span>
+          <span style="font-weight:400">Regular 400</span>
+          <span style="font-weight:700">Bold 700</span>
+        </div>
+        <div class="pd-typo-abc">ABCDEFGHIJKLMNOPQRSTUVWXYZ</div>
+      </div>
+    </div>
+
+    <!-- Patrón / marca gráfica -->
+    <div class="pd-grid-item pd-grid-wide pd-mock-pattern" style="background:#2d5382;min-height:280px">
+      <div class="pd-pattern-wrap" style="opacity:.18">
+        <img src="assets/ene-logo.svg" style="filter:brightness(0) invert(1)">
+        <img src="assets/ene-logo.svg" style="filter:brightness(0) invert(1)">
+        <img src="assets/ene-logo.svg" style="filter:brightness(0) invert(1)">
+        <img src="assets/ene-logo.svg" style="filter:brightness(0) invert(1)">
+        <img src="assets/ene-logo.svg" style="filter:brightness(0) invert(1)">
+        <img src="assets/ene-logo.svg" style="filter:brightness(0) invert(1)">
+        <img src="assets/ene-logo.svg" style="filter:brightness(0) invert(1)">
+        <img src="assets/ene-logo.svg" style="filter:brightness(0) invert(1)">
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- HERO FRAMES — floating project cards, organize on scroll -->
 <div id="hero-frames">
   <div class="hf hf-1">
@@ -685,7 +827,14 @@
       </div>
     </div>
   </div>
-  <div class="hf hf-2"></div>
+  <div class="hf hf-2">
+    <div class="hf-inner">
+      <div class="hf-text">
+        <div class="proj-title">ENE<br>Fisioterapia.</div>
+        <div class="proj-cat">Identidad Corporativa · 2026</div>
+      </div>
+    </div>
+  </div>
   <div class="hf hf-3"></div>
   <div class="hf hf-4"></div>
 </div>
@@ -1081,6 +1230,47 @@ hfEls[0].addEventListener('click', () => {
 });
 projClose.addEventListener('click', closeProj);
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && projOverlay.classList.contains('open')) closeProj(); });
+
+/* ── ENE OVERLAY ── */
+const projOverlay2 = document.getElementById('proj-overlay-2');
+const projFlash2   = document.getElementById('proj-flash-2');
+const projClose2   = document.querySelector('.pd-volver-2');
+
+function openProj2() {
+  savedScroll = window.scrollY;
+  projFlash2.classList.add('on');
+  setTimeout(() => {
+    projOverlay2.classList.add('open');
+    projOverlay2.setAttribute('aria-hidden','false');
+    projOverlay2.scrollTop = 0;
+    document.body.style.top = `-${savedScroll}px`;
+    document.body.classList.add('proj-open');
+    projFlash2.style.transition = 'opacity .22s ease';
+    projFlash2.classList.remove('on');
+    setTimeout(() => { projFlash2.style.transition = ''; }, 250);
+  }, 140);
+}
+
+function closeProj2() {
+  projFlash2.classList.add('on');
+  setTimeout(() => {
+    projOverlay2.classList.remove('open');
+    projOverlay2.setAttribute('aria-hidden','true');
+    document.body.classList.remove('proj-open');
+    document.body.style.top = '';
+    window.scrollTo(0, savedScroll);
+    projFlash2.style.transition = 'opacity .22s ease';
+    projFlash2.classList.remove('on');
+    setTimeout(() => { projFlash2.style.transition = ''; }, 250);
+  }, 140);
+}
+
+document.getElementById('p2').addEventListener('click', openProj2);
+projClose2.addEventListener('click', closeProj2);
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && projOverlay2.classList.contains('open')) closeProj2(); });
+/* hover highlight on p2 */
+document.getElementById('p2').addEventListener('mouseenter', () => document.body.classList.add('hl'));
+document.getElementById('p2').addEventListener('mouseleave', () => document.body.classList.remove('hl'));
 
 /* ══════════════════════════════════════
    INIT + LOADER

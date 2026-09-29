@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 130" fill="currentColor">
+  <!-- Abstract curved N mark -->
+  <path d="M8,38 C8,18 22,6 40,8 C58,10 66,26 58,42 C50,56 34,52 28,40 C22,28 28,14 42,10" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- ene -->
+  <text x="0" y="94" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="70" font-weight="300" letter-spacing="-2">ene</text>
+  <!-- FISIOTERAPIA -->
+  <text x="4" y="118" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="7">FISIOTERAPIA</text>
+</svg>
