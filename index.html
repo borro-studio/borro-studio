@@ -81,7 +81,10 @@
     .hf-inner::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,rgba(0,0,0,.08) 55%,transparent 100%)}
     .hf-text{position:relative;opacity:0;transform:translateY(24px);transition:opacity .45s ease,transform .45s cubic-bezier(.22,1,.36,1)}
     .hf-1.full .hf-text{opacity:1;transform:translateY(0)}
-    .hf-1{background:#d4c3ae;background-image:url('assets/stilo-pole-h.webp')!important;background-size:cover;background-position:center}
+    .hf-1{background:#d4c3ae}
+    .hf-1-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;z-index:0}
+    .hf-1-bg-h{transform:scaleX(-1);object-position:center}
+    .hf-1-bg-v{object-position:left center;display:none}
     .hf-2{background-color:#121b30;background-image:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
     .hf-3{background-color:#2e160a;background-image:url('https://images.unsplash.com/photo-1509815017432-ed21ad98d42b?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
     .hf-4{background-color:#1a1028;background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?fit=crop&w=1920&q=80');background-size:cover;background-position:center}
@@ -255,7 +258,8 @@
 
       .s4-title{font-size:clamp(28px,10vw,60px)}
 
-      .hf-1{background-image:url('assets/stilo-pole-v.jpg')!important;background-position:left center}
+      .hf-1-bg-h{display:none}
+      .hf-1-bg-v{display:block}
       .hf-stilo-logo-wrap{display:none}
     }
     @media(max-width:768px){
@@ -322,7 +326,7 @@
     .pd-logo-bg{display:flex;align-items:center;justify-content:center;width:100%}
     .pd-stilo-logo{width:clamp(120px,40vw,360px);height:auto;display:block;opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
     #proj-overlay.open .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.1s}
-    .hf-stilo-logo-wrap{position:absolute;top:50%;left:clamp(32px,6vw,80px);transform:translateY(-58%);width:clamp(110px,18vw,240px);z-index:2;pointer-events:none}
+    .hf-stilo-logo-wrap{position:absolute;top:50%;left:clamp(32px,6vw,80px);transform:translateY(-58%);width:clamp(70px,11vw,150px);z-index:2;pointer-events:none}
     .hf-stilo-logo{width:100%;height:auto;display:block}
     .hf-stilo-tap{position:absolute;bottom:290px;left:0;right:0;z-index:6;display:flex;justify-content:center;align-items:center;opacity:0;transition:opacity .5s ease;pointer-events:none}
     .hf-stilo-tap.show{opacity:1}
@@ -664,6 +668,8 @@
 <!-- HERO FRAMES — floating project cards, organize on scroll -->
 <div id="hero-frames">
   <div class="hf hf-1">
+    <img class="hf-1-bg hf-1-bg-h" src="assets/stilo-pole-h.webp" alt="">
+    <img class="hf-1-bg hf-1-bg-v" src="assets/stilo-pole-v.jpg" alt="">
     <div class="hf-stilo-logo-wrap">
       <img class="hf-stilo-logo" src="assets/stilo-logo.svg" alt="Stilo Pole Dance Studio">
     </div>
@@ -674,7 +680,7 @@
     </div>
     <div class="hf-inner">
       <div class="hf-text">
-        <div class="proj-title">Stilo Pole Dance<br>Studio.</div>
+        <div class="proj-title">Stilo Pole<br>Dance Studio.</div>
         <div class="proj-cat">Identidad Corporativa · 2025</div>
       </div>
     </div>
