@@ -431,7 +431,10 @@
     #proj-overlay-2 .pd-typo-aa{color:#bacede}
     /* p2 clickable + reduce dark gradient over blue photo */
     #p2{cursor:none}
-    @media(min-width:769px){#p2 .proj-over{background:linear-gradient(to top,rgba(0,0,0,.28) 0%,rgba(0,0,0,.04) 45%,transparent 100%)}}
+    #p2 .proj-over{background:linear-gradient(to top,rgba(0,0,0,.28) 0%,rgba(0,0,0,.04) 45%,transparent 100%)}
+    @media(max-width:480px){
+      #p2 .proj-bg{background-image:url('assets/ene-card-v.webp')!important;background-position:center top}
+    }
     #p2.active .proj-title,#p2.active .proj-cat,#p2.active .proj-year{cursor:none}
   </style>
 </head>
