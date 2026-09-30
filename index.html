@@ -459,10 +459,10 @@
     .pd-ene-wm-light .pd-ene-wm-mark{filter:invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
     .pd-ene-wm-dark .pd-ene-wm-mark{/* natural #cce0ee on blue bg */}
     /* ROW 3 — Dúo tarjeta SVG + foto fisio */
-    .pd-ene-duo{display:flex;min-height:clamp(320px,52vw,620px);gap:12px}
-    .pd-ene-fisio-card{flex:0 0 50%;background:#81a2c9;overflow:hidden;display:flex;align-items:center;justify-content:center}
-    .pd-ene-ftype{width:auto;height:100%;max-width:100%;object-fit:contain;display:block}
-    .pd-ene-photo-type{flex:1;overflow:hidden;position:relative}
+    .pd-ene-duo{display:flex;gap:12px}
+    .pd-ene-fisio-card{flex:0 0 auto;background:#81a2c9;display:flex;align-items:center;justify-content:center;padding:28px 24px}
+    .pd-ene-ftype{height:clamp(300px,46vw,600px);width:auto;display:block}
+    .pd-ene-photo-type{flex:1;overflow:hidden;position:relative;min-height:clamp(300px,46vw,600px)}
     .pd-ene-photo-bg{width:100%;height:100%;object-fit:cover;display:block}
     /* ROW 4 — Isotipo claro + merch */
     .pd-ene-duo-sm{display:flex;min-height:clamp(160px,26vw,320px);gap:12px}
@@ -481,9 +481,10 @@
       .pd-ene-trio{flex-direction:column;min-height:auto}
       .pd-ene-trio-photo{flex:none;min-height:52vw}
       .pd-ene-trio-wm{min-height:140px;padding:16px}
-      .pd-ene-duo{flex-direction:column;min-height:auto}
-      .pd-ene-fisio-card{min-height:480px}
-      .pd-ene-photo-type{min-height:300px}
+      .pd-ene-duo{flex-direction:column}
+      .pd-ene-fisio-card{padding:20px}
+      .pd-ene-ftype{height:clamp(260px,75vw,420px)}
+      .pd-ene-photo-type{min-height:280px}
       .pd-ene-duo-sm{flex-direction:column}
       .pd-ene-mark-cell,.pd-ene-merch-cell{flex:none;min-height:200px}
     }
