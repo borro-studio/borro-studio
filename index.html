@@ -450,12 +450,11 @@
     .pd-ene-trio-photo{flex:0 0 45%;overflow:hidden;position:relative;background:#2d5382}
     .pd-ene-trio-photo img{width:100%;height:100%;object-fit:cover}
     .pd-ene-trio-wm{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:24px}
-    @keyframes ene-shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
-    .pd-ene-wm-light{background:linear-gradient(90deg,#fff 0%,#cce0ee 30%,#eef3f8 55%,#cce0ee 70%,#fff 100%);background-size:300% 100%;animation:ene-shimmer 4s linear infinite;color:#4a6e9a}
-    .pd-ene-wm-dark{background:linear-gradient(90deg,#0d1f35 0%,#1c3556 20%,#4a6e9a 50%,#1c3556 80%,#0d1f35 100%);background-size:300% 100%;animation:ene-shimmer 4s linear infinite;color:#fff}
+    .pd-ene-wm-light{background:#fff;color:#4a6e9a}
+    .pd-ene-wm-dark{background:#4a6e9a;color:#fff}
     .pd-ene-wm-iso{width:clamp(28px,4.5vw,50px);height:auto;display:block;margin-bottom:10px}
     .pd-ene-wm-dark .pd-ene-wm-iso{filter:brightness(0) invert(1)}
-    .pd-ene-wm-light .pd-ene-wm-iso{filter:brightness(0) saturate(100%) invert(52%) sepia(30%) saturate(500%) hue-rotate(185deg) brightness(95%)}
+    .pd-ene-wm-light .pd-ene-wm-iso{filter:brightness(0) saturate(100%) invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
     .pd-ene-wm-mark{width:clamp(72px,13vw,150px);height:auto;display:block}
     /* ROW 3 — Dúo tarjeta SVG + foto fisio */
     .pd-ene-duo{display:flex;gap:12px}
@@ -465,8 +464,8 @@
     .pd-ene-photo-bg{width:100%;height:100%;object-fit:cover;display:block}
     /* ROW 4 — Isotipo claro + merch */
     .pd-ene-duo-sm{display:flex;min-height:clamp(160px,26vw,320px);gap:12px}
-    .pd-ene-mark-cell{flex:0 0 50%;background:linear-gradient(90deg,#bacede 0%,#4a6e9a 30%,#81a2c9 55%,#4a6e9a 70%,#bacede 100%);background-size:300% 100%;animation:ene-shimmer 4s linear infinite;display:flex;align-items:center;justify-content:center}
-    .pd-ene-cell-mark{width:clamp(56px,11vw,130px);height:auto;filter:brightness(0) invert(1)}
+    .pd-ene-mark-cell{flex:0 0 50%;background:#bacede;display:flex;align-items:center;justify-content:center}
+    .pd-ene-cell-mark{width:clamp(56px,11vw,130px);height:auto;filter:brightness(0) saturate(100%) invert(22%) sepia(35%) saturate(700%) hue-rotate(188deg)}
     .pd-ene-merch-cell{flex:1;overflow:hidden;position:relative}
     .pd-ene-mtype{width:100%;height:100%;object-fit:cover;display:block}
     /* ENE grid — stagger entrada igual que Stilo */
