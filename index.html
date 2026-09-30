@@ -412,15 +412,55 @@
     #proj-overlay-2 .pff-e5{background:#4a6e9a;animation:pffe5 1.8s linear infinite}
     #proj-overlay-2 .pff-e6{background:#f5f7fa;animation:pffe6 1.8s linear infinite}
     #proj-overlay-2.open .pd-film-frame{animation-play-state:running}
-    @keyframes pffe1{0%,16.66%{opacity:1}16.67%,100%{opacity:0}}
-    @keyframes pffe2{0%,16.66%{opacity:0}16.67%,33.33%{opacity:1}33.34%,100%{opacity:0}}
-    @keyframes pffe3{0%,33.33%{opacity:0}33.34%,50%{opacity:1}50.01%,100%{opacity:0}}
-    @keyframes pffe4{0%,50%{opacity:0}50.01%,66.66%{opacity:1}66.67%,100%{opacity:0}}
-    @keyframes pffe5{0%,66.66%{opacity:0}66.67%,83.33%{opacity:1}83.34%,100%{opacity:0}}
-    @keyframes pffe6{0%,83.33%{opacity:0}83.34%,100%{opacity:1}}
-    /* ENE logo color — currentColor via CSS color property */
-    #proj-overlay-2 .pd-film-logo{color:#fff}
-    #proj-overlay-2 .pd-film-logo.pf-dark{color:#1c3556}
+    @keyframes pffe1{
+      0%{transform:translateX(-100%);opacity:1;z-index:10}
+      5%{transform:translateX(0);opacity:1;z-index:10}
+      16.66%{transform:translateX(0);opacity:1;z-index:10}
+      16.67%{transform:translateX(0);opacity:0;z-index:1}
+      100%{opacity:0;transform:translateX(-100%);z-index:1}
+    }
+    @keyframes pffe2{
+      0%,16.66%{opacity:0;transform:translateX(-100%)}
+      16.67%{transform:translateX(-100%);opacity:1}
+      21.67%{transform:translateX(0);opacity:1}
+      33.33%{transform:translateX(0);opacity:1}
+      33.34%{opacity:0}
+      100%{opacity:0;transform:translateX(-100%)}
+    }
+    @keyframes pffe3{
+      0%,33.33%{opacity:0;transform:translateX(-100%)}
+      33.34%{transform:translateX(-100%);opacity:1}
+      38.34%{transform:translateX(0);opacity:1}
+      50%{transform:translateX(0);opacity:1}
+      50.01%{opacity:0}
+      100%{opacity:0;transform:translateX(-100%)}
+    }
+    @keyframes pffe4{
+      0%,50%{opacity:0;transform:translateX(-100%)}
+      50.01%{transform:translateX(-100%);opacity:1}
+      55.01%{transform:translateX(0);opacity:1}
+      66.66%{transform:translateX(0);opacity:1}
+      66.67%{opacity:0}
+      100%{opacity:0;transform:translateX(-100%)}
+    }
+    @keyframes pffe5{
+      0%,66.66%{opacity:0;transform:translateX(-100%)}
+      66.67%{transform:translateX(-100%);opacity:1}
+      71.67%{transform:translateX(0);opacity:1}
+      83.33%{transform:translateX(0);opacity:1}
+      83.34%{opacity:0}
+      100%{opacity:0;transform:translateX(-100%)}
+    }
+    @keyframes pffe6{
+      0%{opacity:1;transform:translateX(0)}
+      5%{opacity:0;transform:translateX(0)}
+      83.33%{opacity:0;transform:translateX(-100%)}
+      83.34%{transform:translateX(-100%);opacity:1}
+      88.34%{transform:translateX(0);opacity:1}
+      100%{transform:translateX(0);opacity:1}
+    }
+    #proj-overlay-2 .pd-film-logo img{filter:brightness(0) invert(1)}
+    #proj-overlay-2 .pd-film-logo.pf-dark img{filter:brightness(0) saturate(100%) invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
     #proj-overlay-2 .pd-stilo-logo{width:clamp(120px,40vw,360px);height:auto;display:block;opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
     #proj-overlay-2.open .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.1s}
     /* ENE overlay bg — medium brand blue */
@@ -450,13 +490,6 @@
     .pd-ene-trio-photo{flex:0 0 45%;overflow:hidden;position:relative;background:#2d5382}
     .pd-ene-trio-photo img{width:100%;height:100%;object-fit:cover}
     .pd-ene-trio-wm{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:24px}
-    @keyframes ene-shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
-    .pd-ene-wm-light{background:linear-gradient(90deg,#fff 0%,#cce0ee 30%,#eef3f8 55%,#cce0ee 70%,#fff 100%);background-size:300% 100%;animation:ene-shimmer 4s linear infinite;color:#4a6e9a}
-    .pd-ene-wm-dark{background:linear-gradient(90deg,#0d1f35 0%,#1c3556 20%,#4a6e9a 50%,#1c3556 80%,#0d1f35 100%);background-size:300% 100%;animation:ene-shimmer 4s linear infinite;color:#fff}
-    .pd-ene-wm-iso{width:clamp(28px,4.5vw,50px);height:auto;display:block;margin-bottom:10px}
-    .pd-ene-wm-dark .pd-ene-wm-iso{filter:brightness(0) invert(1)}
-    .pd-ene-wm-light .pd-ene-wm-iso{filter:brightness(0) saturate(100%) invert(52%) sepia(30%) saturate(500%) hue-rotate(185deg) brightness(95%)}
-    .pd-ene-wm-mark{width:clamp(72px,13vw,150px);height:auto;display:block}
     /* ROW 3 — Dúo tarjeta SVG + foto fisio */
     .pd-ene-duo{display:flex;gap:12px}
     .pd-ene-fisio-card{flex:0 0 auto;background:#81a2c9;display:flex;align-items:center;justify-content:center;padding:28px 24px}
@@ -465,8 +498,8 @@
     .pd-ene-photo-bg{width:100%;height:100%;object-fit:cover;display:block}
     /* ROW 4 — Isotipo claro + merch */
     .pd-ene-duo-sm{display:flex;min-height:clamp(160px,26vw,320px);gap:12px}
-    .pd-ene-mark-cell{flex:0 0 50%;background:linear-gradient(90deg,#bacede 0%,#4a6e9a 30%,#81a2c9 55%,#4a6e9a 70%,#bacede 100%);background-size:300% 100%;animation:ene-shimmer 4s linear infinite;display:flex;align-items:center;justify-content:center}
-    .pd-ene-cell-mark{width:clamp(56px,11vw,130px);height:auto;filter:brightness(0) invert(1)}
+    .pd-ene-mark-cell{flex:0 0 50%;background:#bacede;display:flex;align-items:center;justify-content:center}
+    .pd-ene-cell-mark{width:clamp(56px,11vw,130px);height:auto;filter:brightness(0) saturate(100%) invert(22%) sepia(35%) saturate(700%) hue-rotate(188deg)}
     .pd-ene-merch-cell{flex:1;overflow:hidden;position:relative}
     .pd-ene-mtype{width:100%;height:100%;object-fit:cover;display:block}
     /* ENE grid — stagger entrada igual que Stilo */
@@ -827,18 +860,10 @@
       <div class="pd-sw" style="background:#0d1f35"><span class="pd-sw-label" style="color:#bacede">Oscuro<br>#0D1F35</span></div>
     </div>
 
-    <!-- ROW 2: Foto tarjetas | Wordmark blanco | Wordmark azul -->
+    <!-- ROW 2: Foto tarjetas -->
     <div class="pd-ene-trio">
-      <div class="pd-ene-trio-photo">
+      <div class="pd-ene-trio-photo" style="flex:1">
         <img src="assets/ene-cards.webp" alt="ENE Fisioterapia tarjetas">
-      </div>
-      <div class="pd-ene-trio-wm pd-ene-wm-light">
-        <img src="assets/ene-logo.svg" alt="" class="pd-ene-wm-iso">
-        <img src="assets/ene-wm.svg" alt="fisioterapia" class="pd-ene-wm-mark">
-      </div>
-      <div class="pd-ene-trio-wm pd-ene-wm-dark">
-        <img src="assets/ene-logo.svg" alt="" class="pd-ene-wm-iso">
-        <img src="assets/ene-wm.svg" alt="fisioterapia" class="pd-ene-wm-mark">
       </div>
     </div>
 
