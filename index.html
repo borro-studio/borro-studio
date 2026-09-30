@@ -405,12 +405,12 @@
     }
 
     /* ── ENE FILMSTRIP FRAMES ── */
-    #proj-overlay-2 .pff-e1{background:#2d5382;animation:pffe1 1.8s linear infinite}
-    #proj-overlay-2 .pff-e2{background:#bacede;animation:pffe2 1.8s linear infinite}
-    #proj-overlay-2 .pff-e3{background:#0d1f35;animation:pffe3 1.8s linear infinite}
-    #proj-overlay-2 .pff-e4{background:#eef3f8;animation:pffe4 1.8s linear infinite}
-    #proj-overlay-2 .pff-e5{background:#4a6e9a;animation:pffe5 1.8s linear infinite}
-    #proj-overlay-2 .pff-e6{background:#f5f7fa;animation:pffe6 1.8s linear infinite}
+    #proj-overlay-2 .pff-e1{background:#2d5382;animation:pffe1 6s linear infinite}
+    #proj-overlay-2 .pff-e2{background:#bacede;animation:pffe2 6s linear infinite}
+    #proj-overlay-2 .pff-e3{background:#0d1f35;animation:pffe3 6s linear infinite}
+    #proj-overlay-2 .pff-e4{background:#eef3f8;animation:pffe4 6s linear infinite}
+    #proj-overlay-2 .pff-e5{background:#4a6e9a;animation:pffe5 6s linear infinite}
+    #proj-overlay-2 .pff-e6{background:#f5f7fa;animation:pffe6 6s linear infinite}
     #proj-overlay-2.open .pd-film-frame{animation-play-state:running}
     @keyframes pffe1{
       0%{transform:translateX(-100%);opacity:1;z-index:10}
@@ -459,8 +459,18 @@
       88.34%{transform:translateX(0);opacity:1}
       100%{transform:translateX(0);opacity:1}
     }
-    #proj-overlay-2 .pd-film-logo img{filter:brightness(0) invert(1)}
-    #proj-overlay-2 .pd-film-logo.pf-dark img{filter:brightness(0) saturate(100%) invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
+    .pd-ene-film-logo-wrap{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;pointer-events:none}
+    .pd-ene-film-iso{width:clamp(180px,36vw,460px);height:auto;display:block;animation:ene-iso-color 6s linear infinite;animation-play-state:paused}
+    #proj-overlay-2.open .pd-ene-film-iso{animation-play-state:running}
+    @keyframes ene-iso-color{
+      0%{filter:brightness(0) saturate(100%) invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
+      2.5%,19.17%{filter:brightness(0) invert(1)}
+      19.18%,35.84%{filter:brightness(0) saturate(100%) invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
+      35.85%,52.51%{filter:brightness(0) invert(1)}
+      52.52%,69.17%{filter:brightness(0) saturate(100%) invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
+      69.18%,85.84%{filter:brightness(0) invert(1)}
+      85.85%,100%{filter:brightness(0) saturate(100%) invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
+    }
     #proj-overlay-2 .pd-stilo-logo{width:clamp(120px,40vw,360px);height:auto;display:block;opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
     #proj-overlay-2.open .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.1s}
     /* ENE overlay bg — medium brand blue */
@@ -823,23 +833,14 @@
 
   <!-- FILM STRIP — logo positivo/negativo -->
   <div class="pd-film">
-    <div class="pd-film-frame pff-e1">
-      <div class="pd-film-logo"><img src="assets/ene-logo.svg" alt="ENE Fisioterapia"></div>
-    </div>
-    <div class="pd-film-frame pff-e2">
-      <div class="pd-film-logo pf-dark"><img src="assets/ene-logo.svg" alt="ENE Fisioterapia"></div>
-    </div>
-    <div class="pd-film-frame pff-e3">
-      <div class="pd-film-logo"><img src="assets/ene-logo.svg" alt="ENE Fisioterapia"></div>
-    </div>
-    <div class="pd-film-frame pff-e4">
-      <div class="pd-film-logo pf-dark"><img src="assets/ene-logo.svg" alt="ENE Fisioterapia"></div>
-    </div>
-    <div class="pd-film-frame pff-e5">
-      <div class="pd-film-logo"><img src="assets/ene-logo.svg" alt="ENE Fisioterapia"></div>
-    </div>
-    <div class="pd-film-frame pff-e6">
-      <div class="pd-film-logo pf-dark"><img src="assets/ene-logo.svg" alt="ENE Fisioterapia"></div>
+    <div class="pd-film-frame pff-e1"></div>
+    <div class="pd-film-frame pff-e2"></div>
+    <div class="pd-film-frame pff-e3"></div>
+    <div class="pd-film-frame pff-e4"></div>
+    <div class="pd-film-frame pff-e5"></div>
+    <div class="pd-film-frame pff-e6"></div>
+    <div class="pd-ene-film-logo-wrap">
+      <img src="assets/ene-logo.svg" alt="ENE Fisioterapia" class="pd-ene-film-iso">
     </div>
   </div>
 
