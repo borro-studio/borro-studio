@@ -460,16 +460,16 @@
       100%{transform:translateX(0);opacity:1}
     }
     .pd-ene-film-logo-wrap{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;pointer-events:none}
-    .pd-ene-film-iso{width:clamp(180px,36vw,460px);height:auto;display:block;animation:ene-iso-color 6s linear infinite;animation-play-state:paused}
+    .pd-ene-film-iso{width:clamp(180px,36vw,460px);height:auto;display:block;animation:ene-iso-color 6s step-end infinite;animation-play-state:paused}
     #proj-overlay-2.open .pd-ene-film-iso{animation-play-state:running}
     @keyframes ene-iso-color{
-      0%{filter:brightness(0) saturate(100%) invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
-      2.5%,19.17%{filter:brightness(0) invert(1)}
-      19.18%,35.84%{filter:brightness(0) saturate(100%) invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
-      35.85%,52.51%{filter:brightness(0) invert(1)}
-      52.52%,69.17%{filter:brightness(0) saturate(100%) invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
-      69.18%,85.84%{filter:brightness(0) invert(1)}
-      85.85%,100%{filter:brightness(0) saturate(100%) invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
+      0%   {filter:brightness(0) saturate(100%) invert(35%) sepia(30%) saturate(600%) hue-rotate(185deg) brightness(85%)}
+      2.5% {filter:brightness(0) invert(1)}
+      19.17%{filter:brightness(0) saturate(100%) invert(35%) sepia(30%) saturate(600%) hue-rotate(185deg) brightness(85%)}
+      35.84%{filter:brightness(0) invert(1)}
+      52.51%{filter:brightness(0) saturate(100%) invert(35%) sepia(30%) saturate(600%) hue-rotate(185deg) brightness(85%)}
+      69.17%{filter:brightness(0) invert(1)}
+      85.84%{filter:brightness(0) saturate(100%) invert(35%) sepia(30%) saturate(600%) hue-rotate(185deg) brightness(85%)}
     }
     #proj-overlay-2 .pd-stilo-logo{width:clamp(120px,40vw,360px);height:auto;display:block;opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
     #proj-overlay-2.open .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.1s}
