@@ -306,7 +306,7 @@
 
     /* ── FILM STRIP — logo positivo/negativo ── */
     .pd-film{position:relative;width:100%;height:100vh;overflow:hidden}
-    .pd-film-frame{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;animation-play-state:paused}
+    .pd-film-frame{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;animation-play-state:paused;overflow:hidden}
     #proj-overlay.open .pd-film-frame{animation-play-state:running}
     .pd-film-logo{width:clamp(180px,36vw,460px);position:relative;z-index:1;pointer-events:none}
     .pd-film-logo img{width:100%;height:auto;display:block}
@@ -549,8 +549,8 @@
     /* ROW 3 — Dúo tarjeta SVG + foto fisio */
     .pd-ene-duo{display:flex;gap:12px}
     .pd-ene-fisio-card{flex:0 0 auto;background:#81a2c9;display:flex;align-items:center;justify-content:center;padding:28px 24px}
-    .pd-ene-ftype{height:clamp(260px,30vw,420px);width:auto;display:block}
-    .pd-ene-photo-type{flex:1;overflow:hidden;position:relative;min-height:clamp(260px,30vw,420px)}
+    .pd-ene-ftype{height:clamp(200px,22vw,320px);width:auto;display:block}
+    .pd-ene-photo-type{flex:1;overflow:hidden;position:relative;min-height:clamp(200px,22vw,320px)}
     .pd-ene-photo-bg{width:100%;height:100%;object-fit:cover;display:block}
     /* ROW 4 — Isotipo claro + merch */
     .pd-ene-duo-sm{display:flex;min-height:clamp(160px,26vw,320px);gap:12px}
