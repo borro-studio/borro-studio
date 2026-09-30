@@ -15,7 +15,7 @@
   <meta name="theme-color" content="#000000"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=Playfair+Display:ital,wght@0,400;1,400;1,700&family=Fraunces:opsz,wght@9..144,900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=Playfair+Display:ital,wght@0,400;1,400;1,700&family=Fraunces:opsz,wght@9..144,900&family=Nunito:wght@700&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     html{height:100%;background:#000}
@@ -449,10 +449,13 @@
     .pd-ene-trio{display:flex;min-height:clamp(200px,34vw,440px);gap:12px}
     .pd-ene-trio-photo{flex:0 0 45%;overflow:hidden;position:relative;background:#2d5382}
     .pd-ene-trio-photo img{width:100%;height:100%;object-fit:cover}
-    .pd-ene-trio-wm{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px}
-    .pd-ene-wm-light{background:#fff;color:#2d5382}
+    .pd-ene-trio-wm{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:24px}
+    .pd-ene-wm-light{background:#fff;color:#4a6e9a}
     .pd-ene-wm-dark{background:#4a6e9a;color:#fff}
-    .pd-ene-wm-mark{width:clamp(36px,7vw,72px);height:auto;display:block}
+    .pd-ene-wm-mark{width:clamp(44px,8vw,88px);height:auto;display:block;margin-bottom:4px}
+    .pd-ene-wm-light .pd-ene-wm-mark{filter:brightness(0) saturate(100%) invert(38%) sepia(22%) saturate(700%) hue-rotate(180deg) brightness(90%)}
+    .pd-ene-wm-dark .pd-ene-wm-mark{filter:brightness(0) invert(1)}
+    .pd-ene-wm-name{font-family:'Nunito',sans-serif;font-size:clamp(26px,5vw,58px);font-weight:700;line-height:1;color:inherit;letter-spacing:-.01em}
     .pd-ene-wm-light .pd-ene-wm-mark{filter:brightness(0) saturate(100%) invert(22%) sepia(35%) saturate(700%) hue-rotate(188deg)}
     .pd-ene-wm-dark .pd-ene-wm-mark{filter:brightness(0) invert(1)}
     .pd-ene-wm-sub{font-family:Helvetica,Arial,sans-serif;font-size:clamp(7px,1.1vw,11px);letter-spacing:.3em;font-weight:400}
@@ -488,7 +491,7 @@
       .pd-ene-hero{min-height:52vh}
       .pd-ene-trio{flex-direction:column;min-height:auto}
       .pd-ene-trio-photo{flex:none;min-height:52vw}
-      .pd-ene-trio-wm{min-height:120px;flex-direction:row;padding:16px}
+      .pd-ene-trio-wm{min-height:140px;padding:16px}
       .pd-ene-duo{flex-direction:column;min-height:auto}
       .pd-ene-fisio-card{min-height:380px}
       .pd-ene-photo-type{min-height:260px}
@@ -842,10 +845,12 @@
       </div>
       <div class="pd-ene-trio-wm pd-ene-wm-light">
         <img src="assets/ene-logo.svg" alt="ENE" class="pd-ene-wm-mark">
+        <span class="pd-ene-wm-name">ene</span>
         <span class="pd-ene-wm-sub">FISIOTERAPIA</span>
       </div>
       <div class="pd-ene-trio-wm pd-ene-wm-dark">
         <img src="assets/ene-logo.svg" alt="ENE" class="pd-ene-wm-mark">
+        <span class="pd-ene-wm-name">ene</span>
         <span class="pd-ene-wm-sub">FISIOTERAPIA</span>
       </div>
     </div>
