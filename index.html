@@ -450,12 +450,6 @@
     .pd-ene-trio-photo{flex:0 0 45%;overflow:hidden;position:relative;background:#2d5382}
     .pd-ene-trio-photo img{width:100%;height:100%;object-fit:cover}
     .pd-ene-trio-wm{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:24px}
-    .pd-ene-wm-light{background:#fff;color:#4a6e9a}
-    .pd-ene-wm-dark{background:#4a6e9a;color:#fff}
-    .pd-ene-wm-iso{width:clamp(28px,4.5vw,50px);height:auto;display:block;margin-bottom:10px}
-    .pd-ene-wm-dark .pd-ene-wm-iso{filter:brightness(0) invert(1)}
-    .pd-ene-wm-light .pd-ene-wm-iso{filter:brightness(0) saturate(100%) invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
-    .pd-ene-wm-mark{width:clamp(72px,13vw,150px);height:auto;display:block}
     /* ROW 3 — Dúo tarjeta SVG + foto fisio */
     .pd-ene-duo{display:flex;gap:12px}
     .pd-ene-fisio-card{flex:0 0 auto;background:#81a2c9;display:flex;align-items:center;justify-content:center;padding:28px 24px}
@@ -826,18 +820,10 @@
       <div class="pd-sw" style="background:#0d1f35"><span class="pd-sw-label" style="color:#bacede">Oscuro<br>#0D1F35</span></div>
     </div>
 
-    <!-- ROW 2: Foto tarjetas | Wordmark blanco | Wordmark azul -->
+    <!-- ROW 2: Foto tarjetas -->
     <div class="pd-ene-trio">
-      <div class="pd-ene-trio-photo">
+      <div class="pd-ene-trio-photo" style="flex:1">
         <img src="assets/ene-cards.webp" alt="ENE Fisioterapia tarjetas">
-      </div>
-      <div class="pd-ene-trio-wm pd-ene-wm-light">
-        <img src="assets/ene-logo.svg" alt="" class="pd-ene-wm-iso">
-        <img src="assets/ene-wm.svg" alt="fisioterapia" class="pd-ene-wm-mark">
-      </div>
-      <div class="pd-ene-trio-wm pd-ene-wm-dark">
-        <img src="assets/ene-logo.svg" alt="" class="pd-ene-wm-iso">
-        <img src="assets/ene-wm.svg" alt="fisioterapia" class="pd-ene-wm-mark">
       </div>
     </div>
 
