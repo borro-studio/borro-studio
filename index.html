@@ -404,74 +404,28 @@
       .pd-typo-aa{font-size:clamp(50px,16vw,90px)}
     }
 
-    /* ── ENE FILMSTRIP FRAMES ── */
-    #proj-overlay-2 .pff-e1{background:#2d5382;animation:pffe1 6s linear infinite}
-    #proj-overlay-2 .pff-e2{background:#bacede;animation:pffe2 6s linear infinite}
-    #proj-overlay-2 .pff-e3{background:#0d1f35;animation:pffe3 6s linear infinite}
-    #proj-overlay-2 .pff-e4{background:#eef3f8;animation:pffe4 6s linear infinite}
-    #proj-overlay-2 .pff-e5{background:#4a6e9a;animation:pffe5 6s linear infinite}
-    #proj-overlay-2 .pff-e6{background:#f5f7fa;animation:pffe6 6s linear infinite}
+    /* ── ENE FILMSTRIP ── */
+    #proj-overlay-2 .pd-film{width:100vmin;height:100vmin;margin:0 auto}
+    #proj-overlay-2 .pd-film-frame{opacity:1}
+    #proj-overlay-2 .pff-e1 {background:#2d5382;z-index:1}
+    #proj-overlay-2 .pff-e2 {background:#bacede;z-index:2;animation:ene-w2 12s linear infinite paused}
+    #proj-overlay-2 .pff-e3 {background:#0d1f35;z-index:3;animation:ene-w3 12s linear infinite paused}
+    #proj-overlay-2 .pff-e4 {background:#eef3f8;z-index:4;animation:ene-w4 12s linear infinite paused}
+    #proj-overlay-2 .pff-e1r{background:#2d5382;z-index:5;animation:ene-wr 12s linear infinite paused}
     #proj-overlay-2.open .pd-film-frame{animation-play-state:running}
-    @keyframes pffe1{
-      0%{transform:translateX(-100%);opacity:1;z-index:10}
-      5%{transform:translateX(0);opacity:1;z-index:10}
-      16.66%{transform:translateX(0);opacity:1;z-index:10}
-      16.67%{transform:translateX(0);opacity:0;z-index:1}
-      100%{opacity:0;transform:translateX(-100%);z-index:1}
-    }
-    @keyframes pffe2{
-      0%,16.66%{opacity:0;transform:translateX(-100%)}
-      16.67%{transform:translateX(-100%);opacity:1}
-      21.67%{transform:translateX(0);opacity:1}
-      33.33%{transform:translateX(0);opacity:1}
-      33.34%{opacity:0}
-      100%{opacity:0;transform:translateX(-100%)}
-    }
-    @keyframes pffe3{
-      0%,33.33%{opacity:0;transform:translateX(-100%)}
-      33.34%{transform:translateX(-100%);opacity:1}
-      38.34%{transform:translateX(0);opacity:1}
-      50%{transform:translateX(0);opacity:1}
-      50.01%{opacity:0}
-      100%{opacity:0;transform:translateX(-100%)}
-    }
-    @keyframes pffe4{
-      0%,50%{opacity:0;transform:translateX(-100%)}
-      50.01%{transform:translateX(-100%);opacity:1}
-      55.01%{transform:translateX(0);opacity:1}
-      66.66%{transform:translateX(0);opacity:1}
-      66.67%{opacity:0}
-      100%{opacity:0;transform:translateX(-100%)}
-    }
-    @keyframes pffe5{
-      0%,66.66%{opacity:0;transform:translateX(-100%)}
-      66.67%{transform:translateX(-100%);opacity:1}
-      71.67%{transform:translateX(0);opacity:1}
-      83.33%{transform:translateX(0);opacity:1}
-      83.34%{opacity:0}
-      100%{opacity:0;transform:translateX(-100%)}
-    }
-    @keyframes pffe6{
-      0%{opacity:1;transform:translateX(0)}
-      5%{opacity:0;transform:translateX(0)}
-      83.33%{opacity:0;transform:translateX(-100%)}
-      83.34%{transform:translateX(-100%);opacity:1}
-      88.34%{transform:translateX(0);opacity:1}
-      100%{transform:translateX(0);opacity:1}
-    }
-    .pd-ene-film-logo-wrap{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;pointer-events:none}
-    .pd-ene-film-iso{width:clamp(180px,36vw,460px);height:auto;display:block;animation:ene-iso-color 6s step-end infinite;animation-play-state:paused}
-    #proj-overlay-2.open .pd-ene-film-iso{animation-play-state:running}
-    @media(max-width:768px){.pd-ene-film-iso{width:clamp(140px,62vw,280px)}}
-    @keyframes ene-iso-color{
-      0%{filter:brightness(0) saturate(100%) invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
-      2.5%{filter:brightness(0) invert(1)}
-      19.17%{filter:brightness(0) saturate(100%) invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
-      35.84%{filter:brightness(0) invert(1)}
-      52.51%{filter:brightness(0) saturate(100%) invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
-      69.17%{filter:brightness(0) invert(1)}
-      85.84%{filter:brightness(0) saturate(100%) invert(44%) sepia(20%) saturate(700%) hue-rotate(177deg) brightness(90%)}
-    }
+    .pd-ene-ll{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+    .pd-ene-ll svg{width:clamp(180px,36vw,460px);height:auto}
+    @media(max-width:768px){.pd-ene-ll svg{width:clamp(140px,62vw,280px)}}
+    .pd-ene-ll1 {z-index:11;color:#fff}
+    .pd-ene-ll2 {z-index:12;color:#2d5382;animation:ene-w2 12s linear infinite paused}
+    .pd-ene-ll3 {z-index:13;color:#fff;   animation:ene-w3 12s linear infinite paused}
+    .pd-ene-ll4 {z-index:14;color:#2d5382;animation:ene-w4 12s linear infinite paused}
+    .pd-ene-ll1r{z-index:15;color:#fff;   animation:ene-wr 12s linear infinite paused}
+    #proj-overlay-2.open .pd-ene-ll{animation-play-state:running}
+    @keyframes ene-w2{0%,20%{clip-path:inset(0 100% 0 0)}25%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 0 0 0)}}
+    @keyframes ene-w3{0%,40%{clip-path:inset(0 100% 0 0)}45%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 0 0 0)}}
+    @keyframes ene-w4{0%,60%{clip-path:inset(0 100% 0 0)}65%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 0 0 0)}}
+    @keyframes ene-wr{0%,80%{clip-path:inset(0 100% 0 0)}85%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 0 0 0)}}
     #proj-overlay-2 .pd-stilo-logo{width:clamp(120px,40vw,360px);height:auto;display:block;opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
     #proj-overlay-2.open .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.1s}
     /* ENE overlay bg — medium brand blue */
@@ -833,16 +787,26 @@
   </div>
 
   <!-- FILM STRIP — logo positivo/negativo -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+      <symbol id="ene-iso" viewBox="0 0 229.72 158.07">
+        <path fill="currentColor" d="M73.96.35v.1c1.3-.07,2.6-.1,3.91-.1h-3.91Z"/>
+        <path fill="currentColor" d="M226.54.34c1.76,0,3.18,1.43,3.18,3.19v74.7c0,41.62-32.84,75.73-73.96,77.78-1.3.07-2.6.1-3.91.1-15.66,0-30.25-4.65-42.47-12.63-21.31-13.91-35.41-37.96-35.41-65.25V18.15c1.3-.08,2.6-.12,3.91-.12,2.96,0,5.86.19,8.71.58v59.61c0,33.02,24.66,60.4,56.54,64.67,2.85.39,5.76.58,8.71.58,1.31,0,2.62-.04,3.91-.12,34.17-2.03,61.33-30.47,61.33-65.13V16.15c0-1.76-1.42-3.18-3.18-3.19l-83.94-.33c-3.63-2.45-15.3-12.63-30.95-12.63l127.52.34Z"/>
+        <path fill="currentColor" d="M155.76,78.22v59.25c-1.3.08-2.6.12-3.91.12-2.96,0-5.86-.19-8.71-.58v-58.78c0-33.03-24.66-60.4-56.54-64.67-2.85-.39-5.76-.58-8.71-.58-1.31,0-2.62.04-3.91.12C39.8,15.12,12.63,43.55,12.63,78.22v62.17c0,1.71,1.37,3.11,3.08,3.15l80.39,1.89c12.22,7.98,21.87,12.63,37.53,12.63l-129.35-1.9c-2.37-.03-4.27-1.96-4.27-4.33v-73.61C0,36.59,32.83,2.49,73.96.45c1.3-.07,2.6-.1,3.91-.1,15.65,0,30.24,4.64,42.47,12.63,21.3,13.91,35.41,37.96,35.41,65.25Z"/>
+      </symbol>
+    </defs>
+  </svg>
   <div class="pd-film">
     <div class="pd-film-frame pff-e1"></div>
     <div class="pd-film-frame pff-e2"></div>
     <div class="pd-film-frame pff-e3"></div>
     <div class="pd-film-frame pff-e4"></div>
-    <div class="pd-film-frame pff-e5"></div>
-    <div class="pd-film-frame pff-e6"></div>
-    <div class="pd-ene-film-logo-wrap">
-      <img src="assets/ene-logo.svg" alt="ENE Fisioterapia" class="pd-ene-film-iso">
-    </div>
+    <div class="pd-film-frame pff-e1r"></div>
+    <div class="pd-ene-ll pd-ene-ll1"><svg viewBox="0 0 229.72 158.07"><use href="#ene-iso"/></svg></div>
+    <div class="pd-ene-ll pd-ene-ll2"><svg viewBox="0 0 229.72 158.07"><use href="#ene-iso"/></svg></div>
+    <div class="pd-ene-ll pd-ene-ll3"><svg viewBox="0 0 229.72 158.07"><use href="#ene-iso"/></svg></div>
+    <div class="pd-ene-ll pd-ene-ll4"><svg viewBox="0 0 229.72 158.07"><use href="#ene-iso"/></svg></div>
+    <div class="pd-ene-ll pd-ene-ll1r"><svg viewBox="0 0 229.72 158.07"><use href="#ene-iso"/></svg></div>
   </div>
 
   <!-- GRID ENE -->
