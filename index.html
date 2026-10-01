@@ -405,22 +405,22 @@
     }
 
     /* ── ENE FILMSTRIP ── */
-    #proj-overlay-2 .pd-film{width:100vmin;height:100vmin;margin:0 auto}
+    #proj-overlay-2 .pd-film{width:100%;height:100vh;margin:0}
     #proj-overlay-2 .pd-film-frame{opacity:1}
     #proj-overlay-2 .pff-e1 {background:#2d5382;z-index:1}
-    #proj-overlay-2 .pff-e2 {background:#bacede;z-index:2;animation:ene-w2 12s linear infinite paused}
-    #proj-overlay-2 .pff-e3 {background:#0d1f35;z-index:3;animation:ene-w3 12s linear infinite paused}
-    #proj-overlay-2 .pff-e4 {background:#eef3f8;z-index:4;animation:ene-w4 12s linear infinite paused}
-    #proj-overlay-2 .pff-e1r{background:#2d5382;z-index:5;animation:ene-wr 12s linear infinite paused}
+    #proj-overlay-2 .pff-e2 {background:#bacede;z-index:2;animation:ene-w2 8s linear infinite paused}
+    #proj-overlay-2 .pff-e3 {background:#0d1f35;z-index:3;animation:ene-w3 8s linear infinite paused}
+    #proj-overlay-2 .pff-e4 {background:#eef3f8;z-index:4;animation:ene-w4 8s linear infinite paused}
+    #proj-overlay-2 .pff-e1r{background:#2d5382;z-index:5;animation:ene-wr 8s linear infinite paused}
     #proj-overlay-2.open .pd-film-frame{animation-play-state:running}
     .pd-ene-ll{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
     .pd-ene-ll svg{width:clamp(180px,36vw,460px);height:auto}
     @media(max-width:768px){.pd-ene-ll svg{width:clamp(140px,62vw,280px)}}
     .pd-ene-ll1 {z-index:11;color:#fff}
-    .pd-ene-ll2 {z-index:12;color:#2d5382;animation:ene-w2 12s linear infinite paused}
-    .pd-ene-ll3 {z-index:13;color:#fff;   animation:ene-w3 12s linear infinite paused}
-    .pd-ene-ll4 {z-index:14;color:#2d5382;animation:ene-w4 12s linear infinite paused}
-    .pd-ene-ll1r{z-index:15;color:#fff;   animation:ene-wr 12s linear infinite paused}
+    .pd-ene-ll2 {z-index:12;color:#2d5382;animation:ene-w2 8s linear infinite paused}
+    .pd-ene-ll3 {z-index:13;color:#fff;   animation:ene-w3 8s linear infinite paused}
+    .pd-ene-ll4 {z-index:14;color:#2d5382;animation:ene-w4 8s linear infinite paused}
+    .pd-ene-ll1r{z-index:15;color:#fff;   animation:ene-wr 8s linear infinite paused}
     #proj-overlay-2.open .pd-ene-ll{animation-play-state:running}
     @keyframes ene-w2{0%,20%{clip-path:inset(0 100% 0 0)}25%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 0 0 0)}}
     @keyframes ene-w3{0%,40%{clip-path:inset(0 100% 0 0)}45%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 0 0 0)}}
