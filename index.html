@@ -486,25 +486,35 @@
       .pd-ene-mark-cell,.pd-ene-merch-cell{flex:none;min-height:200px}
       .pd-ene-merch-cell{min-height:auto;aspect-ratio:753/673}
     }
-    /* ── ENE SISTEMA ── */
-    .pd-ene-sys{background:#eef3f8;padding:clamp(28px,4vw,56px);display:flex;flex-direction:column;gap:clamp(20px,2.4vw,32px);opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s cubic-bezier(.22,1,.36,1)}
-    #proj-overlay-2.open .pd-ene-sys{opacity:1;transform:none;transition-delay:.14s}
-    .pd-ene-sys-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-bottom:1px solid rgba(45,83,130,.18);padding-bottom:14px;font-family:Helvetica,Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:#2d5382}
-    .pd-ene-sys-head span:last-child{font-weight:400;opacity:.55}
-    .pd-ene-sys-row{display:flex;gap:12px;min-height:clamp(240px,30vw,400px)}
-    .pd-ene-typo{flex:1.4;background:#2d5382;color:#eef3f8;display:flex;align-items:center;gap:clamp(20px,3vw,48px);padding:clamp(24px,3vw,44px);font-family:Helvetica,Arial,sans-serif}
-    .pd-ene-typo-aa{font-size:clamp(90px,12vw,190px);font-weight:700;letter-spacing:-.05em;line-height:.85;flex-shrink:0}
-    .pd-ene-typo-meta{display:flex;flex-direction:column;gap:12px}
-    .pd-ene-typo-name{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#bacede}
-    .pd-ene-typo-w{display:flex;flex-direction:column;gap:4px;font-size:clamp(14px,1.3vw,18px)}
-    .pd-ene-typo-abc{font-size:11px;letter-spacing:.16em;opacity:.5;line-height:1.7}
-    .pd-ene-cons{flex:1;position:relative;background:#bacede;display:flex;align-items:center;justify-content:center;overflow:hidden;
+    /* ── SISTEMA (bloque común de proyecto; colores base = ENE) ── */
+    .pd-sys{background:#eef3f8;padding:clamp(28px,4vw,56px);display:flex;flex-direction:column;gap:clamp(20px,2.4vw,32px);opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s cubic-bezier(.22,1,.36,1)}
+    #proj-overlay.open .pd-sys,#proj-overlay-2.open .pd-sys{opacity:1;transform:none;transition-delay:.14s}
+    .pd-sys-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-bottom:1px solid rgba(45,83,130,.18);padding-bottom:14px;font-family:Helvetica,Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:#2d5382}
+    .pd-sys-head span:last-child{font-weight:400;opacity:.55}
+    .pd-sys-row{display:flex;gap:12px;min-height:clamp(240px,30vw,400px)}
+    .pd-sys-typo{flex:1.4;background:#2d5382;color:#eef3f8;display:flex;align-items:center;gap:clamp(20px,3vw,48px);padding:clamp(24px,3vw,44px);font-family:Helvetica,Arial,sans-serif}
+    .pd-sys-typo-aa{font-size:clamp(90px,12vw,190px);font-weight:700;letter-spacing:-.05em;line-height:.85;flex-shrink:0}
+    .pd-sys-typo-meta{display:flex;flex-direction:column;gap:12px}
+    .pd-sys-typo-name{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#bacede}
+    .pd-sys-typo-w{display:flex;flex-direction:column;gap:4px;font-size:clamp(14px,1.3vw,18px)}
+    .pd-sys-typo-abc{font-size:11px;letter-spacing:.16em;opacity:.5;line-height:1.7}
+    .pd-sys-cons{flex:1;position:relative;background:#bacede;display:flex;align-items:center;justify-content:center;overflow:hidden;
       background-image:linear-gradient(rgba(45,83,130,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(45,83,130,.14) 1px,transparent 1px);background-size:24px 24px;background-position:center}
-    .pd-ene-cons svg{width:62%;max-width:300px;height:auto;color:#2d5382;overflow:visible}
-    .pd-ene-cons-lbl{position:absolute;left:16px;bottom:14px;font-family:Helvetica,Arial,sans-serif;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#2d5382;opacity:.6}
-    .pd-ene-sys .pd-mock-palette{min-height:clamp(120px,12vw,180px)}
-    .pd-ene-sys .pd-sw[style*="#eef3f8"]{box-shadow:inset 0 0 0 1px rgba(45,83,130,.25)}
-    /* ── ENE SIGUIENTE PROYECTO ── */
+    .pd-sys-cons svg{width:62%;max-width:300px;height:auto;color:#2d5382;overflow:visible}
+    .pd-sys-cons-lbl{position:absolute;left:16px;bottom:14px;font-family:Helvetica,Arial,sans-serif;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#2d5382;opacity:.6}
+    .pd-sys .pd-mock-palette{min-height:clamp(120px,12vw,180px)}
+    .pd-sys .pd-sw[style*="#eef3f8"]{box-shadow:inset 0 0 0 1px rgba(45,83,130,.25)}
+    /* Sistema — colores Stilo */
+    #proj-overlay .pd-sys{background:#ece8e1}
+    #proj-overlay .pd-sys-head{color:#353435;border-bottom-color:rgba(53,52,53,.18)}
+    #proj-overlay .pd-sys-typo{background:#353435;color:#ece8e1}
+    #proj-overlay .pd-sys-typo-aa{color:#d4c3ae}
+    #proj-overlay .pd-sys-typo-name{color:#d4c3ae}
+    #proj-overlay .pd-sys-cons{background:#d4c3ae}
+    #proj-overlay .pd-sys-cons .pd-pattern-wrap{opacity:.22}
+    #proj-overlay .pd-sys-cons-lbl{color:#353435}
+    #proj-overlay .pd-sys .pd-sw[style*="#ece8e1"]{box-shadow:inset 0 0 0 1px rgba(53,52,53,.2)}
+    /* ── SIGUIENTE PROYECTO ── */
     .pd-next{position:relative;display:block;width:100%;height:clamp(340px,62vh,620px);border:0;padding:0;background:#0d0d0d;cursor:none;overflow:hidden;text-align:left;color:#fff}
     .pd-next-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;transform:scale(1.04);transition:transform 1.1s cubic-bezier(.22,1,.36,1),opacity .6s ease}
     .pd-next:hover .pd-next-bg{transform:scale(1);opacity:.75}
@@ -515,14 +525,14 @@
     .pd-next-arrow{width:clamp(44px,5vw,72px);height:auto;flex-shrink:0;transition:transform .5s cubic-bezier(.22,1,.36,1)}
     .pd-next:hover .pd-next-arrow{transform:translateX(10px)}
     @media(max-width:768px){
-      .pd-ene-sys{padding:20px}
-      .pd-ene-sys-row{flex-direction:column;min-height:auto}
-      .pd-ene-typo{min-height:220px;flex-direction:column;align-items:flex-start;gap:20px}
-      .pd-ene-typo-abc{font-size:10px;letter-spacing:.08em;word-break:break-all}
-      .pd-ene-sys .pd-sw{padding:12px 8px}
-      .pd-ene-sys .pd-sw-label{font-size:8px;letter-spacing:.06em}
-      .pd-ene-cons{min-height:240px}
-      .pd-ene-sys-head span:last-child{display:none}
+      .pd-sys{padding:20px}
+      .pd-sys-row{flex-direction:column;min-height:auto}
+      .pd-sys-typo{min-height:220px;flex-direction:column;align-items:flex-start;gap:20px}
+      .pd-sys-typo-abc{font-size:10px;letter-spacing:.08em;word-break:break-all}
+      .pd-sys .pd-sw{padding:12px 8px}
+      .pd-sys .pd-sw-label{font-size:8px;letter-spacing:.06em}
+      .pd-sys-cons{min-height:240px}
+      .pd-sys-head span:last-child{display:none}
     }
     /* p2 clickable + reduce dark gradient over blue photo */
     #p2{cursor:none}
@@ -757,17 +767,47 @@
     </div>
   </div>
 
-  <!-- 2 & 3. GRID (fotos + paleta + logo) -->
-  <div class="pd-grid">
-
-    <!-- Paleta de colores -->
-    <div class="pd-grid-item pd-grid-wide pd-mock-palette">
+  <!-- SISTEMA — tipografía, patrón y paleta -->
+  <div class="pd-sys">
+    <div class="pd-sys-head"><span>Sistema</span><span>Tipografía · Patrón · Color</span></div>
+    <div class="pd-sys-row">
+      <div class="pd-sys-typo">
+        <div class="pd-sys-typo-aa">Aa</div>
+        <div class="pd-sys-typo-meta">
+          <div class="pd-sys-typo-name">Helvetica Neue</div>
+          <div class="pd-sys-typo-w"><span style="font-weight:300">Light</span><span style="font-weight:400">Regular</span><span style="font-weight:700">Bold</span></div>
+          <div class="pd-sys-typo-abc">ABCDEFGHIJKLMNÑOPQRSTUVWXYZ<br>abcdefghijklmnñopqrstuvwxyz<br>0123456789</div>
+        </div>
+      </div>
+      <div class="pd-sys-cons pd-mock-pattern">
+        <div class="pd-pattern-wrap">
+              <img src="assets/stilo-logo.svg" alt="">
+              <img src="assets/stilo-logo.svg" alt="">
+              <img src="assets/stilo-logo.svg" alt="">
+              <img src="assets/stilo-logo.svg" alt="">
+              <img src="assets/stilo-logo.svg" alt="">
+              <img src="assets/stilo-logo.svg" alt="">
+              <img src="assets/stilo-logo.svg" alt="">
+              <img src="assets/stilo-logo.svg" alt="">
+              <img src="assets/stilo-logo.svg" alt="">
+              <img src="assets/stilo-logo.svg" alt="">
+              <img src="assets/stilo-logo.svg" alt="">
+              <img src="assets/stilo-logo.svg" alt="">
+        </div>
+        <div class="pd-sys-cons-lbl">Patrón de marca</div>
+      </div>
+    </div>
+    <div class="pd-mock-palette">
       <div class="pd-sw" style="background:#d4c3ae"><span class="pd-sw-label" style="color:#353435">Beige<br>#D4C3AE</span></div>
       <div class="pd-sw" style="background:#353435"><span class="pd-sw-label" style="color:#d4c3ae">Oscuro<br>#353435</span></div>
       <div class="pd-sw" style="background:#ece8e1"><span class="pd-sw-label" style="color:#353435">Crema<br>#ECE8E1</span></div>
       <div class="pd-sw" style="background:#fff"><span class="pd-sw-label" style="color:#353435">Blanco<br>#FFFFFF</span></div>
       <div class="pd-sw" style="background:#0d0d0d"><span class="pd-sw-label" style="color:#ece8e1">Negro<br>#0D0D0D</span></div>
     </div>
+  </div>
+
+  <!-- 2 & 3. GRID (logo + fotos) -->
+  <div class="pd-grid">
 
     <!-- Logo sobre fondo beige -->
     <div class="pd-grid-item pd-grid-wide pd-logo-section" style="aspect-ratio:unset;min-height:50vh">
@@ -792,6 +832,18 @@
     <img class="pd-grid-item pd-grid-wide" src="assets/stilo-05.webp" alt="Stilo tote bag" style="object-fit:cover;width:100%;height:100%">
 
   </div>
+
+  <!-- SIGUIENTE PROYECTO → ENE -->
+  <button class="pd-next pd-next-1" aria-label="Siguiente proyecto: ENE Fisioterapia">
+    <img class="pd-next-bg" src="assets/ene-card-h.webp" alt="" loading="lazy">
+    <div class="pd-next-in">
+      <div class="pd-next-lbl">Siguiente proyecto</div>
+      <div class="pd-next-row">
+        <div class="pd-next-title">ENE<br>Fisioterapia.</div>
+        <svg class="pd-next-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
+      </div>
+    </div>
+  </button>
 </div>
 
 <!-- PROJECT OVERLAY — ENE Fisioterapia -->
@@ -857,18 +909,18 @@
     </div>
 
     <!-- ROW 1b: Sistema — tipografía, retícula del isotipo y paleta -->
-    <div class="pd-ene-sys">
-      <div class="pd-ene-sys-head"><span>Sistema</span><span>Tipografía · Isotipo · Color</span></div>
-      <div class="pd-ene-sys-row">
-        <div class="pd-ene-typo">
-          <div class="pd-ene-typo-aa">Aa</div>
-          <div class="pd-ene-typo-meta">
-            <div class="pd-ene-typo-name">Helvetica Neue</div>
-            <div class="pd-ene-typo-w"><span style="font-weight:300">Light</span><span style="font-weight:400">Regular</span><span style="font-weight:700">Bold</span></div>
-            <div class="pd-ene-typo-abc">ABCDEFGHIJKLMNÑOPQRSTUVWXYZ<br>abcdefghijklmnñopqrstuvwxyz<br>0123456789</div>
+    <div class="pd-sys">
+      <div class="pd-sys-head"><span>Sistema</span><span>Tipografía · Isotipo · Color</span></div>
+      <div class="pd-sys-row">
+        <div class="pd-sys-typo">
+          <div class="pd-sys-typo-aa">Aa</div>
+          <div class="pd-sys-typo-meta">
+            <div class="pd-sys-typo-name">Helvetica Neue</div>
+            <div class="pd-sys-typo-w"><span style="font-weight:300">Light</span><span style="font-weight:400">Regular</span><span style="font-weight:700">Bold</span></div>
+            <div class="pd-sys-typo-abc">ABCDEFGHIJKLMNÑOPQRSTUVWXYZ<br>abcdefghijklmnñopqrstuvwxyz<br>0123456789</div>
           </div>
         </div>
-        <div class="pd-ene-cons">
+        <div class="pd-sys-cons">
           <svg viewBox="0 0 229.72 158.07">
             <g fill="none" stroke="currentColor" stroke-width=".6" opacity=".55">
               <rect x="0" y="0" width="229.72" height="158.07" stroke-dasharray="3 3"/>
@@ -877,7 +929,7 @@
             </g>
             <use href="#ene-iso"/>
           </svg>
-          <div class="pd-ene-cons-lbl">Retícula del isotipo</div>
+          <div class="pd-sys-cons-lbl">Retícula del isotipo</div>
         </div>
       </div>
       <div class="pd-mock-palette">
@@ -1349,6 +1401,22 @@ function closeProj() {
     setTimeout(() => { projFlash.style.transition = ''; }, 250);
   }, 140);
 }
+
+/* Siguiente proyecto: Stilo → ENE sin pasar por la home */
+function nextFromStilo() {
+  projFlash.classList.add('on');
+  setTimeout(() => {
+    projOverlay.classList.remove('open');
+    projOverlay.setAttribute('aria-hidden','true');
+    projOverlay2.classList.add('open');
+    projOverlay2.setAttribute('aria-hidden','false');
+    projOverlay2.scrollTop = 0;
+    projFlash.style.transition = 'opacity .22s ease';
+    projFlash.classList.remove('on');
+    setTimeout(() => { projFlash.style.transition = ''; }, 250);
+  }, 140);
+}
+document.querySelector('.pd-next-1').addEventListener('click', nextFromStilo);
 
 hfEls[0].addEventListener('click', () => {
   if (hfEls[0].classList.contains('clickable')) openProj();
