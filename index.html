@@ -330,7 +330,7 @@
     .pd-logo-section{background:#d4c3ae;display:flex;align-items:center;justify-content:center;padding:120px 80px;min-height:60vh}
     .pd-logo-bg{display:flex;align-items:center;justify-content:center;width:100%}
     .pd-stilo-logo{width:clamp(120px,40vw,360px);height:auto;display:block;opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
-    #proj-overlay.open .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.1s}
+    #proj-overlay .in .pd-stilo-logo{opacity:1;transform:translateY(0);transition-delay:.25s}
     .hf-stilo-logo-wrap{display:none}
     .hf-stilo-logo{width:100%;height:auto;display:block}
     .hf-stilo-tap{position:absolute;bottom:290px;left:0;right:0;z-index:6;display:flex;justify-content:center;align-items:center;opacity:0;transition:opacity .5s ease;pointer-events:none}
@@ -350,14 +350,17 @@
     /* 3 — IMAGE GRID */
     .pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:#0d0d0d;padding:12px}
     .pd-grid-item{aspect-ratio:4/3;opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s cubic-bezier(.22,1,.36,1);overflow:hidden;position:relative}
-    #proj-overlay.open .pd-grid-item:nth-child(1){opacity:1;transform:none;transition-delay:.1s}
-    #proj-overlay.open .pd-grid-item:nth-child(2){opacity:1;transform:none;transition-delay:.2s}
-    #proj-overlay.open .pd-grid-item:nth-child(3){opacity:1;transform:none;transition-delay:.28s}
-    #proj-overlay.open .pd-grid-item:nth-child(4){opacity:1;transform:none;transition-delay:.36s}
-    #proj-overlay.open .pd-grid-item:nth-child(5){opacity:1;transform:none;transition-delay:.44s}
-    #proj-overlay.open .pd-grid-item:nth-child(6){opacity:1;transform:none;transition-delay:.52s}
-    #proj-overlay.open .pd-grid-item:nth-child(7){opacity:1;transform:none;transition-delay:.6s}
     .pd-grid-wide{grid-column:span 2;aspect-ratio:21/9}
+    /* Stilo — reveal al hacer scroll (JS añade .in) */
+    #proj-overlay .pd-sys-head,#proj-overlay .pd-sys-row,#proj-overlay .pd-sys .pd-mock-palette,#proj-overlay .pd-next-row{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .9s cubic-bezier(.22,1,.36,1)}
+    #proj-overlay .pd-grid-item{transform:translateY(40px);transition:opacity .9s ease,transform 1s cubic-bezier(.22,1,.36,1)}
+    #proj-overlay .in{opacity:1!important;transform:none!important}
+    #proj-overlay .pd-grid-item.in:nth-child(3){transition-delay:.12s}
+    /* Stilo — Volver fijo al bajar del intro */
+    .pd-volver-fix{position:fixed;top:20px;left:20px;z-index:5;display:inline-flex;align-items:center;gap:10px;padding:11px 18px;border:0;border-radius:999px;background:rgba(13,13,13,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#fff;font-family:Helvetica,Arial,sans-serif;font-weight:200;font-size:12px;letter-spacing:.18em;text-transform:uppercase;cursor:none;opacity:0;transform:translateY(-12px);pointer-events:none;transition:opacity .35s ease,transform .45s cubic-bezier(.22,1,.36,1),background .2s}
+    .pd-volver-fix.show{opacity:1;transform:none;pointer-events:all}
+    .pd-volver-fix:hover{background:rgba(13,13,13,.8)}
+    .pd-volver-fix svg{width:14px;height:14px;flex-shrink:0}
     /* Business card mockup */
     .pd-mock-card{background:#ece8e1;display:flex;align-items:center;justify-content:center}
     .pd-bc{width:68%;max-width:300px;aspect-ratio:1.75;background:#fff;border-radius:4px;box-shadow:0 18px 56px rgba(53,52,53,.2),0 4px 12px rgba(53,52,53,.1);transform:rotate(-4deg);display:flex;align-items:center;justify-content:center;padding:20px}
@@ -488,7 +491,7 @@
     }
     /* ── SISTEMA (bloque común de proyecto; colores base = ENE) ── */
     .pd-sys{background:#eef3f8;padding:clamp(28px,4vw,56px);display:flex;flex-direction:column;gap:clamp(20px,2.4vw,32px);opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s cubic-bezier(.22,1,.36,1)}
-    #proj-overlay.open .pd-sys,#proj-overlay-2.open .pd-sys{opacity:1;transform:none;transition-delay:.14s}
+    #proj-overlay .pd-sys,#proj-overlay-2.open .pd-sys{opacity:1;transform:none;transition-delay:.14s}
     .pd-sys-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-bottom:1px solid rgba(45,83,130,.18);padding-bottom:14px;font-family:Helvetica,Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:#2d5382}
     .pd-sys-head span:last-child{font-weight:400;opacity:.55}
     .pd-sys-row{display:flex;gap:12px;min-height:clamp(240px,30vw,400px)}
@@ -721,6 +724,10 @@
 
 <!-- PROJECT OVERLAY — Stilo -->
 <div id="proj-overlay" aria-hidden="true">
+  <button class="pd-volver-fix" aria-label="Volver">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="7 4 3 8 7 12"/></svg>
+    Volver
+  </button>
 
   <!-- 1. INTRO — full viewport title screen -->
   <div class="pd-intro">
@@ -1378,6 +1385,7 @@ function openProj() {
     projOverlay.classList.add('open');
     projOverlay.setAttribute('aria-hidden','false');
     projOverlay.scrollTop = 0;
+    stiloReveal();
     document.body.style.top = `-${savedScroll}px`;
     document.body.classList.add('proj-open');
     // Step 3: flash out (reveals overlay with content already animating)
@@ -1417,6 +1425,22 @@ function nextFromStilo() {
   }, 140);
 }
 document.querySelector('.pd-next-1').addEventListener('click', nextFromStilo);
+
+/* Stilo — reveal al hacer scroll + Volver fijo */
+const stiloRv  = projOverlay.querySelectorAll('.pd-sys-head,.pd-sys-row,.pd-sys .pd-mock-palette,.pd-grid-item,.pd-next-row');
+const stiloIO  = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); stiloIO.unobserve(e.target); } });
+}, { root: projOverlay, rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
+function stiloReveal() {
+  stiloRv.forEach(el => { el.classList.remove('in'); stiloIO.observe(el); });
+  stiloBack.classList.remove('show');
+}
+const stiloIntro = projOverlay.querySelector('.pd-intro');
+const stiloBack  = projOverlay.querySelector('.pd-volver-fix');
+projOverlay.addEventListener('scroll', () => {
+  stiloBack.classList.toggle('show', projOverlay.scrollTop > stiloIntro.offsetHeight * .8);
+}, { passive: true });
+stiloBack.addEventListener('click', closeProj);
 
 hfEls[0].addEventListener('click', () => {
   if (hfEls[0].classList.contains('clickable')) openProj();
@@ -1467,6 +1491,7 @@ function nextFromEne() {
     projOverlay.classList.add('open');
     projOverlay.setAttribute('aria-hidden','false');
     projOverlay.scrollTop = 0;
+    stiloReveal();
     projFlash2.style.transition = 'opacity .22s ease';
     projFlash2.classList.remove('on');
     setTimeout(() => { projFlash2.style.transition = ''; }, 250);
