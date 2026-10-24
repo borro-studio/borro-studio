@@ -485,6 +485,44 @@
       .pd-ene-duo-sm{flex-direction:column}
       .pd-ene-mark-cell,.pd-ene-merch-cell{flex:none;min-height:200px}
     }
+    /* ── ENE SISTEMA ── */
+    .pd-ene-sys{background:#eef3f8;padding:clamp(28px,4vw,56px);display:flex;flex-direction:column;gap:clamp(20px,2.4vw,32px);opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s cubic-bezier(.22,1,.36,1)}
+    #proj-overlay-2.open .pd-ene-sys{opacity:1;transform:none;transition-delay:.14s}
+    .pd-ene-sys-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-bottom:1px solid rgba(45,83,130,.18);padding-bottom:14px;font-family:Helvetica,Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:#2d5382}
+    .pd-ene-sys-head span:last-child{font-weight:400;opacity:.55}
+    .pd-ene-sys-row{display:flex;gap:12px;min-height:clamp(240px,30vw,400px)}
+    .pd-ene-typo{flex:1.4;background:#2d5382;color:#eef3f8;display:flex;align-items:center;gap:clamp(20px,3vw,48px);padding:clamp(24px,3vw,44px);font-family:Helvetica,Arial,sans-serif}
+    .pd-ene-typo-aa{font-size:clamp(90px,12vw,190px);font-weight:700;letter-spacing:-.05em;line-height:.85;flex-shrink:0}
+    .pd-ene-typo-meta{display:flex;flex-direction:column;gap:12px}
+    .pd-ene-typo-name{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#bacede}
+    .pd-ene-typo-w{display:flex;flex-direction:column;gap:4px;font-size:clamp(14px,1.3vw,18px)}
+    .pd-ene-typo-abc{font-size:11px;letter-spacing:.16em;opacity:.5;line-height:1.7}
+    .pd-ene-cons{flex:1;position:relative;background:#bacede;display:flex;align-items:center;justify-content:center;overflow:hidden;
+      background-image:linear-gradient(rgba(45,83,130,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(45,83,130,.14) 1px,transparent 1px);background-size:24px 24px;background-position:center}
+    .pd-ene-cons svg{width:62%;max-width:300px;height:auto;color:#2d5382;overflow:visible}
+    .pd-ene-cons-lbl{position:absolute;left:16px;bottom:14px;font-family:Helvetica,Arial,sans-serif;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#2d5382;opacity:.6}
+    .pd-ene-sys .pd-mock-palette{min-height:clamp(120px,12vw,180px)}
+    .pd-ene-sys .pd-sw[style*="#eef3f8"]{box-shadow:inset 0 0 0 1px rgba(45,83,130,.25)}
+    /* ── ENE SIGUIENTE PROYECTO ── */
+    .pd-next{position:relative;display:block;width:100%;height:clamp(340px,62vh,620px);border:0;padding:0;background:#0d0d0d;cursor:none;overflow:hidden;text-align:left;color:#fff}
+    .pd-next-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;transform:scale(1.04);transition:transform 1.1s cubic-bezier(.22,1,.36,1),opacity .6s ease}
+    .pd-next:hover .pd-next-bg{transform:scale(1);opacity:.75}
+    .pd-next-in{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(28px,4vw,52px);background:linear-gradient(to top,rgba(0,0,0,.55),transparent 60%)}
+    .pd-next-lbl{font-family:Helvetica,Arial,sans-serif;font-size:11px;font-weight:200;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+    .pd-next-row{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+    .pd-next-title{font-size:clamp(44px,8vw,112px);font-weight:800;letter-spacing:-.04em;line-height:.92}
+    .pd-next-arrow{width:clamp(44px,5vw,72px);height:auto;flex-shrink:0;transition:transform .5s cubic-bezier(.22,1,.36,1)}
+    .pd-next:hover .pd-next-arrow{transform:translateX(10px)}
+    @media(max-width:768px){
+      .pd-ene-sys{padding:20px}
+      .pd-ene-sys-row{flex-direction:column;min-height:auto}
+      .pd-ene-typo{min-height:220px;flex-direction:column;align-items:flex-start;gap:20px}
+      .pd-ene-typo-abc{font-size:10px;letter-spacing:.08em;word-break:break-all}
+      .pd-ene-sys .pd-sw{padding:12px 8px}
+      .pd-ene-sys .pd-sw-label{font-size:8px;letter-spacing:.06em}
+      .pd-ene-cons{min-height:240px}
+      .pd-ene-sys-head span:last-child{display:none}
+    }
     /* p2 clickable + reduce dark gradient over blue photo */
     #p2{cursor:none}
     #p2 .proj-over{background:linear-gradient(to top,rgba(0,0,0,.28) 0%,rgba(0,0,0,.04) 45%,transparent 100%)}
@@ -817,13 +855,37 @@
       <img src="assets/ene-logo.svg" alt="ENE" class="pd-ene-hero-mark">
     </div>
 
-    <!-- ROW 1b: Paleta de colores (mismo formato que Stilo) -->
-    <div class="pd-mock-palette">
-      <div class="pd-sw" style="background:#2d5382"><span class="pd-sw-label" style="color:#bacede">Azul<br>#2D5382</span></div>
-      <div class="pd-sw" style="background:#4a6e9a"><span class="pd-sw-label" style="color:#eef3f8">Medio<br>#4A6E9A</span></div>
-      <div class="pd-sw" style="background:#bacede"><span class="pd-sw-label" style="color:#2d5382">Claro<br>#BACEDE</span></div>
-      <div class="pd-sw" style="background:#eef3f8"><span class="pd-sw-label" style="color:#2d5382">Fondo<br>#EEF3F8</span></div>
-      <div class="pd-sw" style="background:#0d1f35"><span class="pd-sw-label" style="color:#bacede">Oscuro<br>#0D1F35</span></div>
+    <!-- ROW 1b: Sistema — tipografía, retícula del isotipo y paleta -->
+    <div class="pd-ene-sys">
+      <div class="pd-ene-sys-head"><span>Sistema</span><span>Tipografía · Isotipo · Color</span></div>
+      <div class="pd-ene-sys-row">
+        <div class="pd-ene-typo">
+          <div class="pd-ene-typo-aa">Aa</div>
+          <div class="pd-ene-typo-meta">
+            <div class="pd-ene-typo-name">Helvetica Neue</div>
+            <div class="pd-ene-typo-w"><span style="font-weight:300">Light</span><span style="font-weight:400">Regular</span><span style="font-weight:700">Bold</span></div>
+            <div class="pd-ene-typo-abc">ABCDEFGHIJKLMNÑOPQRSTUVWXYZ<br>abcdefghijklmnñopqrstuvwxyz<br>0123456789</div>
+          </div>
+        </div>
+        <div class="pd-ene-cons">
+          <svg viewBox="0 0 229.72 158.07">
+            <g fill="none" stroke="currentColor" stroke-width=".6" opacity=".55">
+              <rect x="0" y="0" width="229.72" height="158.07" stroke-dasharray="3 3"/>
+              <line x1="-14" y1="78.22" x2="243.72" y2="78.22"/>
+              <line x1="114.86" y1="-14" x2="114.86" y2="172"/>
+            </g>
+            <use href="#ene-iso"/>
+          </svg>
+          <div class="pd-ene-cons-lbl">Retícula del isotipo</div>
+        </div>
+      </div>
+      <div class="pd-mock-palette">
+        <div class="pd-sw" style="background:#2d5382"><span class="pd-sw-label" style="color:#bacede">Azul<br>#2D5382</span></div>
+        <div class="pd-sw" style="background:#4a6e9a"><span class="pd-sw-label" style="color:#eef3f8">Medio<br>#4A6E9A</span></div>
+        <div class="pd-sw" style="background:#bacede"><span class="pd-sw-label" style="color:#2d5382">Claro<br>#BACEDE</span></div>
+        <div class="pd-sw" style="background:#eef3f8"><span class="pd-sw-label" style="color:#2d5382">Fondo<br>#EEF3F8</span></div>
+        <div class="pd-sw" style="background:#0d1f35"><span class="pd-sw-label" style="color:#bacede">Oscuro<br>#0D1F35</span></div>
+      </div>
     </div>
 
     <!-- ROW 2: Foto tarjetas -->
@@ -854,6 +916,18 @@
     </div>
 
   </div>
+
+  <!-- SIGUIENTE PROYECTO → Stilo -->
+  <button class="pd-next pd-next-2" aria-label="Siguiente proyecto: Stilo Pole Dance Studio">
+    <img class="pd-next-bg" src="assets/stilo-pole-h.webp" alt="" loading="lazy">
+    <div class="pd-next-in">
+      <div class="pd-next-lbl">Siguiente proyecto</div>
+      <div class="pd-next-row">
+        <div class="pd-next-title">Stilo Pole<br>Dance Studio.</div>
+        <svg class="pd-next-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
+      </div>
+    </div>
+  </button>
 </div>
 
 <!-- HERO FRAMES — floating project cards, organize on scroll -->
@@ -1315,7 +1389,23 @@ function closeProj2() {
   }, 140);
 }
 
+/* Siguiente proyecto: ENE → Stilo sin pasar por la home */
+function nextFromEne() {
+  projFlash2.classList.add('on');
+  setTimeout(() => {
+    projOverlay2.classList.remove('open');
+    projOverlay2.setAttribute('aria-hidden','true');
+    projOverlay.classList.add('open');
+    projOverlay.setAttribute('aria-hidden','false');
+    projOverlay.scrollTop = 0;
+    projFlash2.style.transition = 'opacity .22s ease';
+    projFlash2.classList.remove('on');
+    setTimeout(() => { projFlash2.style.transition = ''; }, 250);
+  }, 140);
+}
+
 document.getElementById('p2').addEventListener('click', openProj2);
+document.querySelector('.pd-next-2').addEventListener('click', nextFromEne);
 projClose2.addEventListener('click', closeProj2);
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && projOverlay2.classList.contains('open')) closeProj2(); });
 /* hover highlight on p2 */
