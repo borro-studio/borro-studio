@@ -15,7 +15,7 @@
   <meta name="theme-color" content="#000000"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=Playfair+Display:ital,wght@0,400;1,400;1,700&family=Fraunces:opsz,wght@9..144,900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400&family=Playfair+Display:ital,wght@0,400;1,400;1,700&family=Fraunces:opsz,wght@9..144,900&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     html{height:100%;background:#000}
@@ -541,6 +541,99 @@
     #p2{cursor:none}
     #p2 .proj-over{background:linear-gradient(to top,rgba(0,0,0,.28) 0%,rgba(0,0,0,.04) 45%,transparent 100%)}
     #p2.active .proj-title,#p2.active .proj-cat,#p2.active .proj-year{cursor:none}
+    /* ══ PLANTILLA DE PROYECTO (común a todos los proyectos) ══
+       Cada proyecto solo aporta datos en PT_PROJECTS (script). Pantallas: título, foto, frase,
+       construcción del logo (scroll), fotogramas de color (scroll), pareja de fotos, bobina (scroll), foto, pareja, siguiente. */
+    #proj-overlay.pt,#proj-overlay-2.pt{background:#1d1c1c}
+    .pt{--pt-dark:#1d1c1c;--pt-light:#ece8e1;--pt-ink:#2b2a2a;--pt-borro:#fecd52;--pt-muted:#a7a29a;--pt-guide:#b39c80;
+      --pt-gl:max(16px,env(safe-area-inset-left,0px));--pt-gr:max(16px,env(safe-area-inset-right,0px));--pt-ease:cubic-bezier(.22,1,.36,1);
+      background:var(--pt-dark);color:#ece8e1;font-family:'Inter',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    .pt *{box-sizing:border-box;margin:0;padding:0}
+    .pt img{display:block;max-width:100%}
+    .pt button{font:inherit;color:inherit;background:none;border:0;cursor:none}
+    .pt .pt-mono{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+    .pt-top{position:fixed;left:0;right:0;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:12px;
+      padding:calc(14px + env(safe-area-inset-top,0px)) var(--pt-gr) 14px var(--pt-gl);font-size:14px;mix-blend-mode:difference;color:#fff;pointer-events:none}
+    .pt-top>*{pointer-events:auto}
+    .pt-top .pt-mid{opacity:.8}
+    .pt-scr{position:relative;height:100svh;min-height:520px;overflow:hidden}
+    .pt-c{position:absolute;z-index:3;font-size:14px;line-height:1.4}
+    .pt-bl{left:var(--pt-gl);bottom:calc(22px + env(safe-area-inset-bottom,0px))}
+    .pt-br{right:var(--pt-gr);bottom:calc(22px + env(safe-area-inset-bottom,0px));text-align:right;font-variant-numeric:tabular-nums}
+    .pt-tl{left:var(--pt-gl);top:calc(56px + env(safe-area-inset-top,0px))}
+    .pt-tr{right:var(--pt-gr);top:calc(56px + env(safe-area-inset-top,0px));text-align:right}
+    .pt-on-light .pt-c{color:var(--pt-ink)}
+    .pt-on-dark .pt-c{color:#ece8e1}
+    .pt-cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .pt .pt-contain{object-fit:contain;background:var(--pt-light);padding:8%}
+    .pt-pin{position:relative}
+    .pt-pin>.pt-stage{position:sticky;top:0;height:100svh;min-height:520px;overflow:hidden}
+    /* título */
+    .pt-title{background:var(--pt-light);color:var(--pt-ink);display:flex;align-items:flex-end;padding:0 var(--pt-gr) calc(70px + env(safe-area-inset-bottom,0px)) var(--pt-gl)}
+    .pt-title h1{font-weight:900;font-size:clamp(54px,10.5vw,160px);line-height:.86;letter-spacing:-.055em}
+    .pt-ln{display:block;overflow:hidden;padding-bottom:.06em}
+    .pt-ln>span{display:block;transform:translateY(105%);transition:transform 1.1s var(--pt-ease)}
+    .pt-ready .pt-ln>span{transform:none}
+    .pt-ready .pt-ln:nth-child(2)>span{transition-delay:.09s}
+    .pt-zoom img{transform:scale(var(--z,1.15))}
+    /* frase */
+    .pt-say{display:flex;align-items:center;padding:0 var(--pt-gr) 0 var(--pt-gl);background:var(--pt-dark)}
+    .pt-say p{font-weight:800;font-size:clamp(34px,6.6vw,100px);line-height:.98;letter-spacing:-.045em;max-width:16ch}
+    .pt-say .pt-w{opacity:.14;transition:opacity .35s}
+    .pt-say .pt-w.lit{opacity:1}
+    .pt-say .pt-w.acc.lit{color:var(--pt-borro)}
+    .pt-say .pt-c{max-width:46ch;color:var(--pt-muted)}
+    /* construcción del logo */
+    .pt-build .pt-stage{background:var(--pt-light);color:var(--pt-ink)}
+    .pt-cons{position:absolute;inset:0;display:grid;place-items:center}
+    .pt-cons svg{width:min(78vw,820px);height:auto;max-height:70svh;overflow:visible}
+    .pt-cons .g line,.pt-cons .g rect,.pt-cons .g circle{fill:none;stroke:var(--pt-guide);stroke-width:var(--sw-g)}
+    .pt-cons .g .axis{stroke:var(--pt-ink);stroke-opacity:.5}
+    .pt-cons .g text{fill:var(--pt-guide);font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;letter-spacing:.04em}
+    .pt-cons .shape{stroke:var(--pt-ink);stroke-width:var(--sw-s)}
+    .pt-phase{display:flex;flex-direction:column;gap:6px}
+    .pt-phase b{font-weight:800;font-size:clamp(22px,2.4vw,34px);letter-spacing:-.03em}
+    .pt-steps{display:flex;gap:6px;margin-top:6px}
+    .pt-steps i{width:28px;height:3px;background:currentColor;opacity:.2}
+    .pt-steps i.on{opacity:1}
+    /* fotogramas de color */
+    .pt-frames .pt-stage{display:grid;place-items:center}
+    .pt-frames .pt-logo{width:min(52vw,440px);aspect-ratio:var(--pt-ar,1);-webkit-mask:var(--pt-logo) center/contain no-repeat;mask:var(--pt-logo) center/contain no-repeat}
+    .pt-sprocket{position:absolute;left:0;right:0;height:22px;display:flex;gap:18px;padding:0 18px;opacity:.35}
+    .pt-sprocket i{flex:none;width:22px;height:12px;border-radius:2px;background:currentColor;margin-top:5px}
+    .pt-sprocket.t{top:calc(50px + env(safe-area-inset-top,0px))}.pt-sprocket.b{bottom:calc(60px + env(safe-area-inset-bottom,0px))}
+    .pt-bighex{position:absolute;right:var(--pt-gr);top:50%;transform:translateY(-50%);writing-mode:vertical-rl;font-weight:900;font-size:clamp(40px,7vw,110px);letter-spacing:-.04em;opacity:.12}
+    /* pareja de fotos */
+    .pt-split{display:grid;grid-template-columns:1fr 1fr}
+    .pt-split figure{position:relative;overflow:hidden;clip-path:inset(100% 0 0 0);transition:clip-path 1.1s var(--pt-ease)}
+    .pt-split figure:nth-child(2){transition-delay:.12s}
+    .pt-split.in figure{clip-path:inset(0 0 0 0)}
+    /* bobina */
+    .pt-reel .pt-stage{background:var(--pt-dark);display:flex;align-items:center}
+    .pt-strip{display:flex;padding:26px 0;background:#0e0e0e;will-change:transform;position:relative}
+    .pt-strip::before,.pt-strip::after{content:"";position:absolute;left:0;right:0;height:12px;background:repeating-linear-gradient(90deg,transparent 0 14px,#2c2b2b 14px 34px)}
+    .pt-strip::before{top:7px}.pt-strip::after{bottom:7px}
+    .pt-cell{flex:none;width:min(46vw,440px);aspect-ratio:4/5;margin:0 12px;position:relative;overflow:hidden;background:#000;transform:scale(.86);opacity:.4;transition:transform .5s var(--pt-ease),opacity .5s}
+    .pt-cell.act{transform:none;opacity:1}
+    .pt-cell img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .pt-cell .n{position:absolute;left:10px;top:8px;color:#fff;mix-blend-mode:difference;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:11px}
+    .pt-reel .pt-c{color:var(--pt-muted)}
+    /* siguiente */
+    .pt-next{display:block;width:100%;text-align:left}
+    .pt-next img{transition:transform 1.2s var(--pt-ease)}
+    .pt-next:hover img{transform:scale(1.04)}
+    .pt-next .pt-big{position:absolute;left:var(--pt-gl);bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:3;font-weight:900;font-size:clamp(54px,10.5vw,160px);line-height:.86;letter-spacing:-.055em}
+    @media(max-width:700px){
+      .pt-split{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
+      .pt-cell{width:70vw}
+      .pt-top .pt-mid{display:none}
+      .pt-cons svg{width:76vw}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .pt-ln>span{transform:none;transition:none}
+      .pt-split figure{clip-path:none;transition:none}
+      .pt-say .pt-w{opacity:1}
+    }
   </style>
 </head>
 <body>
@@ -722,273 +815,11 @@
 <div id="proj-flash"></div>
 <div id="proj-flash-2"></div>
 
-<!-- PROJECT OVERLAY — Stilo -->
-<div id="proj-overlay" aria-hidden="true">
-  <button class="pd-volver-fix" aria-label="Volver">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="7 4 3 8 7 12"/></svg>
-    Volver
-  </button>
+<!-- PROJECT OVERLAY — Stilo (contenido generado por la plantilla de proyecto) -->
+<div id="proj-overlay" aria-hidden="true" data-pt="stilo"></div>
 
-  <!-- 1. INTRO — full viewport title screen -->
-  <div class="pd-intro">
-    <div class="pd-intro-circle"></div>
-    <div class="pd-intro-top">
-      <div class="pd-intro-title-clip">
-        <div class="pd-intro-title">Stilo Pole Dance<br>Studio.</div>
-      </div>
-      <button class="pd-volver">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="7 4 3 8 7 12"/></svg>
-        Volver
-      </button>
-    </div>
-    <div class="pd-intro-footer">
-      <p class="pd-intro-desc">Stilo Pole Studio es un estudio creado por dos jóvenes emprendedoras que ante todo, disfrutan el deporte que tanto practican. Desde Borro Studio nos encargamos de reflejar esa confianza, juventud y dinamismo que tanto transmiten en sus clases.</p>
-      <div class="pd-intro-meta">
-        <div class="pd-im-col">
-          <div class="pd-im-label">AÑO</div>
-          <div class="pd-im-val">2025</div>
-        </div>
-        <div class="pd-im-col">
-          <div class="pd-im-label">OBJETIVOS</div>
-          <div class="pd-im-val">Actual<br>Dinámico<br>Confianza</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FILM STRIP — logo positivo/negativo en mockups -->
-  <div class="pd-film">
-    <div class="pd-film-frame pff-1">
-      <div class="pd-film-logo"><img src="assets/stilo-logo.svg" alt="Stilo"></div>
-    </div>
-    <div class="pd-film-frame pff-2">
-      <div class="pd-film-logo pf-white"><img src="assets/stilo-logo.svg" alt="Stilo"></div>
-    </div>
-    <div class="pd-film-frame pff-3"></div>
-    <div class="pd-film-frame pff-4">
-      <div class="pd-film-logo"><img src="assets/stilo-logo.svg" alt="Stilo"></div>
-    </div>
-    <div class="pd-film-frame pff-5"></div>
-    <div class="pd-film-frame pff-6">
-      <div class="pd-film-logo pf-white"><img src="assets/stilo-logo.svg" alt="Stilo"></div>
-    </div>
-  </div>
-
-  <!-- SISTEMA — tipografía, patrón y paleta -->
-  <div class="pd-sys">
-    <div class="pd-sys-head"><span>Sistema</span><span>Tipografía · Patrón · Color</span></div>
-    <div class="pd-sys-row">
-      <div class="pd-sys-typo">
-        <div class="pd-sys-typo-aa">Aa</div>
-        <div class="pd-sys-typo-meta">
-          <div class="pd-sys-typo-name">Helvetica Neue</div>
-          <div class="pd-sys-typo-w"><span style="font-weight:300">Light</span><span style="font-weight:400">Regular</span><span style="font-weight:700">Bold</span></div>
-          <div class="pd-sys-typo-abc">ABCDEFGHIJKLMNÑOPQRSTUVWXYZ<br>abcdefghijklmnñopqrstuvwxyz<br>0123456789</div>
-        </div>
-      </div>
-      <div class="pd-sys-cons pd-mock-pattern">
-        <div class="pd-pattern-wrap">
-              <img src="assets/stilo-logo.svg" alt="">
-              <img src="assets/stilo-logo.svg" alt="">
-              <img src="assets/stilo-logo.svg" alt="">
-              <img src="assets/stilo-logo.svg" alt="">
-              <img src="assets/stilo-logo.svg" alt="">
-              <img src="assets/stilo-logo.svg" alt="">
-              <img src="assets/stilo-logo.svg" alt="">
-              <img src="assets/stilo-logo.svg" alt="">
-              <img src="assets/stilo-logo.svg" alt="">
-              <img src="assets/stilo-logo.svg" alt="">
-              <img src="assets/stilo-logo.svg" alt="">
-              <img src="assets/stilo-logo.svg" alt="">
-        </div>
-        <div class="pd-sys-cons-lbl">Patrón de marca</div>
-      </div>
-    </div>
-    <div class="pd-mock-palette">
-      <div class="pd-sw" style="background:#d4c3ae"><span class="pd-sw-label" style="color:#353435">Beige<br>#D4C3AE</span></div>
-      <div class="pd-sw" style="background:#353435"><span class="pd-sw-label" style="color:#d4c3ae">Oscuro<br>#353435</span></div>
-      <div class="pd-sw" style="background:#ece8e1"><span class="pd-sw-label" style="color:#353435">Crema<br>#ECE8E1</span></div>
-      <div class="pd-sw" style="background:#fff"><span class="pd-sw-label" style="color:#353435">Blanco<br>#FFFFFF</span></div>
-      <div class="pd-sw" style="background:#0d0d0d"><span class="pd-sw-label" style="color:#ece8e1">Negro<br>#0D0D0D</span></div>
-    </div>
-  </div>
-
-  <!-- 2 & 3. GRID (logo + fotos) -->
-  <div class="pd-grid">
-
-    <!-- Logo sobre fondo beige -->
-    <div class="pd-grid-item pd-grid-wide pd-logo-section" style="aspect-ratio:unset;min-height:50vh">
-      <div class="pd-logo-bg">
-        <img class="pd-stilo-logo" src="assets/stilo-logo.svg" alt="Stilo Pole Dance Studio">
-      </div>
-    </div>
-
-    <!-- Bailarina con logo -->
-    <div class="pd-grid-item pd-mock-photo">
-      <img class="pd-photo-img" src="assets/stilo-02.webp" alt="Stilo Pole Dance Studio">
-      <img class="pd-photo-logo" src="assets/stilo-logo.svg" alt="Stilo">
-    </div>
-
-    <!-- Phone mockup -->
-    <img class="pd-grid-item" src="assets/stilo-03.webp" alt="Stilo app mockup" style="object-fit:cover;width:100%;height:100%">
-
-    <!-- Sudadera (full width) -->
-    <img class="pd-grid-item pd-grid-wide" src="assets/stilo-04.webp" alt="Stilo sweatshirt" style="object-fit:cover;width:100%;height:100%">
-
-    <!-- Tote bag -->
-    <img class="pd-grid-item pd-grid-wide" src="assets/stilo-05.webp" alt="Stilo tote bag" style="object-fit:cover;width:100%;height:100%">
-
-  </div>
-
-  <!-- SIGUIENTE PROYECTO → ENE -->
-  <button class="pd-next pd-next-1" aria-label="Siguiente proyecto: ENE Fisioterapia">
-    <img class="pd-next-bg" src="assets/ene-card-h.webp" alt="" loading="lazy">
-    <div class="pd-next-in">
-      <div class="pd-next-lbl">Siguiente proyecto</div>
-      <div class="pd-next-row">
-        <div class="pd-next-title">ENE<br>Fisioterapia.</div>
-        <svg class="pd-next-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
-      </div>
-    </div>
-  </button>
-</div>
-
-<!-- PROJECT OVERLAY — ENE Fisioterapia -->
-<div id="proj-overlay-2" aria-hidden="true">
-
-  <!-- 1. INTRO -->
-  <div class="pd-intro">
-    <div class="pd-intro-circle"></div>
-    <div class="pd-intro-wm"><img src="assets/ene-wm.svg" alt=""></div>
-    <div class="pd-intro-top">
-      <div class="pd-intro-title-clip">
-        <div class="pd-intro-title">ENE<br>Fisioterapia.</div>
-      </div>
-      <button class="pd-volver pd-volver-2">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="7 4 3 8 7 12"/></svg>
-        Volver
-      </button>
-    </div>
-    <div class="pd-intro-footer">
-      <p class="pd-intro-desc">ENE Fisioterapia es la clínica de Oihane, fisioterapeuta con vocación por el trato humano y cercano. Desde Borro Studio diseñamos una identidad que transmite profesionalidad, calidez y confianza para conectar con cada paciente.</p>
-      <div class="pd-intro-meta">
-        <div class="pd-im-col">
-          <div class="pd-im-label">AÑO</div>
-          <div class="pd-im-val">2025</div>
-        </div>
-        <div class="pd-im-col">
-          <div class="pd-im-label">OBJETIVOS</div>
-          <div class="pd-im-val">Actual<br>Cercano<br>Familiar</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FILM STRIP — logo positivo/negativo -->
-  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
-    <defs>
-      <symbol id="ene-iso" viewBox="0 0 229.72 158.07">
-        <path fill="currentColor" d="M73.96.35v.1c1.3-.07,2.6-.1,3.91-.1h-3.91Z"/>
-        <path fill="currentColor" d="M226.54.34c1.76,0,3.18,1.43,3.18,3.19v74.7c0,41.62-32.84,75.73-73.96,77.78-1.3.07-2.6.1-3.91.1-15.66,0-30.25-4.65-42.47-12.63-21.31-13.91-35.41-37.96-35.41-65.25V18.15c1.3-.08,2.6-.12,3.91-.12,2.96,0,5.86.19,8.71.58v59.61c0,33.02,24.66,60.4,56.54,64.67,2.85.39,5.76.58,8.71.58,1.31,0,2.62-.04,3.91-.12,34.17-2.03,61.33-30.47,61.33-65.13V16.15c0-1.76-1.42-3.18-3.18-3.19l-83.94-.33c-3.63-2.45-15.3-12.63-30.95-12.63l127.52.34Z"/>
-        <path fill="currentColor" d="M155.76,78.22v59.25c-1.3.08-2.6.12-3.91.12-2.96,0-5.86-.19-8.71-.58v-58.78c0-33.03-24.66-60.4-56.54-64.67-2.85-.39-5.76-.58-8.71-.58-1.31,0-2.62.04-3.91.12C39.8,15.12,12.63,43.55,12.63,78.22v62.17c0,1.71,1.37,3.11,3.08,3.15l80.39,1.89c12.22,7.98,21.87,12.63,37.53,12.63l-129.35-1.9c-2.37-.03-4.27-1.96-4.27-4.33v-73.61C0,36.59,32.83,2.49,73.96.45c1.3-.07,2.6-.1,3.91-.1,15.65,0,30.24,4.64,42.47,12.63,21.3,13.91,35.41,37.96,35.41,65.25Z"/>
-      </symbol>
-    </defs>
-  </svg>
-  <div class="pd-film">
-    <div class="pd-film-frame pff-e1"></div>
-    <div class="pd-film-frame pff-e2"></div>
-    <div class="pd-film-frame pff-e3"></div>
-    <div class="pd-film-frame pff-e4"></div>
-    <div class="pd-film-frame pff-e1r"></div>
-    <div class="pd-ene-ll pd-ene-ll1"><svg viewBox="0 0 229.72 158.07"><use href="#ene-iso"/></svg></div>
-    <div class="pd-ene-ll pd-ene-ll2"><svg viewBox="0 0 229.72 158.07"><use href="#ene-iso"/></svg></div>
-    <div class="pd-ene-ll pd-ene-ll3"><svg viewBox="0 0 229.72 158.07"><use href="#ene-iso"/></svg></div>
-    <div class="pd-ene-ll pd-ene-ll4"><svg viewBox="0 0 229.72 158.07"><use href="#ene-iso"/></svg></div>
-    <div class="pd-ene-ll pd-ene-ll1r"><svg viewBox="0 0 229.72 158.07"><use href="#ene-iso"/></svg></div>
-  </div>
-
-  <!-- GRID ENE -->
-  <div class="pd-ene-grid">
-
-    <!-- ROW 1: Hero isotipo -->
-    <div class="pd-ene-hero">
-      <img src="assets/ene-logo.svg" alt="ENE" class="pd-ene-hero-mark">
-    </div>
-
-    <!-- ROW 1b: Sistema — tipografía, retícula del isotipo y paleta -->
-    <div class="pd-sys">
-      <div class="pd-sys-head"><span>Sistema</span><span>Tipografía · Isotipo · Color</span></div>
-      <div class="pd-sys-row">
-        <div class="pd-sys-typo">
-          <div class="pd-sys-typo-aa">Aa</div>
-          <div class="pd-sys-typo-meta">
-            <div class="pd-sys-typo-name">Helvetica Neue</div>
-            <div class="pd-sys-typo-w"><span style="font-weight:300">Light</span><span style="font-weight:400">Regular</span><span style="font-weight:700">Bold</span></div>
-            <div class="pd-sys-typo-abc">ABCDEFGHIJKLMNÑOPQRSTUVWXYZ<br>abcdefghijklmnñopqrstuvwxyz<br>0123456789</div>
-          </div>
-        </div>
-        <div class="pd-sys-cons">
-          <svg viewBox="0 0 229.72 158.07">
-            <g fill="none" stroke="currentColor" stroke-width=".6" opacity=".55">
-              <rect x="0" y="0" width="229.72" height="158.07" stroke-dasharray="3 3"/>
-              <line x1="-14" y1="78.22" x2="243.72" y2="78.22"/>
-              <line x1="114.86" y1="-14" x2="114.86" y2="172"/>
-            </g>
-            <use href="#ene-iso"/>
-          </svg>
-          <div class="pd-sys-cons-lbl">Retícula del isotipo</div>
-        </div>
-      </div>
-      <div class="pd-mock-palette">
-        <div class="pd-sw" style="background:#2d5382"><span class="pd-sw-label" style="color:#bacede">Azul<br>#2D5382</span></div>
-        <div class="pd-sw" style="background:#4a6e9a"><span class="pd-sw-label" style="color:#eef3f8">Medio<br>#4A6E9A</span></div>
-        <div class="pd-sw" style="background:#bacede"><span class="pd-sw-label" style="color:#2d5382">Claro<br>#BACEDE</span></div>
-        <div class="pd-sw" style="background:#eef3f8"><span class="pd-sw-label" style="color:#2d5382">Fondo<br>#EEF3F8</span></div>
-        <div class="pd-sw" style="background:#0d1f35"><span class="pd-sw-label" style="color:#bacede">Oscuro<br>#0D1F35</span></div>
-      </div>
-    </div>
-
-    <!-- ROW 2: Foto tarjetas -->
-    <div class="pd-ene-trio">
-      <div class="pd-ene-trio-photo" style="flex:1">
-        <img src="assets/ene-cards.webp" alt="ENE Fisioterapia tarjetas">
-      </div>
-    </div>
-
-    <!-- ROW 3: Tarjeta fisio | Foto con overlay -->
-    <div class="pd-ene-duo">
-      <div class="pd-ene-fisio-card">
-        <img src="assets/ene-tarjeta.svg" alt="ENE Fisioterapia tarjeta" class="pd-ene-ftype">
-      </div>
-      <div class="pd-ene-photo-type">
-        <img src="assets/ene-photo.webp" alt="ENE Fisioterapia sesión" class="pd-ene-photo-bg">
-      </div>
-    </div>
-
-    <!-- ROW 4: Isotipo azul claro | Merch -->
-    <div class="pd-ene-duo-sm">
-      <div class="pd-ene-mark-cell">
-        <img src="assets/ene-logo.svg" alt="ENE" class="pd-ene-cell-mark">
-      </div>
-      <div class="pd-ene-merch-cell">
-        <img src="assets/ene-merch.png" alt="ENE Fisioterapia merch" class="pd-ene-mtype">
-      </div>
-    </div>
-
-  </div>
-
-  <!-- SIGUIENTE PROYECTO → Stilo -->
-  <button class="pd-next pd-next-2" aria-label="Siguiente proyecto: Stilo Pole Dance Studio">
-    <img class="pd-next-bg" src="assets/stilo-pole-h.webp" alt="" loading="lazy">
-    <div class="pd-next-in">
-      <div class="pd-next-lbl">Siguiente proyecto</div>
-      <div class="pd-next-row">
-        <div class="pd-next-title">Stilo Pole<br>Dance Studio.</div>
-        <svg class="pd-next-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><line x1="2" y1="8" x2="14" y2="8"/><polyline points="9 3 14 8 9 13"/></svg>
-      </div>
-    </div>
-  </button>
-</div>
+<!-- PROJECT OVERLAY — ENE Fisioterapia (contenido generado por la plantilla de proyecto) -->
+<div id="proj-overlay-2" aria-hidden="true" data-pt="ene"></div>
 
 <!-- HERO FRAMES — floating project cards, organize on scroll -->
 <div id="hero-frames">
@@ -1373,7 +1204,6 @@ hfEls.forEach(el => {
 ══════════════════════════════════════ */
 const projOverlay = document.getElementById('proj-overlay');
 const projFlash   = document.getElementById('proj-flash');
-const projClose   = document.querySelector('.pd-volver');
 let savedScroll   = 0;
 
 function openProj() {
@@ -1385,7 +1215,6 @@ function openProj() {
     projOverlay.classList.add('open');
     projOverlay.setAttribute('aria-hidden','false');
     projOverlay.scrollTop = 0;
-    stiloReveal();
     document.body.style.top = `-${savedScroll}px`;
     document.body.classList.add('proj-open');
     // Step 3: flash out (reveals overlay with content already animating)
@@ -1424,34 +1253,15 @@ function nextFromStilo() {
     setTimeout(() => { projFlash.style.transition = ''; }, 250);
   }, 140);
 }
-document.querySelector('.pd-next-1').addEventListener('click', nextFromStilo);
-
-/* Stilo — reveal al hacer scroll + Volver fijo */
-const stiloRv  = projOverlay.querySelectorAll('.pd-sys-head,.pd-sys-row,.pd-sys .pd-mock-palette,.pd-grid-item,.pd-next-row');
-const stiloIO  = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); stiloIO.unobserve(e.target); } });
-}, { root: projOverlay, rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
-function stiloReveal() {
-  stiloRv.forEach(el => { el.classList.remove('in'); stiloIO.observe(el); });
-  stiloBack.classList.remove('show');
-}
-const stiloIntro = projOverlay.querySelector('.pd-intro');
-const stiloBack  = projOverlay.querySelector('.pd-volver-fix');
-projOverlay.addEventListener('scroll', () => {
-  stiloBack.classList.toggle('show', projOverlay.scrollTop > stiloIntro.offsetHeight * .8);
-}, { passive: true });
-stiloBack.addEventListener('click', closeProj);
 
 hfEls[0].addEventListener('click', () => {
   if (hfEls[0].classList.contains('clickable')) openProj();
 });
-projClose.addEventListener('click', closeProj);
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && projOverlay.classList.contains('open')) closeProj(); });
 
 /* ── ENE OVERLAY ── */
 const projOverlay2 = document.getElementById('proj-overlay-2');
 const projFlash2   = document.getElementById('proj-flash-2');
-const projClose2   = document.querySelector('.pd-volver-2');
 
 function openProj2() {
   savedScroll = window.scrollY;
@@ -1491,7 +1301,6 @@ function nextFromEne() {
     projOverlay.classList.add('open');
     projOverlay.setAttribute('aria-hidden','false');
     projOverlay.scrollTop = 0;
-    stiloReveal();
     projFlash2.style.transition = 'opacity .22s ease';
     projFlash2.classList.remove('on');
     setTimeout(() => { projFlash2.style.transition = ''; }, 250);
@@ -1499,12 +1308,177 @@ function nextFromEne() {
 }
 
 document.getElementById('p2').addEventListener('click', openProj2);
-document.querySelector('.pd-next-2').addEventListener('click', nextFromEne);
-projClose2.addEventListener('click', closeProj2);
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && projOverlay2.classList.contains('open')) closeProj2(); });
 /* hover highlight on p2 */
 document.getElementById('p2').addEventListener('mouseenter', () => document.body.classList.add('hl'));
 document.getElementById('p2').addEventListener('mouseleave', () => document.body.classList.remove('hl'));
+
+/* ══════════════════════════════════════
+   PLANTILLA DE PROYECTO — un único diseño para todos los proyectos.
+   Para añadir un proyecto: nueva entrada en PT_PROJECTS + un overlay <div data-pt="clave">.
+══════════════════════════════════════ */
+const PT_PROJECTS = {
+  stilo:{
+    name:['Stilo Pole','Dance Studio.'], plain:'Stilo Pole Dance Studio', n:1, total:2, kind:'Identidad corporativa', year:'2025',
+    light:'#ece8e1', ink:'#2b2a2a', guide:'#b39c80', logo:'assets/stilo-logo.svg', ar:'120.56/120.95',
+    hero:['assets/stilo-pole-h.webp','El estudio. La barra es la «l».','light'],
+    say:'Dos emprendedoras, un estudio y *una *barra que acabó dentro del logotipo.',
+    sayNote:'Stilo necesitaba una marca actual, dinámica y que diera confianza a quien entra por primera vez.',
+    palette:[['#d4c3ae','Beige','#2b2a2a'],['#353435','Gris oscuro','#ece8e1'],['#ece8e1','Crema','#353435'],['#ffffff','Blanco','#353435'],['#0d0d0d','Negro','#d4c3ae']],
+    split1:[['assets/stilo-02.webp'],['assets/stilo-03.webp'],'Fotografía de marca y web de reservas'],
+    reel:[['assets/stilo-02.webp','Fotografía'],['assets/stilo-04.webp','Sudadera'],['assets/stilo-03.webp','Web móvil'],['assets/stilo-05.webp','Tote bag'],['assets/stilo-pole-v.jpg','Señalética'],['assets/stilo-01.jpg','Clase'],['assets/stilo-pole-h.webp','Estudio']],
+    full:['assets/stilo-04.webp','Sudadera oversize, serigrafía a una tinta','light'],
+    split2:[['assets/stilo-05.webp'],['assets/stilo-pole-v.jpg'],'Tote bag y señalética'],
+    next:'ene'
+  },
+  ene:{
+    name:['ENE','Fisioterapia.'], plain:'ENE Fisioterapia', n:2, total:2, kind:'Identidad corporativa', year:'2025',
+    light:'#eef3f8', ink:'#0d1f35', guide:'#7f9cc0', logo:'assets/ene-logo.svg', ar:'229.72/158.07',
+    hero:['assets/ene-card-h.webp','La consulta. El isotipo, en la pared.','dark'],
+    say:'Una clínica pequeña, una fisio cercana y *una *marca que da confianza desde la primera visita.',
+    sayNote:'Oihane quería una marca profesional pero cálida, tan cercana como su forma de tratar a cada paciente.',
+    palette:[['#2d5382','Azul','#eef3f8'],['#bacede','Azul claro','#0d1f35'],['#0d1f35','Azul noche','#bacede'],['#eef3f8','Fondo','#2d5382'],['#4a6e9a','Azul medio','#eef3f8']],
+    split1:[['assets/ene-cards.webp'],['assets/ene-photo.webp'],'Tarjetas de visita y fotografía de consulta'],
+    reel:[['assets/ene-card-h.webp','Consulta'],['assets/ene-cards.webp','Tarjetas'],['assets/ene-photo.webp','Sesión'],['assets/ene-merch.png','Camisetas',1],['assets/ene-card-v.webp','Camilla'],['assets/ene-tarjeta.svg','Tarjeta de cita',1]],
+    full:['assets/ene-card-v.webp','La camilla, el isotipo y la luz de la consulta','dark','50% 72%'],
+    split2:[['assets/ene-merch.png',1],['assets/ene-tarjeta.svg',1],'Camisetas y tarjeta de cita'],
+    next:'stilo'
+  }
+};
+
+(function(){
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+  const seg = (p,a,b)=>clamp((p-a)/(b-a));
+  const ease = t=>1-Math.pow(1-t,3);
+  const pad2 = n=>String(n).padStart(2,'0');
+  const im = ([src,contain],pos) => `<img class="pt-cover ${contain?'pt-contain':''}" ${pos?`style="object-position:${pos}"`:''} src="${src}" alt="" loading="lazy">`;
+  const ACTIONS = { stilo:{ back:()=>closeProj(), next:()=>nextFromStilo() }, ene:{ back:()=>closeProj2(), next:()=>nextFromEne() } };
+
+  function mount(ov){
+    const key = ov.dataset.pt, p = PT_PROJECTS[key], nx = PT_PROJECTS[p.next], N = 8, nc = nx.hero[2]==='light' ? nx.ink : '#fff';
+    const ticks = [];
+    ov.classList.add('pt');
+    ov.style.setProperty('--pt-light',p.light); ov.style.setProperty('--pt-ink',p.ink); ov.style.setProperty('--pt-guide',p.guide);
+    ov.style.setProperty('--pt-logo',`url(${p.logo})`); ov.style.setProperty('--pt-ar',p.ar);
+    const words = p.say.split(' ').map(w=>w.startsWith('*')?`<span class="pt-w acc">${w.slice(1)}</span>`:`<span class="pt-w">${w}</span>`).join(' ');
+    ov.innerHTML = `
+    <header class="pt-top"><button class="pt-back">← Volver</button><span class="pt-mid">${p.plain} · ${p.n} de ${p.total}</span><button class="pt-go">Ver ${nx.plain} →</button></header>
+    <section class="pt-scr pt-title"><h1><span class="pt-ln"><span>${p.name[0]}</span></span><span class="pt-ln"><span>${p.name[1]}</span></span></h1>
+      <span class="pt-c pt-br" style="color:${p.ink}">${p.kind}<br>${p.year}</span></section>
+    <section class="pt-scr pt-zoom pt-on-${p.hero[2]}">${im([p.hero[0]])}<span class="pt-c pt-bl">${p.hero[1]}</span><span class="pt-c pt-br">01 / ${N}</span></section>
+    <section class="pt-scr pt-say"><p>${words}</p><span class="pt-c pt-bl">${p.sayNote}</span></section>
+    <section class="pt-pin pt-build" style="height:420svh"><div class="pt-stage">
+      <div class="pt-cons"></div>
+      <div class="pt-c pt-tl pt-phase"><span class="pt-mono" style="opacity:.6">Construcción del logotipo</span><b class="pt-ph">Retícula</b><div class="pt-steps"><i></i><i></i><i></i><i></i><i></i></div></div>
+      <span class="pt-c pt-bl pt-mono pt-meter">0%</span><span class="pt-c pt-br">02 / ${N}</span></div></section>
+    <section class="pt-pin pt-frames" style="height:260svh"><div class="pt-stage">
+      <div class="pt-sprocket t">${'<i></i>'.repeat(40)}</div><div class="pt-sprocket b">${'<i></i>'.repeat(40)}</div>
+      <div class="pt-logo"></div><span class="pt-bighex"></span><span class="pt-c pt-bl pt-fname"></span><span class="pt-c pt-br pt-fhex"></span></div></section>
+    <section class="pt-scr pt-split pt-on-dark" data-io><figure>${im(p.split1[0])}</figure><figure>${im(p.split1[1])}</figure><span class="pt-c pt-bl">${p.split1[2]}</span><span class="pt-c pt-br">03 — 04 / ${N}</span></section>
+    <section class="pt-pin pt-reel" style="height:${100+p.reel.length*45}svh"><div class="pt-stage">
+      <div class="pt-strip">${p.reel.map(([s,l,c],i)=>`<div class="pt-cell"><img class="${c?'pt-contain':''}" src="${s}" alt="${l}" loading="lazy"><span class="n">${pad2(i+1)} ${l}</span></div>`).join('')}</div>
+      <span class="pt-c pt-tl pt-mono">Bobina · ${p.reel.length} fotogramas</span><span class="pt-c pt-bl pt-rname"></span><span class="pt-c pt-br pt-rcount"></span></div></section>
+    <section class="pt-scr pt-zoom pt-on-${p.full[2]}">${im([p.full[0]],p.full[3])}<span class="pt-c pt-bl">${p.full[1]}</span><span class="pt-c pt-br">06 / ${N}</span></section>
+    <section class="pt-scr pt-split pt-on-dark" data-io><figure>${im(p.split2[0])}</figure><figure>${im(p.split2[1])}</figure><span class="pt-c pt-bl">${p.split2[2]}</span><span class="pt-c pt-br">07 — 08 / ${N}</span></section>
+    <button class="pt-scr pt-next pt-on-dark" aria-label="Siguiente proyecto: ${nx.plain}">${im([nx.hero[0]])}
+      <span class="pt-c pt-tr" style="color:${nc}">Siguiente proyecto</span><span class="pt-big" style="color:${nc}">${nx.name[0]}<br>${nx.name[1]}</span><span class="pt-c pt-br" style="color:${nc}">Ver →</span></button>`;
+    const $ = s => ov.querySelector(s);
+    $('.pt-back').addEventListener('click', ACTIONS[key].back);
+    $('.pt-go').addEventListener('click', ACTIONS[key].next);
+    $('.pt-next').addEventListener('click', ACTIONS[key].next);
+
+    const pinP = el => { const r=el.getBoundingClientRect(); return clamp(-r.top/(r.height-innerHeight)); };
+
+    // parejas de fotos
+    const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }),{root:ov,threshold:.35});
+    ov.querySelectorAll('[data-io]').forEach(el=>io.observe(el));
+
+    // construcción del logo: lee el SVG y le añade la geometría
+    const build = $('.pt-build');
+    fetch(p.logo).then(r=>r.text()).then(txt=>{
+      const host = $('.pt-cons'); host.innerHTML = txt;
+      const svg = host.querySelector('svg'); svg.removeAttribute('width'); svg.removeAttribute('height');
+      svg.querySelectorAll('style').forEach(s=>s.remove());
+      const shapes = [...svg.querySelectorAll('path,polygon,rect,circle,ellipse')];
+      const lens = shapes.map(s=>{ s.removeAttribute('class'); s.classList.add('shape'); s.style.fill=p.ink; s.style.fillOpacity=0;
+        const L=Math.ceil(s.getTotalLength())+2; s.style.strokeDasharray=L; s.style.strokeDashoffset=L; return L; });
+      const vb=svg.viewBox.baseVal, W=vb.width, H=vb.height, u=Math.max(W,H)/100;
+      svg.style.setProperty('--sw-g',(u*.14).toFixed(3)); svg.style.setProperty('--sw-s',(u*.28).toFixed(3));
+      const boxes=shapes.map(s=>s.getBBox());
+      const all=boxes.reduce((a,b)=>({x:Math.min(a.x,b.x),y:Math.min(a.y,b.y),X:Math.max(a.X,b.x+b.width),Y:Math.max(a.Y,b.y+b.height)}),{x:1e9,y:1e9,X:-1e9,Y:-1e9});
+      const NS='http://www.w3.org/2000/svg', g=document.createElementNS(NS,'g'); g.setAttribute('class','g'); svg.insertBefore(g,svg.firstChild);
+      const guides=[];
+      const add=(tag,attrs,start,end,cls)=>{ const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); if(cls) e.setAttribute('class',cls);
+        if(tag!=='text'){ e.setAttribute('pathLength','1'); e.style.strokeDasharray=1; e.style.strokeDashoffset=1; } else e.style.opacity=0;
+        g.appendChild(e); guides.push({e,tag,start,end}); return e; };
+      const pad=Math.max(W,H)*.22, step=Math.max(W,H)/12; let i=0;
+      for(let x=Math.ceil((vb.x-pad)/step)*step; x<=vb.x+W+pad; x+=step,i++) add('line',{x1:x,y1:vb.y-pad,x2:x,y2:vb.y+H+pad,'stroke-opacity':.35},.02+i*.006,.16+i*.006);
+      i=0;
+      for(let y=Math.ceil((vb.y-pad)/step)*step; y<=vb.y+H+pad; y+=step,i++) add('line',{x1:vb.x-pad,y1:y,x2:vb.x+W+pad,y2:y,'stroke-opacity':.35},.04+i*.006,.18+i*.006);
+      const cx=(all.x+all.X)/2, cy=(all.y+all.Y)/2;
+      add('line',{x1:cx,y1:vb.y-pad,x2:cx,y2:vb.y+H+pad},.12,.24,'axis');
+      add('line',{x1:vb.x-pad,y1:cy,x2:vb.x+W+pad,y2:cy},.14,.26,'axis');
+      add('rect',{x:all.x,y:all.y,width:all.X-all.x,height:all.Y-all.y},.18,.3,'axis');
+      add('text',{x:all.x,y:all.y-u*1.6,'font-size':u*2.2},.24,.3).textContent=`${(all.X-all.x).toFixed(1)} × ${(all.Y-all.y).toFixed(1)}`;
+      const area=(all.X-all.x)*(all.Y-all.y);
+      const big=boxes.map((b,k)=>({b,k})).filter(o=>o.b.width*o.b.height>area*.02).slice(0,10);
+      big.forEach((o,j)=>{ const b=o.b, s=.28+j*.025, ratio=b.width/b.height;
+        add('rect',{x:b.x,y:b.y,width:b.width,height:b.height},s,s+.1);
+        if(ratio>.75&&ratio<1.33) add('circle',{cx:b.x+b.width/2,cy:b.y+b.height/2,r:Math.max(b.width,b.height)/2},s+.03,s+.14);
+        if(ratio<.2||ratio>5) add('line',{x1:b.x+b.width/2,y1:vb.y-pad,x2:b.x+b.width/2,y2:vb.y+H+pad},s+.02,s+.12,'axis');
+        add('text',{x:b.x,y:b.y+b.height+u*2.6,'font-size':u*1.7},s+.06,s+.12).textContent=`${String.fromCharCode(65+j)} · ${b.width.toFixed(1)}`; });
+      const ys=[...new Set(big.flatMap(o=>[o.b.y,o.b.y+o.b.height]).map(v=>Math.round(v/u)*u))].slice(0,8);
+      ys.forEach((y,j)=>add('line',{x1:vb.x-pad,y1:y,x2:vb.x+W+pad,y2:y},.36+j*.015,.48+j*.015));
+      const phases=['Retícula','Proporciones','Trazo','Relleno','Logotipo'];
+      const phEl=$('.pt-ph'), stEl=[...ov.querySelectorAll('.pt-steps i')], meter=$('.pt-meter'); let last=-1;
+      ticks.push(()=>{
+        const P=reduce?1:pinP(build);
+        guides.forEach(o=>{ const t=ease(seg(P,o.start,o.end)), fade=1-seg(P,.84,.95)*.8;
+          if(o.tag==='text') o.e.style.opacity=t*fade; else { o.e.style.strokeDashoffset=1-t; o.e.style.opacity=fade; } });
+        shapes.forEach((s,k)=>{ const a=.46+(k/shapes.length)*.2, t=ease(seg(P,a,a+.14));
+          s.style.strokeDashoffset=lens[k]*(1-t); s.style.fillOpacity=ease(seg(P,.72+(k/shapes.length)*.08,.86+(k/shapes.length)*.06)); s.style.strokeOpacity=1-seg(P,.88,.97); });
+        const ph=P<.27?0:P<.46?1:P<.72?2:P<.92?3:4;
+        if(ph!==last){ last=ph; phEl.textContent=phases[ph]; stEl.forEach((e,k)=>e.classList.toggle('on',k<=ph)); }
+        meter.textContent=`${Math.round(P*100)}%`;
+      });
+      tick();
+    });
+
+    // fotogramas de color
+    const fr=$('.pt-frames'), st=fr.querySelector('.pt-stage'), fl=st.querySelector('.pt-logo'); let lf=-1;
+    ticks.push(()=>{ const i=Math.min(p.palette.length-1,Math.floor(pinP(fr)*p.palette.length)); if(i===lf) return; lf=i;
+      const [bg,name,fg]=p.palette[i]; st.style.background=bg; st.style.color=fg; fl.style.background=fg;
+      $('.pt-fname').textContent=name; $('.pt-bighex').textContent=bg.toUpperCase();
+      $('.pt-fhex').textContent=`Fotograma ${pad2(i+1)} / ${pad2(p.palette.length)}`; });
+
+    // bobina
+    const reel=$('.pt-reel'), strip=$('.pt-strip'), cells=[...strip.children]; let la=-1;
+    ticks.push(()=>{ const P=pinP(reel), cw=cells[0].offsetWidth+24, x=innerWidth/2-cw/2-12-P*(cells.length-1)*cw;
+      strip.style.transform=`translate3d(${x}px,0,0)`;
+      const a=Math.round(P*(cells.length-1)); if(a!==la){ la=a; cells.forEach((c,k)=>c.classList.toggle('act',k===a));
+        $('.pt-rname').textContent=p.reel[a][1]; $('.pt-rcount').textContent=`${pad2(a+1)} / ${pad2(cells.length)}`; } });
+
+    // frase y zoom
+    const wEls=[...ov.querySelectorAll('.pt-say .pt-w')], say=$('.pt-say'), zooms=[...ov.querySelectorAll('.pt-zoom')];
+    ticks.push(()=>{ const h=innerHeight, r=say.getBoundingClientRect(), n=Math.round(clamp((h*.85-r.top)/(h*.7))*wEls.length);
+      wEls.forEach((w,i)=>w.classList.toggle('lit',reduce||i<n));
+      if(!reduce) zooms.forEach(z=>{ const b=z.getBoundingClientRect(), t=clamp(1-(b.top+b.height)/(h+b.height)); z.querySelector('img').style.setProperty('--z',(1.15-t*.15).toFixed(3)); }); });
+
+    let raf=0;
+    function tick(){ if(ov.classList.contains('open')) ticks.forEach(f=>f()); }
+    ov.addEventListener('scroll',()=>{ cancelAnimationFrame(raf); raf=requestAnimationFrame(tick); },{passive:true});
+    addEventListener('resize',tick);
+    // al abrir: reinicia el título y las animaciones
+    let wasOpen=false;
+    new MutationObserver(()=>{
+      const o=ov.classList.contains('open'); if(o===wasOpen) return; wasOpen=o;
+      if(o){ ov.classList.remove('pt-ready'); requestAnimationFrame(()=>requestAnimationFrame(()=>{ ov.classList.add('pt-ready'); tick(); })); }
+      else ov.querySelectorAll('[data-io]').forEach(el=>el.classList.remove('in'));
+    }).observe(ov,{attributes:true,attributeFilter:['class']});
+  }
+  document.querySelectorAll('[data-pt]').forEach(mount);
+})();
 
 /* ══════════════════════════════════════
    INIT + LOADER
