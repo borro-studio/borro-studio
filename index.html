@@ -589,7 +589,7 @@
     .pt-cons svg{width:min(78vw,820px);height:auto;max-height:70svh;overflow:visible}
     .pt-cons .g line,.pt-cons .g rect,.pt-cons .g circle{fill:none;stroke:var(--pt-guide);stroke-width:var(--sw-g)}
     .pt-cons .g .axis{stroke:var(--pt-ink);stroke-opacity:.5}
-    .pt-cons .g text{fill:var(--pt-guide);font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;letter-spacing:.04em}
+    .pt-cons .g text{fill:var(--pt-ink);fill-opacity:.7;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;letter-spacing:.04em}
     .pt-cons .shape{stroke:var(--pt-ink);stroke-width:var(--sw-s)}
     .pt-phase{display:flex;flex-direction:column;gap:6px}
     .pt-phase b{font-weight:800;font-size:clamp(22px,2.4vw,34px);letter-spacing:-.03em}
@@ -1321,7 +1321,7 @@ const PT_PROJECTS = {
   stilo:{
     name:['Stilo Pole','Dance Studio.'], plain:'Stilo Pole Dance Studio', n:1, total:2, kind:'Identidad corporativa', year:'2025',
     light:'#ece8e1', ink:'#2b2a2a', guide:'#b39c80', logo:'assets/stilo-logo.svg', ar:'120.56/120.95',
-    hero:['assets/stilo-pole-h.webp','El estudio. La barra es la «l».','light'],
+    hero:['assets/stilo-pole-h.webp','El estudio. La barra es la «l».','light','30% 50%'],
     say:'Dos emprendedoras, un estudio y *una *barra que acabó dentro del logotipo.',
     sayNote:'Stilo necesitaba una marca actual, dinámica y que diera confianza a quien entra por primera vez.',
     palette:[['#d4c3ae','Beige','#2b2a2a'],['#353435','Gris oscuro','#ece8e1'],['#ece8e1','Crema','#353435'],['#ffffff','Blanco','#353435'],['#0d0d0d','Negro','#d4c3ae']],
@@ -1363,26 +1363,25 @@ const PT_PROJECTS = {
     ov.style.setProperty('--pt-logo',`url(${p.logo})`); ov.style.setProperty('--pt-ar',p.ar);
     const words = p.say.split(' ').map(w=>w.startsWith('*')?`<span class="pt-w acc">${w.slice(1)}</span>`:`<span class="pt-w">${w}</span>`).join(' ');
     ov.innerHTML = `
-    <header class="pt-top"><button class="pt-back">← Volver</button><span class="pt-mid">${p.plain} · ${p.n} de ${p.total}</span><button class="pt-go">Ver ${nx.plain} →</button></header>
+    <header class="pt-top"><button class="pt-back">← Volver</button><button class="pt-go">${nx.plain} →</button></header>
     <section class="pt-scr pt-title"><h1><span class="pt-ln"><span>${p.name[0]}</span></span><span class="pt-ln"><span>${p.name[1]}</span></span></h1>
-      <span class="pt-c pt-br" style="color:${p.ink}">${p.kind}<br>${p.year}</span></section>
-    <section class="pt-scr pt-zoom pt-on-${p.hero[2]}">${im([p.hero[0]])}<span class="pt-c pt-bl">${p.hero[1]}</span><span class="pt-c pt-br">01 / ${N}</span></section>
+      </section>
+    <section class="pt-scr pt-zoom pt-on-${p.hero[2]}">${im([p.hero[0]],p.hero[3])}</section>
     <section class="pt-scr pt-say"><p>${words}</p><span class="pt-c pt-bl">${p.sayNote}</span></section>
     <section class="pt-pin pt-build" style="height:420svh"><div class="pt-stage">
       <div class="pt-cons"></div>
-      <div class="pt-c pt-tl pt-phase"><span class="pt-mono" style="opacity:.6">Construcción del logotipo</span><b class="pt-ph">Retícula</b><div class="pt-steps"><i></i><i></i><i></i><i></i><i></i></div></div>
-      <span class="pt-c pt-bl pt-mono pt-meter">0%</span><span class="pt-c pt-br">02 / ${N}</span></div></section>
+</div></section>
     <section class="pt-pin pt-frames" style="height:260svh"><div class="pt-stage">
       <div class="pt-sprocket t">${'<i></i>'.repeat(40)}</div><div class="pt-sprocket b">${'<i></i>'.repeat(40)}</div>
-      <div class="pt-logo"></div><span class="pt-bighex"></span><span class="pt-c pt-bl pt-fname"></span><span class="pt-c pt-br pt-fhex"></span></div></section>
-    <section class="pt-scr pt-split pt-on-dark" data-io><figure>${im(p.split1[0])}</figure><figure>${im(p.split1[1])}</figure><span class="pt-c pt-bl">${p.split1[2]}</span><span class="pt-c pt-br">03 — 04 / ${N}</span></section>
+      <div class="pt-logo"></div></div></section>
+    <section class="pt-scr pt-split pt-on-dark" data-io><figure>${im(p.split1[0])}</figure><figure>${im(p.split1[1])}</figure></section>
     <section class="pt-pin pt-reel" style="height:${100+p.reel.length*45}svh"><div class="pt-stage">
-      <div class="pt-strip">${p.reel.map(([s,l,c],i)=>`<div class="pt-cell"><img class="${c?'pt-contain':''}" src="${s}" alt="${l}" loading="lazy"><span class="n">${pad2(i+1)} ${l}</span></div>`).join('')}</div>
-      <span class="pt-c pt-tl pt-mono">Bobina · ${p.reel.length} fotogramas</span><span class="pt-c pt-bl pt-rname"></span><span class="pt-c pt-br pt-rcount"></span></div></section>
-    <section class="pt-scr pt-zoom pt-on-${p.full[2]}">${im([p.full[0]],p.full[3])}<span class="pt-c pt-bl">${p.full[1]}</span><span class="pt-c pt-br">06 / ${N}</span></section>
-    <section class="pt-scr pt-split pt-on-dark" data-io><figure>${im(p.split2[0])}</figure><figure>${im(p.split2[1])}</figure><span class="pt-c pt-bl">${p.split2[2]}</span><span class="pt-c pt-br">07 — 08 / ${N}</span></section>
+      <div class="pt-strip">${p.reel.map(([s,l,c],i)=>`<div class="pt-cell"><img class="${c?'pt-contain':''}" src="${s}" alt="${l}" loading="lazy"></div>`).join('')}</div>
+</div></section>
+    <section class="pt-scr pt-zoom pt-on-${p.full[2]}">${im([p.full[0]],p.full[3])}</section>
+    <section class="pt-scr pt-split pt-on-dark" data-io><figure>${im(p.split2[0])}</figure><figure>${im(p.split2[1])}</figure></section>
     <button class="pt-scr pt-next pt-on-dark" aria-label="Siguiente proyecto: ${nx.plain}">${im([nx.hero[0]])}
-      <span class="pt-c pt-tr" style="color:${nc}">Siguiente proyecto</span><span class="pt-big" style="color:${nc}">${nx.name[0]}<br>${nx.name[1]}</span><span class="pt-c pt-br" style="color:${nc}">Ver →</span></button>`;
+      <span class="pt-big" style="color:${nc}">${nx.name[0]}<br>${nx.name[1]} →</span></button>`;
     const $ = s => ov.querySelector(s);
     $('.pt-back').addEventListener('click', ACTIONS[key].back);
     $('.pt-go').addEventListener('click', ACTIONS[key].next);
@@ -1403,7 +1402,7 @@ const PT_PROJECTS = {
       const shapes = [...svg.querySelectorAll('path,polygon,rect,circle,ellipse')];
       const lens = shapes.map(s=>{ s.removeAttribute('class'); s.classList.add('shape'); s.style.fill=p.ink; s.style.fillOpacity=0;
         const L=Math.ceil(s.getTotalLength())+2; s.style.strokeDasharray=L; s.style.strokeDashoffset=L; return L; });
-      const vb=svg.viewBox.baseVal, W=vb.width, H=vb.height, u=Math.max(W,H)/100;
+      const vb=svg.viewBox.baseVal, W=vb.width, H=vb.height, u=Math.max(W,H)/100, fs=innerWidth<700?1.9:1;
       svg.style.setProperty('--sw-g',(u*.14).toFixed(3)); svg.style.setProperty('--sw-s',(u*.28).toFixed(3));
       const boxes=shapes.map(s=>s.getBBox());
       const all=boxes.reduce((a,b)=>({x:Math.min(a.x,b.x),y:Math.min(a.y,b.y),X:Math.max(a.X,b.x+b.width),Y:Math.max(a.Y,b.y+b.height)}),{x:1e9,y:1e9,X:-1e9,Y:-1e9});
@@ -1420,27 +1419,22 @@ const PT_PROJECTS = {
       add('line',{x1:cx,y1:vb.y-pad,x2:cx,y2:vb.y+H+pad},.12,.24,'axis');
       add('line',{x1:vb.x-pad,y1:cy,x2:vb.x+W+pad,y2:cy},.14,.26,'axis');
       add('rect',{x:all.x,y:all.y,width:all.X-all.x,height:all.Y-all.y},.18,.3,'axis');
-      add('text',{x:all.x,y:all.y-u*1.6,'font-size':u*2.2},.24,.3).textContent=`${(all.X-all.x).toFixed(1)} × ${(all.Y-all.y).toFixed(1)}`;
+      add('text',{x:all.x,y:all.y-u*1.6*fs,'font-size':u*2.2*fs},.24,.3).textContent=`${(all.X-all.x).toFixed(1)} × ${(all.Y-all.y).toFixed(1)}`;
       const area=(all.X-all.x)*(all.Y-all.y);
       const big=boxes.map((b,k)=>({b,k})).filter(o=>o.b.width*o.b.height>area*.02).slice(0,10);
       big.forEach((o,j)=>{ const b=o.b, s=.28+j*.025, ratio=b.width/b.height;
         add('rect',{x:b.x,y:b.y,width:b.width,height:b.height},s,s+.1);
         if(ratio>.75&&ratio<1.33) add('circle',{cx:b.x+b.width/2,cy:b.y+b.height/2,r:Math.max(b.width,b.height)/2},s+.03,s+.14);
         if(ratio<.2||ratio>5) add('line',{x1:b.x+b.width/2,y1:vb.y-pad,x2:b.x+b.width/2,y2:vb.y+H+pad},s+.02,s+.12,'axis');
-        add('text',{x:b.x,y:b.y+b.height+u*2.6,'font-size':u*1.7},s+.06,s+.12).textContent=`${String.fromCharCode(65+j)} · ${b.width.toFixed(1)}`; });
+        add('text',{x:b.x,y:b.y+b.height+u*2.6*fs,'font-size':u*1.7*fs},s+.06,s+.12).textContent=`${String.fromCharCode(65+j)} · ${b.width.toFixed(1)}`; });
       const ys=[...new Set(big.flatMap(o=>[o.b.y,o.b.y+o.b.height]).map(v=>Math.round(v/u)*u))].slice(0,8);
       ys.forEach((y,j)=>add('line',{x1:vb.x-pad,y1:y,x2:vb.x+W+pad,y2:y},.36+j*.015,.48+j*.015));
-      const phases=['Retícula','Proporciones','Trazo','Relleno','Logotipo'];
-      const phEl=$('.pt-ph'), stEl=[...ov.querySelectorAll('.pt-steps i')], meter=$('.pt-meter'); let last=-1;
       ticks.push(()=>{
         const P=reduce?1:pinP(build);
         guides.forEach(o=>{ const t=ease(seg(P,o.start,o.end)), fade=1-seg(P,.84,.95)*.8;
           if(o.tag==='text') o.e.style.opacity=t*fade; else { o.e.style.strokeDashoffset=1-t; o.e.style.opacity=fade; } });
         shapes.forEach((s,k)=>{ const a=.46+(k/shapes.length)*.2, t=ease(seg(P,a,a+.14));
           s.style.strokeDashoffset=lens[k]*(1-t); s.style.fillOpacity=ease(seg(P,.72+(k/shapes.length)*.08,.86+(k/shapes.length)*.06)); s.style.strokeOpacity=1-seg(P,.88,.97); });
-        const ph=P<.27?0:P<.46?1:P<.72?2:P<.92?3:4;
-        if(ph!==last){ last=ph; phEl.textContent=phases[ph]; stEl.forEach((e,k)=>e.classList.toggle('on',k<=ph)); }
-        meter.textContent=`${Math.round(P*100)}%`;
       });
       tick();
     });
@@ -1448,16 +1442,13 @@ const PT_PROJECTS = {
     // fotogramas de color
     const fr=$('.pt-frames'), st=fr.querySelector('.pt-stage'), fl=st.querySelector('.pt-logo'); let lf=-1;
     ticks.push(()=>{ const i=Math.min(p.palette.length-1,Math.floor(pinP(fr)*p.palette.length)); if(i===lf) return; lf=i;
-      const [bg,name,fg]=p.palette[i]; st.style.background=bg; st.style.color=fg; fl.style.background=fg;
-      $('.pt-fname').textContent=name; $('.pt-bighex').textContent=bg.toUpperCase();
-      $('.pt-fhex').textContent=`Fotograma ${pad2(i+1)} / ${pad2(p.palette.length)}`; });
+      const [bg,,fg]=p.palette[i]; st.style.background=bg; st.style.color=fg; fl.style.background=fg; });
 
     // bobina
     const reel=$('.pt-reel'), strip=$('.pt-strip'), cells=[...strip.children]; let la=-1;
     ticks.push(()=>{ const P=pinP(reel), cw=cells[0].offsetWidth+24, x=innerWidth/2-cw/2-12-P*(cells.length-1)*cw;
       strip.style.transform=`translate3d(${x}px,0,0)`;
-      const a=Math.round(P*(cells.length-1)); if(a!==la){ la=a; cells.forEach((c,k)=>c.classList.toggle('act',k===a));
-        $('.pt-rname').textContent=p.reel[a][1]; $('.pt-rcount').textContent=`${pad2(a+1)} / ${pad2(cells.length)}`; } });
+      const a=Math.round(P*(cells.length-1)); if(a!==la){ la=a; cells.forEach((c,k)=>c.classList.toggle('act',k===a)); } });
 
     // frase y zoom
     const wEls=[...ov.querySelectorAll('.pt-say .pt-w')], say=$('.pt-say'), zooms=[...ov.querySelectorAll('.pt-zoom')];
