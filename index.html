@@ -609,15 +609,9 @@
     .pt-split figure:nth-child(2){transition-delay:.12s}
     .pt-split.in figure{clip-path:inset(0 0 0 0)}
     /* bobina */
-    .pt-reel .pt-stage{background:var(--pt-dark);display:flex;align-items:center}
-    .pt-strip{display:flex;padding:26px 0;background:#0e0e0e;will-change:transform;position:relative}
-    .pt-strip::before,.pt-strip::after{content:"";position:absolute;left:0;right:0;height:12px;background:repeating-linear-gradient(90deg,transparent 0 14px,#2c2b2b 14px 34px)}
-    .pt-strip::before{top:7px}.pt-strip::after{bottom:7px}
-    .pt-cell{flex:none;width:min(46vw,440px);aspect-ratio:4/5;margin:0 12px;position:relative;overflow:hidden;background:#000;transform:scale(.86);opacity:.4;transition:transform .5s var(--pt-ease),opacity .5s}
-    .pt-cell.act{transform:none;opacity:1}
-    .pt-cell img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-    .pt-cell .n{position:absolute;left:10px;top:8px;color:#fff;mix-blend-mode:difference;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:11px}
-    .pt-reel .pt-c{color:var(--pt-muted)}
+    .pt-stack .pt-stage{background:var(--pt-dark)}
+    .pt-card{position:absolute;inset:0;overflow:hidden;will-change:transform;transform-origin:50% 0}
+    .pt-card:not(:first-child){transform:translate3d(0,100%,0)}
     /* siguiente */
     .pt-next{display:block;width:100%;text-align:left}
     .pt-next img{transition:transform 1.2s var(--pt-ease)}
@@ -625,7 +619,6 @@
     .pt-next .pt-big{position:absolute;left:var(--pt-gl);bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:3;font-weight:900;font-size:clamp(54px,10.5vw,160px);line-height:.86;letter-spacing:-.055em}
     @media(max-width:700px){
       .pt-split{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
-      .pt-cell{width:70vw}
       .pt-top .pt-mid{display:none}
       .pt-cons svg{width:76vw}
     }
@@ -1372,12 +1365,9 @@ const PT_PROJECTS = {
       <div class="pt-cons"></div>
 </div></section>
     <section class="pt-pin pt-frames" style="height:260svh"><div class="pt-stage">
-      <div class="pt-sprocket t">${'<i></i>'.repeat(40)}</div><div class="pt-sprocket b">${'<i></i>'.repeat(40)}</div>
       <div class="pt-logo"></div></div></section>
     <section class="pt-scr pt-split pt-on-dark" data-io><figure>${im(p.split1[0])}</figure><figure>${im(p.split1[1])}</figure></section>
-    <section class="pt-pin pt-reel" style="height:${100+p.reel.length*45}svh"><div class="pt-stage">
-      <div class="pt-strip">${p.reel.map(([s,l,c],i)=>`<div class="pt-cell"><img class="${c?'pt-contain':''}" src="${s}" alt="${l}" loading="lazy"></div>`).join('')}</div>
-</div></section>
+    <section class="pt-pin pt-stack" style="height:${p.reel.length*90}svh"><div class="pt-stage">${p.reel.map(([src,l,c])=>`<figure class="pt-card">${im([src,c])}</figure>`).join('')}</div></section>
     <section class="pt-scr pt-zoom pt-on-${p.full[2]}">${im([p.full[0]],p.full[3])}</section>
     <section class="pt-scr pt-split pt-on-dark" data-io><figure>${im(p.split2[0])}</figure><figure>${im(p.split2[1])}</figure></section>
     <button class="pt-scr pt-next pt-on-dark" aria-label="Siguiente proyecto: ${nx.plain}">${im([nx.hero[0]])}
@@ -1411,13 +1401,16 @@ const PT_PROJECTS = {
       const add=(tag,attrs,start,end,cls)=>{ const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); if(cls) e.setAttribute('class',cls);
         if(tag!=='text'){ e.setAttribute('pathLength','1'); e.style.strokeDasharray=1; e.style.strokeDashoffset=1; } else e.style.opacity=0;
         g.appendChild(e); guides.push({e,tag,start,end}); return e; };
-      const pad=Math.max(W,H)*.22, step=Math.max(W,H)/12; let i=0;
-      for(let x=Math.ceil((vb.x-pad)/step)*step; x<=vb.x+W+pad; x+=step,i++) add('line',{x1:x,y1:vb.y-pad,x2:x,y2:vb.y+H+pad,'stroke-opacity':.35},.02+i*.006,.16+i*.006);
-      i=0;
-      for(let y=Math.ceil((vb.y-pad)/step)*step; y<=vb.y+H+pad; y+=step,i++) add('line',{x1:vb.x-pad,y1:y,x2:vb.x+W+pad,y2:y,'stroke-opacity':.35},.04+i*.006,.18+i*.006);
-      const cx=(all.x+all.X)/2, cy=(all.y+all.Y)/2;
-      add('line',{x1:cx,y1:vb.y-pad,x2:cx,y2:vb.y+H+pad},.12,.24,'axis');
-      add('line',{x1:vb.x-pad,y1:cy,x2:vb.x+W+pad,y2:cy},.14,.26,'axis');
+      // retícula calculada sobre la caja del logo: sus bordes y ejes caen siempre sobre una línea
+      const bw=all.X-all.x, bh=all.Y-all.y, cx=(all.x+all.X)/2, cy=(all.y+all.Y)/2;
+      const nx=bw>=bh?12:Math.max(4,Math.round(12*bw/bh)), mx=bw/nx;
+      let ny=Math.max(2,Math.round(bh/mx)); if(ny%2) ny++; const my=bh/ny;
+      const gx0=all.x-2*mx, gx1=all.X+2*mx, gy0=all.y-2*my, gy1=all.Y+2*my;
+      const far=Math.max(nx,ny)/2+2;
+      for(let c=-2;c<=nx+2;c++){ const x=all.x+c*mx, d=Math.abs(c-nx/2)/far; add('line',{x1:x,y1:gy0,x2:x,y2:gy1,'stroke-opacity':(c<0||c>nx)?.18:.35},.02+d*.12,.12+d*.12); }
+      for(let r=-2;r<=ny+2;r++){ const y=all.y+r*my, d=Math.abs(r-ny/2)/far; add('line',{x1:gx0,y1:y,x2:gx1,y2:y,'stroke-opacity':(r<0||r>ny)?.18:.35},.04+d*.12,.14+d*.12); }
+      add('line',{x1:cx,y1:gy0,x2:cx,y2:gy1},.14,.26,'axis');
+      add('line',{x1:gx0,y1:cy,x2:gx1,y2:cy},.16,.28,'axis');
       add('rect',{x:all.x,y:all.y,width:all.X-all.x,height:all.Y-all.y},.18,.3,'axis');
       add('text',{x:all.x,y:all.y-u*1.6*fs,'font-size':u*2.2*fs},.24,.3).textContent=`${(all.X-all.x).toFixed(1)} × ${(all.Y-all.y).toFixed(1)}`;
       const area=(all.X-all.x)*(all.Y-all.y);
@@ -1425,10 +1418,8 @@ const PT_PROJECTS = {
       big.forEach((o,j)=>{ const b=o.b, s=.28+j*.025, ratio=b.width/b.height;
         add('rect',{x:b.x,y:b.y,width:b.width,height:b.height},s,s+.1);
         if(ratio>.75&&ratio<1.33) add('circle',{cx:b.x+b.width/2,cy:b.y+b.height/2,r:Math.max(b.width,b.height)/2},s+.03,s+.14);
-        if(ratio<.2||ratio>5) add('line',{x1:b.x+b.width/2,y1:vb.y-pad,x2:b.x+b.width/2,y2:vb.y+H+pad},s+.02,s+.12,'axis');
+        if(ratio<.2||ratio>5) add('line',{x1:b.x+b.width/2,y1:gy0,x2:b.x+b.width/2,y2:gy1},s+.02,s+.12,'axis');
         add('text',{x:b.x,y:b.y+b.height+u*2.6*fs,'font-size':u*1.7*fs},s+.06,s+.12).textContent=`${String.fromCharCode(65+j)} · ${b.width.toFixed(1)}`; });
-      const ys=[...new Set(big.flatMap(o=>[o.b.y,o.b.y+o.b.height]).map(v=>Math.round(v/u)*u))].slice(0,8);
-      ys.forEach((y,j)=>add('line',{x1:vb.x-pad,y1:y,x2:vb.x+W+pad,y2:y},.36+j*.015,.48+j*.015));
       ticks.push(()=>{
         const P=reduce?1:pinP(build);
         guides.forEach(o=>{ const t=ease(seg(P,o.start,o.end)), fade=1-seg(P,.84,.95)*.8;
@@ -1444,11 +1435,12 @@ const PT_PROJECTS = {
     ticks.push(()=>{ const i=Math.min(p.palette.length-1,Math.floor(pinP(fr)*p.palette.length)); if(i===lf) return; lf=i;
       const [bg,,fg]=p.palette[i]; st.style.background=bg; st.style.color=fg; fl.style.background=fg; });
 
-    // bobina
-    const reel=$('.pt-reel'), strip=$('.pt-strip'), cells=[...strip.children]; let la=-1;
-    ticks.push(()=>{ const P=pinP(reel), cw=cells[0].offsetWidth+24, x=innerWidth/2-cw/2-12-P*(cells.length-1)*cw;
-      strip.style.transform=`translate3d(${x}px,0,0)`;
-      const a=Math.round(P*(cells.length-1)); if(a!==la){ la=a; cells.forEach((c,k)=>c.classList.toggle('act',k===a)); } });
+    // galería apilada: cada foto sube por encima de la anterior
+    const stack=$('.pt-stack'), cards=[...stack.querySelectorAll('.pt-card')];
+    ticks.push(()=>{ const P=pinP(stack)*(cards.length-1);
+      cards.forEach((c,k)=>{ const tin=k===0?1:ease(clamp(P-(k-1))), tout=k<cards.length-1?ease(clamp(P-k)):0;
+        c.style.transform=`translate3d(0,${((1-tin)*100).toFixed(2)}%,0) scale(${(1-tout*.08).toFixed(3)})`;
+        c.style.filter=tout>0?`brightness(${(1-tout*.55).toFixed(3)})`:''; }); });
 
     // frase y zoom
     const wEls=[...ov.querySelectorAll('.pt-say .pt-w')], say=$('.pt-say'), zooms=[...ov.querySelectorAll('.pt-zoom')];
