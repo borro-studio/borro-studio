@@ -1401,33 +1401,41 @@ const PT_PROJECTS = {
       const add=(tag,attrs,start,end,cls)=>{ const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); if(cls) e.setAttribute('class',cls);
         if(tag!=='text'){ e.setAttribute('pathLength','1'); e.style.strokeDasharray=1; e.style.strokeDashoffset=1; } else e.style.opacity=0;
         g.appendChild(e); guides.push({e,tag,start,end}); return e; };
-      // retícula de construcción: el módulo es el grosor de la barra del logo si la tiene (Stilo: barra = palo de la «i»);
-      // si no, la caja del logo entre 12. La cuadrícula parte de esa barra, así que encaja con las letras.
+      // retícula de construcción.
+      // · Logos con barra (Stilo): las líneas salen de los bordes de cada pieza (letras, barra, bloque de texto),
+      //   así cada letra queda enmarcada exactamente por la retícula.
+      // · Resto (ENE): cuadrícula regular sobre la caja del logo, con sus ejes.
       const bw=all.X-all.x, bh=all.Y-all.y, cx=(all.x+all.X)/2, cy=(all.y+all.Y)/2, area0=bw*bh;
       const pieces=boxes.filter(b=>b.width*b.height>area0*.003);
-      const bars=pieces.filter(b=>b.width/b.height<.25&&b.height>bh*.25).sort((a,b)=>b.height-a.height);
-      const m=bars.length?bars[0].width:Math.max(bw,bh)/12;
-      const ax=bars.length?bars[0].x:all.x, ay=bars.length?bars[0].y:all.y;
+      const small=boxes.filter(b=>b.width*b.height<=area0*.003&&b.width*b.height>area0*.0003);
+      const bars=pieces.filter(b=>b.width/b.height<.25&&b.height>bh*.25);
+      const featureMode=bars.length>0;
+      const m=featureMode?bars[0].width:Math.max(bw,bh)/12;
       const gx0=all.x-2*m, gx1=all.X+2*m, gy0=all.y-2*m, gy1=all.Y+2*m;
-      const c0=Math.ceil((gx0-ax)/m), c1=Math.floor((gx1-ax)/m), r0=Math.ceil((gy0-ay)/m), r1=Math.floor((gy1-ay)/m);
-      const far=Math.max(c1-c0,r1-r0)/2||1;
-      for(let c=c0;c<=c1;c++){ const x=ax+c*m, d=Math.abs(x-cx)/(m*far); add('line',{x1:x,y1:gy0,x2:x,y2:gy1,'stroke-opacity':(x<all.x-.1||x>all.X+.1)?.16:.32},.02+d*.12,.12+d*.12); }
-      for(let r=r0;r<=r1;r++){ const y=ay+r*m, d=Math.abs(y-cy)/(m*far); add('line',{x1:gx0,y1:y,x2:gx1,y2:y,'stroke-opacity':(y<all.y-.1||y>all.Y+.1)?.16:.32},.04+d*.12,.14+d*.12); }
-      // alineaciones reales: bordes que comparten al menos dos piezas (línea base, altura x, ascendentes…)
-      const cluster=(vals,tol)=>{ vals.sort((a,b)=>a-b); const out=[]; vals.forEach(v=>{ const l=out[out.length-1]; if(l&&v-l.v[l.v.length-1]<=tol) l.v.push(v); else out.push({v:[v]}); }); return out.filter(c=>c.v.length>=2).map(c=>c.v.reduce((a,b)=>a+b)/c.v.length); };
-      const tol=m*.2;
-      cluster(pieces.flatMap(b=>[b.y,b.y+b.height]),tol).forEach((y,j)=>add('line',{x1:gx0,y1:y,x2:gx1,y2:y},.3+j*.02,.42+j*.02,'axis'));
-      cluster(pieces.flatMap(b=>[b.x,b.x+b.width]),tol).forEach((x,j)=>add('line',{x1:x,y1:gy0,x2:x,y2:gy1},.32+j*.02,.44+j*.02,'axis'));
-      if(!bars.length){ add('line',{x1:cx,y1:gy0,x2:cx,y2:gy1},.14,.26,'axis'); add('line',{x1:gx0,y1:cy,x2:gx1,y2:cy},.16,.28,'axis'); }
-      else { const B=bars[0]; add('rect',{x:B.x,y:gy0,width:m,height:gy1-gy0},.2,.32,'axis'); add('text',{x:B.x+m*1.3,y:gy0+u*3*fs,'font-size':u*1.7*fs},.26,.32).textContent=`1 módulo = ${m.toFixed(2)}`; }
+      if(featureMode){
+        const blocks=[...pieces];
+        if(small.length){ const t=small.reduce((a,b)=>({x:Math.min(a.x,b.x),y:Math.min(a.y,b.y),X:Math.max(a.X,b.x+b.width),Y:Math.max(a.Y,b.y+b.height)}),{x:1e9,y:1e9,X:-1e9,Y:-1e9}); blocks.push({x:t.x,y:t.y,width:t.X-t.x,height:t.Y-t.y}); }
+        const merge=(vals,tol)=>{ vals.sort((a,b)=>a-b); const out=[]; vals.forEach(v=>{ const l=out[out.length-1]; if(l&&v-l[l.length-1]<=tol) l.push(v); else out.push([v]); }); return out.map(c=>c.reduce((a,b)=>a+b)/c.length); };
+        const tol=Math.max(bw,bh)*.007;
+        const xs=merge(blocks.flatMap(b=>[b.x,b.x+b.width]),tol), ys=merge(blocks.flatMap(b=>[b.y,b.y+b.height]),tol);
+        xs.forEach(x=>{ const d=Math.abs(x-cx)/(bw/2); add('line',{x1:x,y1:gy0,x2:x,y2:gy1,'stroke-opacity':.4},.02+d*.14,.14+d*.14); });
+        ys.forEach(y=>{ const d=Math.abs(y-cy)/(bh/2); add('line',{x1:gx0,y1:y,x2:gx1,y2:y,'stroke-opacity':.4},.04+d*.14,.16+d*.14); });
+        const B=bars[0]; add('text',{x:B.x+m*1.3,y:gy0+u*3*fs,'font-size':u*1.7*fs},.26,.32).textContent=`barra = ${m.toFixed(2)}`;
+      } else {
+        const nx=bw>=bh?12:Math.max(4,Math.round(12*bw/bh)), mx=bw/nx; let ny=Math.max(2,Math.round(bh/mx)); if(ny%2) ny++; const my=bh/ny;
+        const far=Math.max(nx,ny)/2+2;
+        for(let c=-2;c<=nx+2;c++){ const x=all.x+c*mx, d=Math.abs(c-nx/2)/far; add('line',{x1:x,y1:all.y-2*my,x2:x,y2:all.Y+2*my,'stroke-opacity':(c<0||c>nx)?.18:.35},.02+d*.12,.12+d*.12); }
+        for(let r=-2;r<=ny+2;r++){ const y=all.y+r*my, d=Math.abs(r-ny/2)/far; add('line',{x1:all.x-2*mx,y1:y,x2:all.X+2*mx,y2:y,'stroke-opacity':(r<0||r>ny)?.18:.35},.04+d*.12,.14+d*.12); }
+        add('line',{x1:cx,y1:all.y-2*my,x2:cx,y2:all.Y+2*my},.14,.26,'axis'); add('line',{x1:all.x-2*mx,y1:cy,x2:all.X+2*mx,y2:cy},.16,.28,'axis');
+      }
       add('rect',{x:all.x,y:all.y,width:all.X-all.x,height:all.Y-all.y},.18,.3,'axis');
       add('text',{x:all.x,y:all.y-u*1.6*fs,'font-size':u*2.2*fs},.24,.3).textContent=`${(all.X-all.x).toFixed(1)} × ${(all.Y-all.y).toFixed(1)}`;
       const area=(all.X-all.x)*(all.Y-all.y);
       const big=boxes.map((b,k)=>({b,k})).filter(o=>o.b.width*o.b.height>area*.02).slice(0,10);
       big.forEach((o,j)=>{ const b=o.b, s=.28+j*.025, ratio=b.width/b.height;
-        add('rect',{x:b.x,y:b.y,width:b.width,height:b.height},s,s+.1);
+        if(!featureMode) add('rect',{x:b.x,y:b.y,width:b.width,height:b.height},s,s+.1);
         if(ratio>.75&&ratio<1.33) add('circle',{cx:b.x+b.width/2,cy:b.y+b.height/2,r:Math.max(b.width,b.height)/2},s+.03,s+.14);
-        if(ratio<.2||ratio>5) add('line',{x1:b.x+b.width/2,y1:gy0,x2:b.x+b.width/2,y2:gy1},s+.02,s+.12,'axis');
+
         add('text',{x:b.x,y:b.y+b.height+u*2.6*fs,'font-size':u*1.7*fs},s+.06,s+.12).textContent=`${String.fromCharCode(65+j)} · ${b.width.toFixed(1)}`; });
       ticks.push(()=>{
         const P=reduce?1:pinP(build);
