@@ -597,8 +597,14 @@
     .pt-steps i{width:28px;height:3px;background:currentColor;opacity:.2}
     .pt-steps i.on{opacity:1}
     /* fotogramas de color */
-    .pt-frames .pt-stage{display:grid;place-items:center}
-    .pt-frames .pt-logo{width:min(52vw,440px);aspect-ratio:var(--pt-ar,1);-webkit-mask:var(--pt-logo) center/contain no-repeat;mask:var(--pt-logo) center/contain no-repeat}
+    .pt-pal{display:flex;background:var(--pt-dark)}
+    .pt-pane{position:relative;flex:1 1 0;min-width:0;overflow:hidden;display:grid;place-items:center;transform:translateY(102%);
+      transition:transform .9s var(--pt-ease) var(--d),flex-grow .8s var(--pt-ease)}
+    .pt-pal.in .pt-pane{transform:none}
+    .pt-pane.on{flex-grow:4}
+    .pt-plogo{display:block;width:clamp(70px,16vw,300px);max-width:78%;aspect-ratio:var(--pt-ar,1);background:var(--fg);
+      -webkit-mask:var(--pt-logo) center/contain no-repeat;mask:var(--pt-logo) center/contain no-repeat;opacity:.35;transform:scale(.8);transition:opacity .6s,transform .8s var(--pt-ease)}
+    .pt-pane.on .pt-plogo{opacity:1;transform:none}
     .pt-sprocket{position:absolute;left:0;right:0;height:22px;display:flex;gap:18px;padding:0 18px;opacity:.35}
     .pt-sprocket i{flex:none;width:22px;height:12px;border-radius:2px;background:currentColor;margin-top:5px}
     .pt-sprocket.t{top:calc(50px + env(safe-area-inset-top,0px))}.pt-sprocket.b{bottom:calc(60px + env(safe-area-inset-bottom,0px))}
@@ -618,6 +624,9 @@
     .pt-next:hover img{transform:scale(1.04)}
     .pt-next .pt-big{position:absolute;left:var(--pt-gl);bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:3;font-weight:900;font-size:clamp(54px,10.5vw,160px);line-height:.86;letter-spacing:-.055em}
     @media(max-width:700px){
+      .pt-pal{flex-direction:column}
+      .pt-pane{transform:translateX(-102%)}
+      .pt-plogo{width:clamp(70px,30vw,160px);max-height:70%}
       .pt-split{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
       .pt-top .pt-mid{display:none}
       .pt-cons svg{width:76vw}
@@ -625,6 +634,7 @@
     @media(prefers-reduced-motion:reduce){
       .pt-ln>span{transform:none;transition:none}
       .pt-split figure{clip-path:none;transition:none}
+      .pt-pane{transform:none;transition:none}
       .pt-say .pt-w{opacity:1}
     }
   </style>
@@ -1364,8 +1374,7 @@ const PT_PROJECTS = {
     <section class="pt-pin pt-build" style="height:420svh"><div class="pt-stage">
       <div class="pt-cons"></div>
 </div></section>
-    <section class="pt-pin pt-frames" style="height:260svh"><div class="pt-stage">
-      <div class="pt-logo"></div></div></section>
+    <section class="pt-scr pt-pal" aria-label="Paleta de color">${p.palette.map(([bg,,fg],i)=>`<button class="pt-pane${i===0?' on':''}" style="background:${bg};--fg:${fg};--d:${i*.09}s" aria-label="Color ${bg}"><span class="pt-plogo"></span></button>`).join('')}</section>
     <section class="pt-scr pt-split pt-on-dark" data-io><figure>${im(p.split1[0])}</figure><figure>${im(p.split1[1])}</figure></section>
     <section class="pt-pin pt-stack" style="height:${p.reel.length*90}svh"><div class="pt-stage">${p.reel.map(([src,l,c])=>`<figure class="pt-card">${im([src,c])}</figure>`).join('')}</div></section>
     <section class="pt-scr pt-zoom pt-on-${p.full[2]}">${im([p.full[0]],p.full[3])}</section>
@@ -1447,10 +1456,16 @@ const PT_PROJECTS = {
       tick();
     });
 
-    // fotogramas de color
-    const fr=$('.pt-frames'), st=fr.querySelector('.pt-stage'), fl=st.querySelector('.pt-logo'); let lf=-1;
-    ticks.push(()=>{ const i=Math.min(p.palette.length-1,Math.floor(pinP(fr)*p.palette.length)); if(i===lf) return; lf=i;
-      const [bg,,fg]=p.palette[i]; st.style.background=bg; st.style.color=fg; fl.style.background=fg; });
+    // paleta: franjas de color con el logo; la activa se abre (sola cada 2 s o al pasar/tocar)
+    const pal=$('.pt-pal'), panes=[...pal.children]; let pi=0, auto=null, hover=false, hold=0;
+    const openPane=i=>{ pi=i; panes.forEach((x,k)=>x.classList.toggle('on',k===i)); };
+    pal.addEventListener('pointerleave',e=>{ if(e.pointerType==='mouse') hover=false; });
+    panes.forEach((x,k)=>{ x.addEventListener('pointerenter',e=>{ if(e.pointerType==='mouse'){ hover=true; openPane(k); } });
+      x.addEventListener('click',()=>{ hold=Date.now()+6000; openPane(k); }); });
+    new IntersectionObserver(es=>es.forEach(e=>{
+      if(e.isIntersecting){ pal.classList.add('in'); if(!reduce&&!auto) auto=setInterval(()=>{ if(!hover&&Date.now()>hold) openPane((pi+1)%panes.length); },2000); }
+      else { pal.classList.remove('in'); clearInterval(auto); auto=null; }
+    }),{root:ov,threshold:.4}).observe(pal);
 
     // galería apilada: cada foto sube por encima de la anterior
     const stack=$('.pt-stack'), cards=[...stack.querySelectorAll('.pt-card')];
