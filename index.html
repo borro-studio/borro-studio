@@ -553,7 +553,8 @@
     .pt button{font:inherit;color:inherit;background:none;border:0;cursor:none}
     .pt .pt-mono{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
     .pt-top{position:fixed;left:0;right:0;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:12px;
-      padding:calc(14px + env(safe-area-inset-top,0px)) var(--pt-gr) 14px var(--pt-gl);font-size:14px;mix-blend-mode:difference;color:#fff;pointer-events:none}
+      padding:calc(14px + env(safe-area-inset-top,0px)) var(--pt-gr) 14px var(--pt-gl);font-size:13px;color:#fff;pointer-events:none}
+    .pt-top button{padding:9px 15px;border-radius:99px;background:rgba(29,28,28,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
     .pt-top>*{pointer-events:auto}
     .pt-top .pt-mid{opacity:.8}
     .pt-scr{position:relative;height:100svh;min-height:520px;overflow:hidden}
@@ -605,6 +606,7 @@
     .pt-plogo{display:block;width:clamp(70px,16vw,300px);max-width:78%;aspect-ratio:var(--pt-ar,1);background:var(--fg);
       -webkit-mask:var(--pt-logo) center/contain no-repeat;mask:var(--pt-logo) center/contain no-repeat;opacity:.35;transform:scale(.8);transition:opacity .6s,transform .8s var(--pt-ease)}
     .pt-pane.on .pt-plogo{opacity:1;transform:none}
+    @media(min-width:701px){.pt-pane:not(.on) .pt-plogo{opacity:0}}
     .pt-sprocket{position:absolute;left:0;right:0;height:22px;display:flex;gap:18px;padding:0 18px;opacity:.35}
     .pt-sprocket i{flex:none;width:22px;height:12px;border-radius:2px;background:currentColor;margin-top:5px}
     .pt-sprocket.t{top:calc(50px + env(safe-area-inset-top,0px))}.pt-sprocket.b{bottom:calc(60px + env(safe-area-inset-bottom,0px))}
@@ -616,12 +618,14 @@
     .pt-split.in figure{clip-path:inset(0 0 0 0)}
     /* bobina */
     .pt-stack .pt-stage{background:var(--pt-dark)}
-    .pt-card{position:absolute;inset:0;overflow:hidden;will-change:transform;transform-origin:50% 0}
+    .pt-card{position:absolute;inset:0;overflow:hidden;will-change:transform}
     .pt-card:not(:first-child){transform:translate3d(0,100%,0)}
     /* siguiente */
     .pt-next{display:block;width:100%;text-align:left}
     .pt-next img{transition:transform 1.2s var(--pt-ease)}
     .pt-next:hover img{transform:scale(1.04)}
+    .pt-shade{position:absolute;inset:0;z-index:2;background:linear-gradient(to top,rgba(0,0,0,.5),rgba(0,0,0,0) 55%)}
+    .pt-shade-l{background:linear-gradient(to top,rgba(236,232,225,.85),rgba(236,232,225,0) 50%)}
     .pt-next .pt-big{position:absolute;left:var(--pt-gl);bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:3;font-weight:900;font-size:clamp(54px,10.5vw,160px);line-height:.86;letter-spacing:-.055em}
     @media(max-width:700px){
       .pt-pal{flex-direction:column}
@@ -1329,9 +1333,7 @@ const PT_PROJECTS = {
     sayNote:'Stilo necesitaba una marca actual, dinámica y que diera confianza a quien entra por primera vez.',
     palette:[['#d4c3ae','Beige','#2b2a2a'],['#353435','Gris oscuro','#ece8e1'],['#ece8e1','Crema','#353435'],['#ffffff','Blanco','#353435'],['#0d0d0d','Negro','#d4c3ae']],
     split1:[['assets/stilo-02.webp'],['assets/stilo-03.webp'],'Fotografía de marca y web de reservas'],
-    reel:[['assets/stilo-02.webp','Fotografía'],['assets/stilo-04.webp','Sudadera'],['assets/stilo-03.webp','Web móvil'],['assets/stilo-05.webp','Tote bag'],['assets/stilo-pole-v.jpg','Señalética'],['assets/stilo-01.jpg','Clase'],['assets/stilo-pole-h.webp','Estudio']],
-    full:['assets/stilo-04.webp','Sudadera oversize, serigrafía a una tinta','light'],
-    split2:[['assets/stilo-05.webp'],['assets/stilo-pole-v.jpg'],'Tote bag y señalética'],
+    reel:[['assets/stilo-04.webp','Sudadera'],['assets/stilo-05.webp','Tote bag'],['assets/stilo-pole-v.jpg','Señalética'],['assets/stilo-01.jpg','Clase']],
     next:'ene'
   },
   ene:{
@@ -1342,9 +1344,7 @@ const PT_PROJECTS = {
     sayNote:'Oihane quería una marca profesional pero cálida, tan cercana como su forma de tratar a cada paciente.',
     palette:[['#2d5382','Azul','#eef3f8'],['#bacede','Azul claro','#0d1f35'],['#0d1f35','Azul noche','#bacede'],['#eef3f8','Fondo','#2d5382'],['#4a6e9a','Azul medio','#eef3f8']],
     split1:[['assets/ene-cards.webp'],['assets/ene-photo.webp'],'Tarjetas de visita y fotografía de consulta'],
-    reel:[['assets/ene-card-h.webp','Consulta'],['assets/ene-cards.webp','Tarjetas'],['assets/ene-photo.webp','Sesión'],['assets/ene-merch.png','Camisetas',1],['assets/ene-card-v.webp','Camilla'],['assets/ene-tarjeta.svg','Tarjeta de cita',1]],
-    full:['assets/ene-card-v.webp','La camilla, el isotipo y la luz de la consulta','dark','50% 72%'],
-    split2:[['assets/ene-merch.png',1],['assets/ene-tarjeta.svg',1],'Camisetas y tarjeta de cita'],
+    reel:[['assets/ene-merch.png','Camisetas',1],['assets/ene-tarjeta.svg','Tarjeta de cita',1]],
     next:'stilo'
   }
 };
@@ -1377,9 +1377,7 @@ const PT_PROJECTS = {
     <section class="pt-scr pt-pal" aria-label="Paleta de color">${p.palette.map(([bg,,fg],i)=>`<button class="pt-pane${i===0?' on':''}" style="background:${bg};--fg:${fg};--d:${i*.09}s" aria-label="Color ${bg}"><span class="pt-plogo"></span></button>`).join('')}</section>
     <section class="pt-scr pt-split pt-on-dark" data-io><figure>${im(p.split1[0])}</figure><figure>${im(p.split1[1])}</figure></section>
     <section class="pt-pin pt-stack" style="height:${p.reel.length*90}svh"><div class="pt-stage">${p.reel.map(([src,l,c])=>`<figure class="pt-card">${im([src,c])}</figure>`).join('')}</div></section>
-    <section class="pt-scr pt-zoom pt-on-${p.full[2]}">${im([p.full[0]],p.full[3])}</section>
-    <section class="pt-scr pt-split pt-on-dark" data-io><figure>${im(p.split2[0])}</figure><figure>${im(p.split2[1])}</figure></section>
-    <button class="pt-scr pt-next pt-on-dark" aria-label="Siguiente proyecto: ${nx.plain}">${im([nx.hero[0]])}
+    <button class="pt-scr pt-next pt-on-dark" aria-label="Siguiente proyecto: ${nx.plain}">${im([nx.hero[0]],nx.hero[3])}${nc==='#fff'?'<span class="pt-shade"></span>':'<span class="pt-shade pt-shade-l"></span>'}
       <span class="pt-big" style="color:${nc}">${nx.name[0]}<br>${nx.name[1]} →</span></button>`;
     const $ = s => ov.querySelector(s);
     $('.pt-back').addEventListener('click', ACTIONS[key].back);
@@ -1471,7 +1469,7 @@ const PT_PROJECTS = {
     const stack=$('.pt-stack'), cards=[...stack.querySelectorAll('.pt-card')];
     ticks.push(()=>{ const P=pinP(stack)*(cards.length-1);
       cards.forEach((c,k)=>{ const tin=k===0?1:ease(clamp(P-(k-1))), tout=k<cards.length-1?ease(clamp(P-k)):0;
-        c.style.transform=`translate3d(0,${((1-tin)*100).toFixed(2)}%,0) scale(${(1-tout*.08).toFixed(3)})`;
+        c.style.transform=`translate3d(0,${((1-tin)*100-tout*12).toFixed(2)}%,0)`;
         c.style.filter=tout>0?`brightness(${(1-tout*.55).toFixed(3)})`:''; }); });
 
     // frase y zoom
