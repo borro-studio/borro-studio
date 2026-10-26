@@ -624,6 +624,8 @@
     .pt-next{display:block;width:100%;text-align:left}
     .pt-next img{transition:transform 1.2s var(--pt-ease)}
     .pt-next:hover img{transform:scale(1.04)}
+    .pt-overlogo{position:absolute;left:50%;top:50%;z-index:2;width:clamp(120px,22vw,300px);aspect-ratio:var(--pt-ar,1);transform:translate(-50%,-50%);background:#fff;
+      -webkit-mask:var(--pt-logo) center/contain no-repeat;mask:var(--pt-logo) center/contain no-repeat;filter:drop-shadow(0 2px 14px rgba(0,0,0,.25))}
     .pt-shade{position:absolute;inset:0;z-index:2;background:linear-gradient(to top,rgba(0,0,0,.5),rgba(0,0,0,0) 55%)}
     .pt-shade-l{background:linear-gradient(to top,rgba(236,232,225,.85),rgba(236,232,225,0) 50%)}
     .pt-next .pt-big{position:absolute;left:var(--pt-gl);bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:3;font-weight:900;font-size:clamp(54px,10.5vw,160px);line-height:.86;letter-spacing:-.055em}
@@ -1332,7 +1334,7 @@ const PT_PROJECTS = {
     say:'Dos emprendedoras, un estudio y *una *barra que acabó dentro del logotipo.',
     sayNote:'Stilo necesitaba una marca actual, dinámica y que diera confianza a quien entra por primera vez.',
     palette:[['#d4c3ae','Beige','#2b2a2a'],['#353435','Gris oscuro','#ece8e1'],['#ece8e1','Crema','#353435'],['#ffffff','Blanco','#353435'],['#0d0d0d','Negro','#d4c3ae']],
-    split1:[['assets/stilo-02.webp'],['assets/stilo-03.webp'],'Fotografía de marca y web de reservas'],
+    split1:[['assets/stilo-02.webp',0,'logo'],['assets/stilo-03.webp'],'Fotografía de marca y web de reservas'],
     reel:[['assets/stilo-04.webp','Sudadera'],['assets/stilo-05.webp','Tote bag'],['assets/stilo-pole-v.jpg','Señalética'],['assets/stilo-01.jpg','Clase']],
     next:'ene'
   },
@@ -1355,7 +1357,7 @@ const PT_PROJECTS = {
   const seg = (p,a,b)=>clamp((p-a)/(b-a));
   const ease = t=>1-Math.pow(1-t,3);
   const pad2 = n=>String(n).padStart(2,'0');
-  const im = ([src,contain],pos) => `<img class="pt-cover ${contain?'pt-contain':''}" ${pos?`style="object-position:${pos}"`:''} src="${src}" alt="" loading="lazy">`;
+  const im = ([src,contain,over],pos) => `<img class="pt-cover ${contain?'pt-contain':''}" ${pos?`style="object-position:${pos}"`:''} src="${src}" alt="" loading="lazy">${over==='logo'?'<span class="pt-overlogo" aria-hidden="true"></span>':''}`;
   const ACTIONS = { stilo:{ back:()=>closeProj(), next:()=>nextFromStilo() }, ene:{ back:()=>closeProj2(), next:()=>nextFromEne() } };
 
   function mount(ov){
